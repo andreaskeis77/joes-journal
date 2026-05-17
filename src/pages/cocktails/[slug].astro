@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { cocktails, ingredientBySlug } from "../../data/stub";
-import type { CocktailStub } from "../../data/stub";
+import { cocktails, ingredientBySlug } from "../../data/source";
+import type { CocktailStub } from "../../data/source";
 
 export function getStaticPaths() {
   return cocktails.map((cocktail) => ({

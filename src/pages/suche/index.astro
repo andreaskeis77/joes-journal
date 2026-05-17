@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
-import { searchIndex } from "../../data/stub";
-import type { SearchKind } from "../../data/stub";
+import { searchIndex } from "../../data/source";
+import type { SearchKind } from "../../data/source";
 
 const groupOrder: Array<{ kind: SearchKind; label: string }> = [
   { kind: "restaurant", label: "Restaurants" },

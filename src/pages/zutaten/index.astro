@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
-import { ingredients, suppliers, supplierBySlug } from "../../data/stub";
-import type { SupplierStub } from "../../data/stub";
+import { ingredients, suppliers, supplierBySlug } from "../../data/source";
+import type { SupplierStub } from "../../data/source";
 
 const ingredientsWithSuppliers = ingredients.map((ing) => ({
   ingredient: ing,

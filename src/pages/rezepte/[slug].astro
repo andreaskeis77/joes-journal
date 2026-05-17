@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { recipes, equipmentBySlug, ingredientBySlug } from "../../data/stub";
-import type { RecipeStub } from "../../data/stub";
+import { recipes, equipmentBySlug, ingredientBySlug } from "../../data/source";
+import type { RecipeStub } from "../../data/source";
 
 export function getStaticPaths() {
   return recipes.map((recipe) => ({

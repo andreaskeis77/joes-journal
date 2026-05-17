@@ -3,8 +3,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import RatingStars from "../../components/RatingStars.astro";
 import EmptyState from "../../components/EmptyState.astro";
-import { restaurants, reviewBySlug } from "../../data/stub";
-import type { RestaurantStub } from "../../data/stub";
+import { restaurants, reviewBySlug } from "../../data/source";
+import type { RestaurantStub } from "../../data/source";
 
 export function getStaticPaths() {
   return restaurants.map((restaurant) => ({
