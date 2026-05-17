@@ -1,0 +1,65 @@
+project: joes-journal
+brand: Zum Fettigen Joe
+output_root: public/assets
+
+global_style: >
+  Premium editorial food photography, warm natural light, calm composition,
+  subtle depth of field, refined but personal culinary journal atmosphere.
+  Warm neutrals, wood, stone, linen, porcelain, glass, stainless steel.
+  Restrained accents in BBQ red #B23A32 and petrol #2E7070.
+  High-end culinary journal aesthetic, realistic textures, not sterile,
+  not generic stock photography.
+
+global_negative: >
+  No readable text, no fake words, no menus with readable text, no logos,
+  no real brands, no recognizable real restaurant, no identifiable people,
+  no watermarks, no QR codes, no neon, no cartoon, no clutter,
+  no cheap diner theme, no messy plates, no dirty kitchen,
+  no extreme saturation, no distorted cutlery, no unrealistic food.
+
+assets:
+  - id: placeholder_recipe
+    filename: placeholder-recipe-4x3-v01.webp
+    folder: placeholders
+    aspect_ratio: "4:3"
+    target_size: [1600, 1200]
+    quality: high
+    subject: >
+      High-quality private kitchen mise-en-place scene with fresh ingredients,
+      wooden cutting board, chef knife, ceramic bowls, herbs, garlic, tomatoes,
+      warm window light, calm editorial composition.
+    composition: >
+      Landscape 4:3. Main focus on the wooden board and ingredients in the lower
+      and central area. Soft background blur. Leave some calm negative space
+      in the upper third. No hands, no people.
+
+  - id: placeholder_cocktail
+    filename: placeholder-cocktail-4x5-v01.webp
+    folder: placeholders
+    aspect_ratio: "4:5"
+    target_size: [1600, 2000]
+    quality: high
+    subject: >
+      Elegant cocktail or mocktail still life with a refined glass, clear ice,
+      citrus peel, lime, bar spoon, jigger and shaker elements, warm bar light,
+      premium but personal atmosphere.
+    composition: >
+      Portrait 4:5. Glass and bar tools in the lower and central area.
+      Calm warm background with subtle depth of field. Not too dark.
+      Leave quiet negative space in the upper third for possible UI overlay.
+      No bottle labels, no readable text.
+
+  - id: placeholder_equipment
+    filename: placeholder-equipment-4x3-v01.webp
+    folder: placeholders
+    aspect_ratio: "4:3"
+    target_size: [1600, 1200]
+    quality: high
+    subject: >
+      High-quality still life of kitchen equipment and utensils: chef knife,
+      cast iron pan, stainless steel thermometer probe, bar tools, ceramic bowl,
+      wooden board, warm natural light.
+    composition: >
+      Landscape 4:3. Calm, premium editorial product-style still life.
+      Objects arranged clearly and sparsely, not cluttered. Stainless steel,
+      wood and ceramic textures. Soft shadows. No brand marks or logos.
