@@ -1,65 +1,508 @@
 project: joes-journal
 brand: Zum Fettigen Joe
 output_root: public/assets
+global_style: 'Premium editorial food photography, warm natural light, calm composition, subtle depth
+  of field, refined but personal culinary journal atmosphere. Warm neutrals, wood, stone, linen, porcelain,
+  glass, stainless steel. Restrained accents in BBQ red #B23A32 and petrol #2E7070. High-end culinary
+  journal aesthetic, realistic textures, not sterile, not generic stock photography.
 
-global_style: >
-  Premium editorial food photography, warm natural light, calm composition,
-  subtle depth of field, refined but personal culinary journal atmosphere.
-  Warm neutrals, wood, stone, linen, porcelain, glass, stainless steel.
-  Restrained accents in BBQ red #B23A32 and petrol #2E7070.
-  High-end culinary journal aesthetic, realistic textures, not sterile,
-  not generic stock photography.
+  '
+global_negative: 'No readable text, no fake words, no menus with readable text, no logos, no real brands,
+  no recognizable real restaurant, no identifiable people, no watermarks, no QR codes, no neon, no cartoon,
+  no clutter, no cheap diner theme, no messy plates, no dirty kitchen, no extreme saturation, no distorted
+  cutlery, no unrealistic food.
 
-global_negative: >
-  No readable text, no fake words, no menus with readable text, no logos,
-  no real brands, no recognizable real restaurant, no identifiable people,
-  no watermarks, no QR codes, no neon, no cartoon, no clutter,
-  no cheap diner theme, no messy plates, no dirty kitchen,
-  no extreme saturation, no distorted cutlery, no unrealistic food.
-
+  '
 assets:
-  - id: placeholder_recipe
-    filename: placeholder-recipe-4x3-v01.webp
-    folder: placeholders
-    aspect_ratio: "4:3"
-    target_size: [1600, 1200]
-    quality: high
-    subject: >
-      High-quality private kitchen mise-en-place scene with fresh ingredients,
-      wooden cutting board, chef knife, ceramic bowls, herbs, garlic, tomatoes,
-      warm window light, calm editorial composition.
-    composition: >
-      Landscape 4:3. Main focus on the wooden board and ingredients in the lower
-      and central area. Soft background blur. Leave some calm negative space
-      in the upper third. No hands, no people.
+- id: placeholder_recipe
+  filename: placeholder-recipe-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: 'Accepted as initial MVP recipe placeholder. Warm private kitchen mise-en-place scene with
+    wood, knife, herbs, garlic, tomatoes, ceramic and calm editorial light. No visible text or logos.
 
-  - id: placeholder_cocktail
-    filename: placeholder-cocktail-4x5-v01.webp
-    folder: placeholders
-    aspect_ratio: "4:5"
-    target_size: [1600, 2000]
-    quality: high
-    subject: >
-      Elegant cocktail or mocktail still life with a refined glass, clear ice,
-      citrus peel, lime, bar spoon, jigger and shaker elements, warm bar light,
-      premium but personal atmosphere.
-    composition: >
-      Portrait 4:5. Glass and bar tools in the lower and central area.
-      Calm warm background with subtle depth of field. Not too dark.
-      Leave quiet negative space in the upper third for possible UI overlay.
-      No bottle labels, no readable text.
+    '
+  subject: 'High-quality private kitchen mise-en-place scene with fresh ingredients, wooden cutting board,
+    chef knife, ceramic bowls, herbs, garlic, tomatoes, warm window light, calm editorial composition.
 
-  - id: placeholder_equipment
-    filename: placeholder-equipment-4x3-v01.webp
-    folder: placeholders
-    aspect_ratio: "4:3"
-    target_size: [1600, 1200]
-    quality: high
-    subject: >
-      High-quality still life of kitchen equipment and utensils: chef knife,
-      cast iron pan, stainless steel thermometer probe, bar tools, ceramic bowl,
-      wooden board, warm natural light.
-    composition: >
-      Landscape 4:3. Calm, premium editorial product-style still life.
-      Objects arranged clearly and sparsely, not cluttered. Stainless steel,
-      wood and ceramic textures. Soft shadows. No brand marks or logos.
+    '
+  composition: 'Landscape 4:3. Main focus on the wooden board and ingredients in the lower and central
+    area. Soft background blur. Leave some calm negative space in the upper third. No hands, no people.
+
+    '
+- id: placeholder_cocktail
+  filename: placeholder-cocktail-4x5-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:5'
+  target_size:
+  - 1600
+  - 2000
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: 'Accepted as initial MVP cocktail placeholder. Elegant cocktail/mocktail still life with
+    glass, ice, citrus, bar spoon, shaker, jigger, warm light and enough calm upper negative space. No
+    visible text or logos.
+
+    '
+  subject: 'Elegant cocktail or mocktail still life with a refined glass, clear ice, citrus peel, lime,
+    bar spoon, jigger and shaker elements, warm bar light, premium but personal atmosphere.
+
+    '
+  composition: 'Portrait 4:5. Glass and bar tools in the lower and central area. Calm warm background
+    with subtle depth of field. Not too dark. Leave quiet negative space in the upper third for possible
+    UI overlay. No bottle labels, no readable text.
+
+    '
+- id: placeholder_equipment
+  filename: placeholder-equipment-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: 'Accepted as initial MVP equipment placeholder. Clear premium still life with kitchen and
+    bar equipment: knife, cast iron pan, thermometer probe, jigger, shaker, wood, stainless steel and
+    ceramic. No visible text or logos.
+
+    '
+  subject: 'High-quality still life of kitchen equipment and utensils: chef knife, cast iron pan, stainless
+    steel thermometer probe, bar tools, ceramic bowl, wooden board, warm natural light.
+
+    '
+  composition: 'Landscape 4:3. Calm, premium editorial product-style still life. Objects arranged clearly
+    and sparsely, not cluttered. Stainless steel, wood and ceramic textures. Soft shadows. No brand marks
+    or logos.
+
+    '
+- id: placeholder_restaurant
+  filename: placeholder-restaurant-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Warm premium restaurant table placeholder image without a specific recognizable restaurant.
+    Beautifully set table with linen napkin, ceramic plate, glassware, cutlery, subtle candlelight, wood
+    and stone textures, refined but personal atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Calm restaurant table scene, no people, no readable menus, no signage.
+    Table detail in the lower and central area, softly blurred warm restaurant background, enough quiet
+    negative space in the upper third.
+
+    '
+- id: placeholder_review
+  filename: placeholder-review-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Editorial restaurant review placeholder image: calm table after a good course, glassware,
+    fork, linen napkin, ceramic plate with a small elegant remaining food detail, warm light, reflective
+    personal journal atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Quiet after-dinner table detail, refined but not messy. No dirty plates,
+    no people, no readable text, no logos. Warm background, shallow depth of field, calm composition.
+
+    '
+- id: placeholder_ingredient
+  filename: placeholder-ingredient-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Premium ingredient still life with herbs, citrus, spices, olive oil in a neutral unlabeled
+    glass bottle, ceramic bowls, warm wood and stone surface, calm culinary journal mood.
+
+    '
+  composition: 'Landscape 4:3. Ingredients arranged clearly and sparingly, not cluttered. No labels, no
+    readable text, no brands. Warm natural light, soft shadows, refined editorial realism.
+
+    '
+- id: texture_warm_paper_grain
+  filename: texture-warm-paper-grain-1x1-v01.webp
+  folder: patterns
+  aspect_ratio: '1:1'
+  target_size:
+  - 1024
+  - 1024
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Very subtle warm paper grain texture for a premium culinary journal website background. Warm
+    grey and cream tones, almost invisible organic texture, no objects, no text, no pattern that dominates.
+
+    '
+  composition: 'Square 1:1 seamless-looking texture tile. Extremely low contrast, suitable behind text.
+    No readable text, no icons, no food objects, no high contrast, no visible borders.
+
+    '
+- id: placeholder_supplier
+  filename: placeholder-supplier-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Premium supplier placeholder scene: curated market-style produce, baskets, herbs, vegetables,
+    neutral boxes, ceramic bowls, warm natural light, no people, no visible stall signs, no labels.
+
+    '
+  composition: 'Landscape 4:3. Calm premium market or supplier still life, not a real shop, not crowded.
+    Food and materials in lower and central area, soft background blur, no readable text or logos.
+
+    '
+- id: placeholder_collection
+  filename: placeholder-collection-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Curated culinary collection placeholder: notebook, cards, printed notes without readable text,
+    ceramic cup, glass, small food detail, warm table, refined personal journal mood.
+
+    '
+  composition: 'Landscape 4:3. Editorial desktop/table scene with quiet upper negative space. Notes must
+    be blank, blurred, abstract or unreadable. No real maps, no readable handwriting, no logos.
+
+    '
+- id: placeholder_link
+  filename: placeholder-link-4x3-v01.webp
+  folder: placeholders
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Curated links placeholder image: laptop partially visible with blank or blurred screen, notebook
+    without readable text, coffee or drink, warm culinary desk atmosphere, premium editorial still life.
+
+    '
+  composition: 'Landscape 4:3. Calm research desk scene, no readable screen content, no browser logos,
+    no websites, no app names. Warm light, wood, paper, ceramic and subtle petrol accent.
+
+    '
+- id: hero_restaurants_cool_dining_room
+  filename: hero-restaurants-cool-dining-room-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'General non-recognizable premium restaurant interior with open tables, warm light, refined
+    materials, wood, stone, linen, ceramic, subtle bar or dining room depth in the background.
+
+    '
+  composition: 'Landscape 16:9 desktop hero. Calm dining room with no people and no readable signage.
+    Leave enough quiet space for frontend text overlay. Warm editorial mood, subtle depth of field, no
+    real restaurant identity.
+
+    '
+- id: hero_reviews_table_after_service
+  filename: hero-reviews-table-after-service-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Restaurant table after a good course: glass, cutlery, linen napkin, half-finished elegant
+    plate detail, small crumbs or sauce trace but not dirty, warm reflective review atmosphere.
+
+    '
+  composition: 'Landscape 16:9 hero. Lower/central table detail, calm blurred restaurant background and
+    quiet area for text overlay. Personal culinary journal mood, refined but not sterile.
+
+    '
+- id: hero_recipes_kitchen_counter_mise_en_place
+  filename: hero-recipes-kitchen-counter-mise-en-place-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'High-quality private kitchen counter with prepared ingredients, knife, bowl, vegetables, herbs,
+    wooden board, warm light, premium home cooking atmosphere.
+
+    '
+  composition: 'Landscape 16:9 hero. Mise-en-place arranged in lower and central area, quiet upper or
+    side area for text overlay. No hands, no people, no labels, no readable text.
+
+    '
+- id: hero_cocktails_moody_bar_glassware
+  filename: hero-cocktails-moody-bar-glassware-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Calm bar scene with glassware, clear ice, citrus, shaker, jigger, bar spoon, soft reflections,
+    warm bar light, elegant cocktail or mocktail atmosphere, not too dark.
+
+    '
+  composition: 'Landscape 16:9 hero. Bar tools and glass detail in lower/central part, calm negative space
+    for overlay, no bottle labels, no readable text, no brand marks.
+
+    '
+- id: hero_equipment_kitchen_tools_still_life
+  filename: hero-equipment-kitchen-tools-still-life-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'High-quality kitchen tools still life: knife, pan, bar tools, thermometer, wooden board, stainless
+    steel, ceramic, warm natural light, premium culinary equipment mood.
+
+    '
+  composition: 'Landscape 16:9 hero. Clear sparse arrangement, not cluttered. Quiet upper or left area
+    for text overlay. No logos, no brands, no readable labels.
+
+    '
+- id: restaurant_interior_fine_dining_warm
+  filename: restaurant-interior-fine-dining-warm-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Fine dining room with warm light, clean set tables, linen, glassware, ceramic plates, subtle
+    luxury, no people, no signage, no real restaurant.
+
+    '
+  composition: 'Landscape 4:3. Calm interior card image, softly blurred depth, warm editorial mood. No
+    readable menus, no logos, no real location.
+
+    '
+- id: restaurant_interior_bistro_window
+  filename: restaurant-interior-bistro-window-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Modern bistro table near a window, warm wood, brass, ceramic, glass, urban evening atmosphere
+    outside but no readable signs, inviting and refined.
+
+    '
+  composition: 'Landscape 4:3. Table and window scene, no people, no readable street signs or menus, soft
+    depth of field, calm premium bistro mood.
+
+    '
+- id: review_dish_fine_dining_plate
+  filename: review-dish-fine-dining-plate-4x3-v01.webp
+  folder: reviews
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Elegant generic fine dining plate, appetizing and realistic, ceramic plate, warm restaurant
+    light, subtle sauce accent in BBQ red, refined but not overdesigned.
+
+    '
+  composition: 'Landscape 4:3. Plate detail in lower/central area, shallow depth of field, clean table
+    setting, no people, no text, no logos, no unrealistic food.
+
+    '
+- id: recipe_card_mise_en_place_vegetables
+  filename: recipe-card-mise-en-place-vegetables-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Prepared vegetables, herbs, knife, wooden board, ceramic bowls, warm private kitchen light,
+    premium editorial recipe card image.
+
+    '
+  composition: 'Landscape 4:3. Clear mise-en-place composition, realistic vegetables, no hands, no text,
+    no labels, no clutter.
+
+    '
+- id: cocktail_card_highball_citrus
+  filename: cocktail-card-highball-citrus-4x5-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:5'
+  target_size:
+  - 1600
+  - 2000
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Highball cocktail or mocktail with citrus, clear ice, fresh atmosphere, warm natural bar light,
+    premium glassware, no labels, no brand bottles.
+
+    '
+  composition: 'Portrait 4:5. Drink in lower/central area, calm upper negative space, subtle depth of
+    field, realistic ice and garnish, no readable text.
+
+    '
+- id: cocktail_card_rocks_glass_ice
+  filename: cocktail-card-rocks-glass-ice-4x5-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:5'
+  target_size:
+  - 1600
+  - 2000
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Rocks glass with large clear ice cube, subtle citrus garnish, warm quiet bar light, refined
+    cocktail or mocktail still life, no bottle labels.
+
+    '
+  composition: 'Portrait 4:5. Glass and ice in lower/central frame, soft background, calm negative space,
+    premium editorial atmosphere, no text or logos.
+
+    '
+- id: ingredient_category_spices_herbs
+  filename: ingredient-category-spices-herbs-4x3-v01.webp
+  folder: ingredients
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Premium still life of spices, herbs, small ceramic bowls, warm wood, stone surface, culinary
+    journal ingredient mood.
+
+    '
+  composition: 'Landscape 4:3. Sparse and elegant ingredient arrangement, no labels, no readable text,
+    no brands, warm natural light.
+
+    '
+- id: equipment_card_bar_tools
+  filename: equipment-card-bar-tools-4x3-v01.webp
+  folder: equipment
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Premium bar tools still life: jigger, shaker, bar spoon, strainer, citrus, glass, warm wood
+    and stone, stainless steel reflections, no logos.
+
+    '
+  composition: 'Landscape 4:3. Clear product-style arrangement, not cluttered, warm editorial light, no
+    readable text, no brand marks.
+
+    '
+- id: social_og_default
+  filename: social-og-default-1200x630-v01.webp
+  folder: social
+  aspect_ratio: 1.91:1
+  target_size:
+  - 1200
+  - 630
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for MVP asset library.
+  subject: 'Editorial restaurant table default social preview image for a private culinary journal, warm
+    table setting, glassware, ceramic, linen, subtle Joe red and petrol accents, no embedded text.
+
+    '
+  composition: Wide 1.91:1 social preview. Leave safe quiet space for later frontend or OG text overlay.
+    No text in image, no logos, no people, no real restaurant.
