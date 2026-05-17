@@ -1,0 +1,30 @@
+{
+  "name": "@joes-journal/directus",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Directus admin + API for joes-journal (local: SQLite, prod: PostgreSQL).",
+  "scripts": {
+    "directus": "directus",
+    "bootstrap": "directus bootstrap",
+    "start": "directus start",
+    "schema:snapshot": "directus schema snapshot ./schema/snapshot.yaml --yes",
+    "schema:apply": "tsx --env-file=.env bootstrap/apply-schema.ts",
+    "seed": "tsx --env-file=.env bootstrap/seed.ts",
+    "reset": "node scripts/reset.mjs"
+  },
+  "dependencies": {
+    "@directus/sdk": "^17.0.0",
+    "directus": "^11.1.0",
+    "better-sqlite3": "^11.3.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.7.0"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20 <23"
+  }
+}
