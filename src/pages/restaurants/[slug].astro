@@ -1,0 +1,331 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import RatingStars from "../../components/RatingStars.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { restaurants, reviewBySlug } from "../../data/stub";
+import type { RestaurantStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return restaurants.map((restaurant) => ({
+    params: { slug: restaurant.slug },
+    props: { restaurant },
+  }));
+}
+
+interface Props {
+  restaurant: RestaurantStub;
+}
+
+const { restaurant } = Astro.props;
+const review = restaurant.reviewSlug ? reviewBySlug.get(restaurant.reviewSlug) : undefined;
+const priceDisplay = "€".repeat(restaurant.priceLevel);
+const visitedDate = review
+  ? new Date(review.visitedOn).toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "long",
+    })
+  : null;
+---
+
+<BaseLayout
+  title={restaurant.name}
+  description={`${restaurant.name} in ${restaurant.city}: ${restaurant.note}`}
+>
+  <article class="restaurant-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/restaurants">Restaurants</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{restaurant.name}</span>
+    </nav>
+
+    <div class="hero">
+      <img
+        src={restaurant.image}
+        alt=""
+        width="1600"
+        height="1200"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <header class="head container">
+      <div class="head-top">
+        <StatusBadge status={restaurant.status} label={restaurant.statusLabel} />
+        <span class="city">{restaurant.city}, {restaurant.region}</span>
+      </div>
+      <h1>{restaurant.name}</h1>
+      <p class="lede">{restaurant.note}</p>
+
+      <dl class="facts">
+        <div>
+          <dt>Küche</dt>
+          <dd>{restaurant.cuisine}</dd>
+        </div>
+        <div>
+          <dt>Preisniveau</dt>
+          <dd>{priceDisplay} <span class="muted">({restaurant.priceLevel}/4)</span></dd>
+        </div>
+        <div>
+          <dt>Priorität</dt>
+          <dd>{restaurant.priority}</dd>
+        </div>
+        {restaurant.tags.length > 0 && (
+          <div>
+            <dt>Tags</dt>
+            <dd>
+              <ul class="tags">
+                {restaurant.tags.map((tag) => <li>#{tag}</li>)}
+              </ul>
+            </dd>
+          </div>
+        )}
+      </dl>
+
+      <div class="ctas">
+        {restaurant.website && (
+          <a class="btn btn-primary" href={restaurant.website} target="_blank" rel="noopener noreferrer">
+            Website
+          </a>
+        )}
+        {restaurant.reservationUrl && (
+          <a class="btn btn-secondary" href={restaurant.reservationUrl} target="_blank" rel="noopener noreferrer">
+            Reservieren
+          </a>
+        )}
+        {restaurant.mapsUrl && (
+          <a class="btn btn-secondary" href={restaurant.mapsUrl} target="_blank" rel="noopener noreferrer">
+            Auf Karte
+          </a>
+        )}
+      </div>
+    </header>
+
+    <section class="container review-section">
+      <h2>Kritik</h2>
+      {review ? (
+        <a class="review-link" href={`/kritiken/${review.slug}`}>
+          <div class="review-card">
+            <div>
+              <p class="review-eyebrow eyebrow">Aus dem Journal</p>
+              <h3>{review.title}</h3>
+              <p class="review-excerpt">{review.excerpt}</p>
+              <RatingStars value={review.rating} />
+              {visitedDate && <p class="visited muted">Besucht im {visitedDate}</p>}
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      ) : (
+        <EmptyState
+          title={
+            restaurant.status === "planned"
+              ? "Reservierung steht – Kritik folgt."
+              : "Noch keine Kritik vorhanden."
+          }
+          description={
+            restaurant.status === "planned"
+              ? "Dieses Restaurant ist eingeplant. Eine Kritik erscheint nach dem Besuch."
+              : "Dieses Restaurant steht auf der Merkliste. Sobald der Besuch stattgefunden hat, kommt hier die Kritik."
+          }
+        />
+      )}
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .restaurant-detail {
+    padding-bottom: var(--space-9);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb span[aria-current] {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .hero {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 540px;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .head {
+    padding-block: var(--space-6) var(--space-5);
+    max-width: var(--max-detail);
+  }
+
+  .head-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .city {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .head h1 {
+    margin: 0 0 var(--space-3);
+  }
+
+  .lede {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  .facts {
+    margin: 0 0 var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-5);
+  }
+
+  .facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .facts dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .facts dd {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+  }
+
+  .tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tags li {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .review-section {
+    padding-top: var(--space-7);
+    max-width: var(--max-detail);
+  }
+
+  .review-section h2 {
+    margin: 0 0 var(--space-5);
+  }
+
+  .review-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .review-link:hover {
+    text-decoration: none;
+  }
+
+  .review-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-card);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .review-link:hover .review-card {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .review-eyebrow {
+    margin: 0 0 var(--space-2);
+  }
+
+  .review-card h3 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-xl);
+  }
+
+  .review-excerpt {
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .visited {
+    margin: var(--space-3) 0 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .arrow {
+    flex-shrink: 0;
+    font-size: var(--font-size-2xl);
+    color: var(--color-secondary);
+  }
+
+  @media (min-width: 700px) {
+    .facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .facts {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

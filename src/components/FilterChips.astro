@@ -1,0 +1,89 @@
+---
+interface ChipOption {
+  label: string;
+  href: string;
+  active?: boolean;
+  count?: number;
+}
+
+interface Props {
+  label?: string;
+  options: ChipOption[];
+}
+
+const { label, options } = Astro.props;
+---
+
+<nav class="filter-chips" aria-label={label ?? "Filter"}>
+  <ul>
+    {options.map((option) => (
+      <li>
+        <a href={option.href} class:list={["chip", { active: option.active }]} aria-current={option.active ? "page" : undefined}>
+          {option.label}
+          {typeof option.count === "number" && (
+            <span class="count">{option.count}</span>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .filter-chips {
+    margin-block: var(--space-5) var(--space-6);
+  }
+
+  .filter-chips ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+
+  .chip:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .chip.active {
+    background: var(--color-text);
+    color: #fff;
+    border-color: var(--color-text);
+  }
+
+  .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+  }
+
+  .chip.active .count {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.92);
+  }
+</style>

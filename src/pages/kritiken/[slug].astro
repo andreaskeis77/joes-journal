@@ -1,0 +1,355 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RatingStars from "../../components/RatingStars.astro";
+import { reviews, restaurantBySlug, reviewsByDateDesc } from "../../data/stub";
+import type { ReviewStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return reviews.map((review) => ({
+    params: { slug: review.slug },
+    props: { review },
+  }));
+}
+
+interface Props {
+  review: ReviewStub;
+}
+
+const { review } = Astro.props;
+const restaurant = restaurantBySlug.get(review.restaurantSlug);
+const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const related = reviewsByDateDesc
+  .filter((r) => r.slug !== review.slug)
+  .slice(0, 2);
+---
+
+<BaseLayout title={review.title} description={review.excerpt}>
+  <article class="review-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/kritiken">Kritiken</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{review.title}</span>
+    </nav>
+
+    <div class="hero">
+      <img
+        src={review.image}
+        alt=""
+        width="1600"
+        height="1200"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <header class="container head">
+      <div class="head-meta">
+        {restaurant && (
+          <a class="restaurant-link" href={`/restaurants/${restaurant.slug}`}>
+            {restaurant.name}
+          </a>
+        )}
+        {restaurant && <span aria-hidden="true">·</span>}
+        {restaurant && <span>{restaurant.city}</span>}
+        <span aria-hidden="true">·</span>
+        <time datetime={review.visitedOn}>{visitedDate}</time>
+      </div>
+      <h1>{review.title}</h1>
+      <div class="rating-wrap">
+        <RatingStars value={review.rating} />
+      </div>
+      <p class="excerpt">{review.excerpt}</p>
+    </header>
+
+    <div class="container body">
+      {review.body.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+
+    {review.galleryImages.length > 0 && (
+      <section class="container gallery-section">
+        <h2>Galerie</h2>
+        <div class="gallery">
+          {review.galleryImages.map((src) => (
+            <figure>
+              <img src={src} alt="" loading="lazy" decoding="async" />
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="container details-section">
+      <h2>Details</h2>
+      <dl class="details">
+        {restaurant && (
+          <>
+            <div>
+              <dt>Restaurant</dt>
+              <dd>
+                <a href={`/restaurants/${restaurant.slug}`}>{restaurant.name}</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Ort</dt>
+              <dd>{restaurant.city}, {restaurant.region}</dd>
+            </div>
+            <div>
+              <dt>Küche</dt>
+              <dd>{restaurant.cuisine}</dd>
+            </div>
+          </>
+        )}
+        <div>
+          <dt>Besuchsdatum</dt>
+          <dd><time datetime={review.visitedOn}>{visitedDate}</time></dd>
+        </div>
+        <div>
+          <dt>Bewertung</dt>
+          <dd>{review.rating.toFixed(1).replace(".", ",")} / 5</dd>
+        </div>
+      </dl>
+    </section>
+
+    {related.length > 0 && (
+      <section class="container related-section">
+        <h2>Weitere Kritiken</h2>
+        <ul class="related-list">
+          {related.map((r) => (
+            <li>
+              <a href={`/kritiken/${r.slug}`} class="related-link">
+                <img src={r.image} alt="" width="200" height="150" loading="lazy" />
+                <span>
+                  <span class="related-title">{r.title}</span>
+                  <span class="related-meta">
+                    {restaurantBySlug.get(r.restaurantSlug)?.name ?? ""}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .review-detail {
+    padding-bottom: var(--space-9);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb span[aria-current] {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .hero {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 540px;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .head {
+    padding-block: var(--space-7) var(--space-5);
+    max-width: var(--max-content);
+  }
+
+  .head-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .restaurant-link {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .head h1 {
+    margin: 0 0 var(--space-4);
+  }
+
+  .rating-wrap {
+    margin-bottom: var(--space-5);
+  }
+
+  .excerpt {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    line-height: var(--line-body);
+    max-width: 60ch;
+  }
+
+  .body {
+    max-width: var(--max-content);
+    padding-block: var(--space-5) var(--space-7);
+  }
+
+  .body p {
+    font-size: var(--font-size-base);
+    line-height: var(--line-body);
+    margin: 0 0 var(--space-5);
+  }
+
+  .gallery-section,
+  .details-section,
+  .related-section {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--color-border);
+    max-width: var(--max-detail);
+  }
+
+  .gallery-section h2,
+  .details-section h2,
+  .related-section h2 {
+    margin: 0 0 var(--space-5);
+  }
+
+  .gallery {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  .gallery figure {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--color-bg-warm);
+  }
+
+  .gallery figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .details > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .details dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .details dd {
+    margin: 0;
+    font-size: var(--font-size-base);
+  }
+
+  .related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  .related-link {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+
+  .related-link:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .related-link img {
+    width: 96px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .related-title {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+  }
+
+  .related-meta {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 700px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .details {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .related-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .details {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

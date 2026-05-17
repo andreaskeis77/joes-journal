@@ -1,5 +1,6 @@
 ---
 import type { ReviewStub } from "../data/stub";
+import { restaurantBySlug } from "../data/stub";
 import RatingStars from "./RatingStars.astro";
 
 interface Props {
@@ -7,6 +8,9 @@ interface Props {
 }
 
 const { review } = Astro.props;
+const restaurant = restaurantBySlug.get(review.restaurantSlug);
+const restaurantName = restaurant?.name ?? "Unbekanntes Restaurant";
+const city = restaurant?.city ?? "";
 const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
   year: "numeric",
   month: "long",
@@ -27,9 +31,13 @@ const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
     </div>
     <div class="body">
       <div class="meta">
-        <span class="restaurant">{review.restaurant}</span>
-        <span class="dot" aria-hidden="true">·</span>
-        <span class="city">{review.city}</span>
+        <span class="restaurant">{restaurantName}</span>
+        {city && (
+          <>
+            <span class="dot" aria-hidden="true">·</span>
+            <span class="city">{city}</span>
+          </>
+        )}
         <span class="dot" aria-hidden="true">·</span>
         <time datetime={review.visitedOn}>{visitedDate}</time>
       </div>

@@ -6,7 +6,17 @@ import ReviewCard from "../components/ReviewCard.astro";
 import RestaurantCard from "../components/RestaurantCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 import StatCard from "../components/StatCard.astro";
-import { reviews, restaurants, categories, stats } from "../data/stub";
+import {
+  reviewsByDateDesc,
+  restaurants,
+  categories,
+  stats,
+} from "../data/stub";
+
+const latestReviews = reviewsByDateDesc.slice(0, 3);
+const homeRestaurants = restaurants
+  .filter((r) => r.status === "wishlist" || r.status === "planned" || r.status === "reviewed")
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -26,7 +36,7 @@ import { reviews, restaurants, categories, stats } from "../data/stub";
         <a class="section-more" href="/kritiken">Alle Kritiken →</a>
       </header>
       <div class="grid grid-3">
-        {reviews.map((review) => (
+        {latestReviews.map((review) => (
           <ReviewCard review={review} />
         ))}
       </div>
@@ -43,7 +53,7 @@ import { reviews, restaurants, categories, stats } from "../data/stub";
         <a class="section-more" href="/restaurants">Alle Restaurants →</a>
       </header>
       <div class="grid grid-3">
-        {restaurants.map((restaurant) => (
+        {homeRestaurants.map((restaurant) => (
           <RestaurantCard restaurant={restaurant} />
         ))}
       </div>

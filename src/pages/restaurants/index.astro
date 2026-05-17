@@ -1,0 +1,219 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import RestaurantCard from "../../components/RestaurantCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { restaurants, statusOrder } from "../../data/stub";
+
+const sorted = [...restaurants].sort(
+  (a, b) => statusOrder[a.status] - statusOrder[b.status],
+);
+
+const counts = {
+  all: restaurants.length,
+  wishlist: restaurants.filter((r) => r.status === "wishlist" || r.status === "planned").length,
+  visited: restaurants.filter((r) => r.status === "visited" || r.status === "reviewed").length,
+  reviewed: restaurants.filter((r) => r.status === "reviewed").length,
+};
+
+const filterOptions = [
+  { label: "Alle", href: "#all", active: true, count: counts.all, view: "all" },
+  { label: "Watchlist", href: "#wishlist", count: counts.wishlist, view: "wishlist" },
+  { label: "Besucht", href: "#visited", count: counts.visited, view: "visited" },
+  { label: "Mit Kritik", href: "#reviewed", count: counts.reviewed, view: "reviewed" },
+];
+---
+
+<BaseLayout
+  title="Restaurants"
+  description="Restaurants, Watchlist und besuchte Adressen aus dem Journal."
+>
+  <PageHeader
+    eyebrow="Restaurants"
+    title="Watchlist & Besuche"
+    lede="Alle Restaurants im Journal – mit Status, Stadt, Küche und Preisniveau."
+  />
+
+  <section class="restaurant-list">
+    <div class="container">
+      <nav class="filter-chips" aria-label="Restaurants filtern" data-filter-nav>
+        <ul>
+          {filterOptions.map((option) => (
+            <li>
+              <button
+                type="button"
+                class:list={["chip", { active: option.active }]}
+                data-view={option.view}
+                aria-pressed={option.active ? "true" : "false"}
+              >
+                {option.label}
+                <span class="count">{option.count}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="grid" data-restaurant-grid>
+        {sorted.map((restaurant) => (
+          <div
+            class="grid-item"
+            data-status={restaurant.status}
+            data-view-match={
+              restaurant.status === "reviewed"
+                ? "all reviewed visited"
+                : restaurant.status === "visited"
+                ? "all visited"
+                : "all wishlist"
+            }
+          >
+            <RestaurantCard restaurant={restaurant} />
+          </div>
+        ))}
+      </div>
+
+      <div class="empty-wrap" data-empty hidden>
+        <EmptyState
+          title="Keine Restaurants in dieser Ansicht."
+          description="Passe den Filter an oder gehe zurück zur Gesamtliste."
+        />
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      const nav = document.querySelector("[data-filter-nav]");
+      const grid = document.querySelector("[data-restaurant-grid]");
+      const empty = document.querySelector("[data-empty]");
+      if (!nav || !grid || !empty) return;
+
+      const buttons = nav.querySelectorAll("button[data-view]");
+
+      function applyView(view) {
+        let visible = 0;
+        grid.querySelectorAll("[data-view-match]").forEach((item) => {
+          const matches = item.getAttribute("data-view-match")?.split(" ").includes(view);
+          if (matches) {
+            item.removeAttribute("hidden");
+            visible++;
+          } else {
+            item.setAttribute("hidden", "");
+          }
+        });
+        empty.toggleAttribute("hidden", visible !== 0);
+        buttons.forEach((b) => {
+          const active = b.getAttribute("data-view") === view;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        if (view === "all") {
+          history.replaceState(null, "", location.pathname);
+        } else {
+          history.replaceState(null, "", `${location.pathname}#${view}`);
+        }
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const view = button.getAttribute("data-view") ?? "all";
+          applyView(view);
+        });
+      });
+
+      const initial = location.hash.replace("#", "");
+      if (initial && ["wishlist", "visited", "reviewed"].includes(initial)) {
+        applyView(initial);
+      }
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .restaurant-list {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .filter-chips {
+    margin-block: var(--space-5) var(--space-6);
+  }
+
+  .filter-chips ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-ui);
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+
+  .chip:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  .chip.active {
+    background: var(--color-text);
+    color: #fff;
+    border-color: var(--color-text);
+  }
+
+  .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+  }
+
+  .chip.active .count {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item[hidden] {
+    display: none;
+  }
+
+  .empty-wrap[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
