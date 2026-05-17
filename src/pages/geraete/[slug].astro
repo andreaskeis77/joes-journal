@@ -1,11 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import {
-  equipment,
-  recipeBySlug,
-  cocktailBySlug,
-  links,
-} from "../../data/source";
+import { equipment, recipeBySlug, cocktailBySlug, links } from "../../data/source";
 import type { EquipmentStub } from "../../data/source";
 
 export function getStaticPaths() {
@@ -51,75 +46,102 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
       <p class="lede">{eq.note}</p>
 
       <dl class="facts">
-        {eq.manufacturer && (
-          <div><dt>Hersteller</dt><dd>{eq.manufacturer}</dd></div>
-        )}
-        {eq.model && (
-          <div><dt>Modell</dt><dd>{eq.model}</dd></div>
-        )}
+        {
+          eq.manufacturer && (
+            <div>
+              <>
+                <dt>Hersteller</dt>
+                <dd>{eq.manufacturer}</dd>
+              </>
+            </div>
+          )
+        }
+        {
+          eq.model && (
+            <div>
+              <>
+                <dt>Modell</dt>
+                <dd>{eq.model}</dd>
+              </>
+            </div>
+          )
+        }
         <div><dt>Kategorie</dt><dd>{eq.category}</dd></div>
         <div><dt>Status</dt><dd>{eq.statusLabel}</dd></div>
       </dl>
 
-      {eq.productUrl && (
-        <div class="ctas">
-          <a class="btn btn-primary" href={eq.productUrl} target="_blank" rel="noopener noreferrer">
-            Produktseite
-          </a>
-        </div>
-      )}
+      {
+        eq.productUrl && (
+          <div class="ctas">
+            <a
+              class="btn btn-primary"
+              href={eq.productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Produktseite
+            </a>
+          </div>
+        )
+      }
     </header>
 
-    {(linkedRecipes.length > 0 || linkedCocktails.length > 0) && (
-      <section class="container used-section">
-        <h2>Wofür im Einsatz</h2>
-        <ul class="used-list">
-          {linkedRecipes.map((r) => (
-            <li>
-              <a href={`/rezepte/${r.slug}`} class="used-link">
-                <img src={r.image} alt="" width="80" height="60" loading="lazy" />
-                <span>
-                  <span class="used-eyebrow">Rezept</span>
-                  <span class="used-title">{r.title}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-          {linkedCocktails.map((c) => (
-            <li>
-              <a href={`/cocktails/${c.slug}`} class="used-link">
-                <img src={c.image} alt="" width="80" height="60" loading="lazy" />
-                <span>
-                  <span class="used-eyebrow">Cocktail</span>
-                  <span class="used-title">{c.name}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
+    {
+      (linkedRecipes.length > 0 || linkedCocktails.length > 0) && (
+        <section class="container used-section">
+          <h2>Wofür im Einsatz</h2>
+          <ul class="used-list">
+            {linkedRecipes.map((r) => (
+              <li>
+                <a href={`/rezepte/${r.slug}`} class="used-link">
+                  <img src={r.image} alt="" width="80" height="60" loading="lazy" />
+                  <span>
+                    <span class="used-eyebrow">Rezept</span>
+                    <span class="used-title">{r.title}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+            {linkedCocktails.map((c) => (
+              <li>
+                <a href={`/cocktails/${c.slug}`} class="used-link">
+                  <img src={c.image} alt="" width="80" height="60" loading="lazy" />
+                  <span>
+                    <span class="used-eyebrow">Cocktail</span>
+                    <span class="used-title">{c.name}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
-    {equipmentLinks.length > 0 && (
-      <section class="container links-section">
-        <h2>Links</h2>
-        <ul class="link-list">
-          {equipmentLinks.map((l) => (
-            <li>
-              <a href={l.url} target="_blank" rel="noopener noreferrer">
-                {l.label}
-              </a>
-              <span class="link-source">{l.source}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
+    {
+      equipmentLinks.length > 0 && (
+        <section class="container links-section">
+          <h2>Links</h2>
+          <ul class="link-list">
+            {equipmentLinks.map((l) => (
+              <li>
+                <a href={l.url} target="_blank" rel="noopener noreferrer">
+                  {l.label}
+                </a>
+                <span class="link-source">{l.source}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>
 
 <style>
-  .equipment-detail { padding-bottom: var(--space-9); }
+  .equipment-detail {
+    padding-bottom: var(--space-9);
+  }
 
   .breadcrumb {
     padding: var(--space-4) 0;
@@ -129,14 +151,26 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
   }
-  .breadcrumb a { color: var(--color-text-muted); }
-  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+  .breadcrumb a {
+    color: var(--color-text-muted);
+  }
+  .breadcrumb span[aria-current] {
+    color: var(--color-text);
+    font-weight: 500;
+  }
 
   .hero {
-    width: 100%; aspect-ratio: 16 / 9; max-height: 540px;
-    overflow: hidden; background: var(--color-bg-warm);
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 540px;
+    overflow: hidden;
+    background: var(--color-bg-warm);
   }
-  .hero img { width: 100%; height: 100%; object-fit: cover; }
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   .head {
     padding-block: var(--space-6) var(--space-5);
@@ -144,17 +178,21 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
   }
 
   .head-top {
-    display: flex; flex-wrap: wrap; align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-3);
     margin-bottom: var(--space-4);
   }
 
   .status {
-    padding: 4px 10px; border-radius: 999px;
-    background: rgba(255,255,255,0.96);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
     color: var(--badge-color);
     border: 1px solid var(--badge-color);
-    font-size: var(--font-size-xs); font-weight: 600;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
     letter-spacing: 0.04em;
   }
 
@@ -165,7 +203,9 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
     letter-spacing: 0.08em;
   }
 
-  h1 { margin: 0 0 var(--space-3); }
+  h1 {
+    margin: 0 0 var(--space-3);
+  }
 
   .lede {
     margin: 0 0 var(--space-6);
@@ -183,16 +223,25 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
     border-bottom: 1px solid var(--color-border);
     padding-block: var(--space-5);
   }
-  .facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+  .facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
   .facts dt {
     font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-text-muted);
   }
-  .facts dd { margin: 0; }
+  .facts dd {
+    margin: 0;
+  }
 
-  .ctas { display: flex; gap: var(--space-3); }
+  .ctas {
+    display: flex;
+    gap: var(--space-3);
+  }
 
   .used-section,
   .links-section {
@@ -207,25 +256,35 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
   }
 
   .used-list {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
 
   .used-link {
-    display: flex; gap: var(--space-4); align-items: center;
-    color: inherit; text-decoration: none;
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
   }
-  .used-link:hover { border-color: var(--color-secondary); text-decoration: none; }
+  .used-link:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
 
   .used-link img {
-    width: 80px; height: 60px;
-    object-fit: cover; border-radius: var(--radius-sm);
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
     flex-shrink: 0;
   }
 
@@ -236,11 +295,17 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
     letter-spacing: 0.1em;
     color: var(--color-text-muted);
   }
-  .used-title { display: block; font-weight: 600; }
+  .used-title {
+    display: block;
+    font-weight: 600;
+  }
 
   .link-list {
-    list-style: none; margin: 0; padding: 0;
-    display: flex; flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-3);
   }
   .link-list li {
@@ -258,6 +323,8 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
   }
 
   @media (min-width: 700px) {
-    .used-list { grid-template-columns: repeat(2, 1fr); }
+    .used-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>

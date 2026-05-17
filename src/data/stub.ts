@@ -586,7 +586,8 @@ export const recipes: RecipeStub[] = [
       "Hitze reduzieren, Thymian, Salz und Zitronenschale zugeben. Mit Zitronensaft abschmecken und sofort servieren.",
     ],
     equipmentSlugs: ["chefs-knife", "cast-iron-pan"],
-    notes: "Funktioniert auch mit Spargel, Erbsen oder dicken Bohnen. Wichtig: nicht zu lang garen, das Gemüse soll Biss behalten.",
+    notes:
+      "Funktioniert auch mit Spargel, Erbsen oder dicken Bohnen. Wichtig: nicht zu lang garen, das Gemüse soll Biss behalten.",
   },
   {
     slug: "saiblings-filet-beurre-blanc",
@@ -615,7 +616,8 @@ export const recipes: RecipeStub[] = [
       "Fisch direkt mit Beurre Blanc servieren. Idealerweise mit jungen Erbsen oder Saisongemüse.",
     ],
     equipmentSlugs: ["chefs-knife"],
-    notes: "Die Sauce verträgt keinen starken Hitzeschub. Wer mag, kann am Ende mit ein paar Tropfen Zitronensaft frisch nachjustieren.",
+    notes:
+      "Die Sauce verträgt keinen starken Hitzeschub. Wer mag, kann am Ende mit ein paar Tropfen Zitronensaft frisch nachjustieren.",
   },
   {
     slug: "geschmorte-tomaten-rosmarin",
@@ -642,7 +644,8 @@ export const recipes: RecipeStub[] = [
       "Mit etwas Öl in einem Schraubglas hält sich das Ganze 3–4 Tage im Kühlschrank.",
     ],
     equipmentSlugs: [],
-    notes: "Sehr gut auf geröstetem Brot mit Ricotta. Oder als Basis für eine schnelle Pasta-Sauce.",
+    notes:
+      "Sehr gut auf geröstetem Brot mit Ricotta. Oder als Basis für eine schnelle Pasta-Sauce.",
   },
 ];
 
@@ -846,9 +849,7 @@ export const supplierBySlug = new Map(suppliers.map((s) => [s.slug, s]));
 export const collectionBySlug = new Map(collections.map((c) => [c.slug, c]));
 
 /** Sortierte Listen für Listenseiten. */
-export const reviewsByDateDesc = [...reviews].sort((a, b) =>
-  a.visitedOn < b.visitedOn ? 1 : -1,
-);
+export const reviewsByDateDesc = [...reviews].sort((a, b) => (a.visitedOn < b.visitedOn ? 1 : -1));
 
 /** Status-Reihenfolge für Listenanzeige. */
 export const statusOrder: Record<RestaurantStatus, number> = {
@@ -948,7 +949,14 @@ export const searchIndex: SearchEntry[] = [
     href: `/cocktails/${co.slug}`,
     snippet: `${co.glass} · ${co.technique}`,
     image: co.image,
-    searchText: s(co.name, co.type, co.glass, co.technique, co.flavorProfile, ...co.pours.map((p) => p.item)),
+    searchText: s(
+      co.name,
+      co.type,
+      co.glass,
+      co.technique,
+      co.flavorProfile,
+      ...co.pours.map((p) => p.item),
+    ),
   })),
   ...equipment.map<SearchEntry>((eq) => ({
     kind: "equipment",

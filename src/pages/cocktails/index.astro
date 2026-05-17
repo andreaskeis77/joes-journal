@@ -26,18 +26,32 @@ const counts = {
     <div class="container">
       <nav class="filter-chips" aria-label="Cocktails filtern" data-filter-nav>
         <ul>
-          <li><button type="button" class="chip active" data-view="all" aria-pressed="true">Alle <span class="count">{counts.all}</span></button></li>
-          <li><button type="button" class="chip" data-view="alkoholisch" aria-pressed="false">Alkoholisch <span class="count">{counts.alkoholisch}</span></button></li>
-          <li><button type="button" class="chip" data-view="alkoholfrei" aria-pressed="false">Alkoholfrei <span class="count">{counts.alkoholfrei}</span></button></li>
+          <li>
+            <button type="button" class="chip active" data-view="all" aria-pressed="true"
+              >Alle <span class="count">{counts.all}</span></button
+            >
+          </li>
+          <li>
+            <button type="button" class="chip" data-view="alkoholisch" aria-pressed="false"
+              >Alkoholisch <span class="count">{counts.alkoholisch}</span></button
+            >
+          </li>
+          <li>
+            <button type="button" class="chip" data-view="alkoholfrei" aria-pressed="false"
+              >Alkoholfrei <span class="count">{counts.alkoholfrei}</span></button
+            >
+          </li>
         </ul>
       </nav>
 
       <div class="grid" data-cocktail-grid>
-        {cocktails.map((cocktail) => (
-          <div class="grid-item" data-type={cocktail.type}>
-            <CocktailCard cocktail={cocktail} />
-          </div>
-        ))}
+        {
+          cocktails.map((cocktail) => (
+            <div class="grid-item" data-type={cocktail.type}>
+              <CocktailCard cocktail={cocktail} />
+            </div>
+          ))
+        }
       </div>
 
       <div class="empty-wrap" data-empty hidden>
@@ -73,7 +87,9 @@ const counts = {
         if (view === "all") history.replaceState(null, "", location.pathname);
         else history.replaceState(null, "", `${location.pathname}#${view}`);
       }
-      buttons.forEach((b) => b.addEventListener("click", () => applyView(b.getAttribute("data-view") ?? "all")));
+      buttons.forEach((b) =>
+        b.addEventListener("click", () => applyView(b.getAttribute("data-view") ?? "all")),
+      );
       const initial = location.hash.replace("#", "");
       if (["alkoholisch", "alkoholfrei"].includes(initial)) applyView(initial);
     })();
@@ -81,15 +97,25 @@ const counts = {
 </BaseLayout>
 
 <style>
-  .cocktail-list { padding-block: var(--space-6) var(--space-9); }
+  .cocktail-list {
+    padding-block: var(--space-6) var(--space-9);
+  }
 
-  .filter-chips { margin-block: var(--space-5) var(--space-6); }
+  .filter-chips {
+    margin-block: var(--space-5) var(--space-6);
+  }
   .filter-chips ul {
-    list-style: none; margin: 0; padding: 0;
-    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
   .chip {
-    display: inline-flex; align-items: center; gap: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -99,30 +125,52 @@ const counts = {
     font-family: var(--font-ui);
     cursor: pointer;
   }
-  .chip:hover { border-color: var(--color-secondary); color: var(--color-secondary); }
-  .chip.active { background: var(--color-text); color: #fff; border-color: var(--color-text); }
+  .chip:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+  .chip.active {
+    background: var(--color-text);
+    color: #fff;
+    border-color: var(--color-text);
+  }
   .count {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 24px; padding: 0 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 0 6px;
     border-radius: 999px;
     background: var(--color-bg-warm);
     color: var(--color-text-muted);
     font-size: var(--font-size-xs);
     font-weight: 600;
   }
-  .chip.active .count { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.92); }
+  .chip.active .count {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.92);
+  }
 
   .grid {
-    display: grid; gap: var(--space-5);
+    display: grid;
+    gap: var(--space-5);
     grid-template-columns: 1fr;
   }
-  .grid-item[hidden] { display: none; }
-  .empty-wrap[hidden] { display: none; }
+  .grid-item[hidden] {
+    display: none;
+  }
+  .empty-wrap[hidden] {
+    display: none;
+  }
 
   @media (min-width: 700px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (min-width: 1100px) {
-    .grid { grid-template-columns: repeat(3, 1fr); }
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 </style>

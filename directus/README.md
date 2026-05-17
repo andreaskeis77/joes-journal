@@ -39,11 +39,11 @@ Removes `./data/*.db` and `./uploads/`. Run `pnpm bootstrap` again to start clea
 
 ## Scripts
 
-| Script | Purpose |
-|---|---|
-| `pnpm bootstrap` | Directus CLI bootstrap. Creates DB schema (Directus meta tables) and first admin user. |
-| `pnpm schema:apply` | Applies our domain schema via Directus SDK (collections, fields, relations). |
-| `pnpm schema:snapshot` | Exports current schema as YAML to `./schema/snapshot.yaml`. |
-| `pnpm seed` | Inserts seed data via Directus SDK. |
-| `pnpm start` | Starts Directus server. |
-| `pnpm reset` | Drops local DB + uploads (irreversible). |
+| Script                 | Purpose                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `pnpm bootstrap`       | Directus CLI bootstrap. Creates DB schema (Directus meta tables) and first admin user. |
+| `pnpm schema:apply`    | Applies our domain schema via Directus SDK (collections, fields, relations).           |
+| `pnpm schema:snapshot` | Exports current schema as YAML to `./schema/snapshot.yaml`.                            |
+| `pnpm seed`            | Inserts seed data via Directus SDK.                                                    |
+| `pnpm start`           | Starts Directus server.                                                                |
+| `pnpm reset`           | Drops local DB + uploads (irreversible).                                               |

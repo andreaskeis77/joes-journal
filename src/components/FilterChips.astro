@@ -16,16 +16,20 @@ const { label, options } = Astro.props;
 
 <nav class="filter-chips" aria-label={label ?? "Filter"}>
   <ul>
-    {options.map((option) => (
-      <li>
-        <a href={option.href} class:list={["chip", { active: option.active }]} aria-current={option.active ? "page" : undefined}>
-          {option.label}
-          {typeof option.count === "number" && (
-            <span class="count">{option.count}</span>
-          )}
-        </a>
-      </li>
-    ))}
+    {
+      options.map((option) => (
+        <li>
+          <a
+            href={option.href}
+            class:list={["chip", { active: option.active }]}
+            aria-current={option.active ? "page" : undefined}
+          >
+            {option.label}
+            {typeof option.count === "number" && <span class="count">{option.count}</span>}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </nav>
 
@@ -54,7 +58,9 @@ const { label, options } = Astro.props;
     color: var(--color-text);
     font-size: var(--font-size-sm);
     text-decoration: none;
-    transition: border-color 120ms ease, background 120ms ease;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease;
   }
 
   .chip:hover {

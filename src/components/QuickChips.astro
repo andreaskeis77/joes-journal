@@ -5,11 +5,13 @@ import { quickChips } from "../data/source";
 <section class="quick-chips" aria-label="Schnelleinstiege">
   <div class="container">
     <ul>
-      {quickChips.map((chip) => (
-        <li>
-          <a href={chip.href}>{chip.label}</a>
-        </li>
-      ))}
+      {
+        quickChips.map((chip) => (
+          <li>
+            <a href={chip.href}>{chip.label}</a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </section>

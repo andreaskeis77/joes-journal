@@ -65,19 +65,19 @@ Nicht verwenden:
 
 Alle Assets sollen an dieser Palette ausgerichtet sein.
 
-| Rolle | Name | Hex | Einsatz |
-|---|---|---:|---|
-| Primärfarbe | Joe Rot / BBQ-Rot | `#B23A32` | Akzente, Buttons, Ratings, kleine grafische Highlights |
-| Sekundärfarbe | umami Petrol | `#2E7070` | Links, ruhige Akzente, sekundäre Aktionen, Signatur |
-| Hintergrund | Warmgrau | `#F5F3F1` | Seitenhintergrund, helle Flächen |
-| Oberfläche | Weiß | `#FFFFFF` | Cards, Inhaltsflächen |
-| Footer / Fläche | Hellgrau | `#EDEBE9` | abgesetzte Flächen, Footer, Sektionen |
-| Haupttext | Dunkelgrau | `#222222` | Text, Icons, Linien |
-| Sekundärtext | Mittelgrau | `#5F5A56` | Meta, Nebeninfos |
-| Border | Warmes Grau | `#DDD8D2` | Rahmen, Divider |
-| Erfolg | gedecktes Grün | `#2F6F4E` | positive Status, sparsam |
-| Warnung | Senf/Amber | `#B87514` | Hinweis, sparsam |
-| Gefahr | dunkles Rot | `#9F2D24` | Fehler, sparsam |
+| Rolle           | Name              |       Hex | Einsatz                                                |
+| --------------- | ----------------- | --------: | ------------------------------------------------------ |
+| Primärfarbe     | Joe Rot / BBQ-Rot | `#B23A32` | Akzente, Buttons, Ratings, kleine grafische Highlights |
+| Sekundärfarbe   | umami Petrol      | `#2E7070` | Links, ruhige Akzente, sekundäre Aktionen, Signatur    |
+| Hintergrund     | Warmgrau          | `#F5F3F1` | Seitenhintergrund, helle Flächen                       |
+| Oberfläche      | Weiß              | `#FFFFFF` | Cards, Inhaltsflächen                                  |
+| Footer / Fläche | Hellgrau          | `#EDEBE9` | abgesetzte Flächen, Footer, Sektionen                  |
+| Haupttext       | Dunkelgrau        | `#222222` | Text, Icons, Linien                                    |
+| Sekundärtext    | Mittelgrau        | `#5F5A56` | Meta, Nebeninfos                                       |
+| Border          | Warmes Grau       | `#DDD8D2` | Rahmen, Divider                                        |
+| Erfolg          | gedecktes Grün    | `#2F6F4E` | positive Status, sparsam                               |
+| Warnung         | Senf/Amber        | `#B87514` | Hinweis, sparsam                                       |
+| Gefahr          | dunkles Rot       | `#9F2D24` | Fehler, sparsam                                        |
 
 ### 3.1 Farbverwendung in Bildern
 
@@ -96,10 +96,10 @@ Bilder sollen nicht künstlich in der Palette eingefärbt werden, aber die Farbw
 
 ### 4.1 Website-Typografie
 
-| Zweck | Font |
-|---|---|
-| Headlines | Poppins |
-| Body/UI | Inter |
+| Zweck          | Font                    |
+| -------------- | ----------------------- |
+| Headlines      | Poppins                 |
+| Body/UI        | Inter                   |
 | Logo/Wortmarke | eigenes Branding später |
 
 ### 4.2 Regel für generierte Bilder
@@ -133,28 +133,28 @@ Nicht erlaubt:
 
 ### 5.1 Masterformate
 
-| Zweck | Seitenverhältnis | Mastergröße | Verwendung |
-|---|---:|---:|---|
-| Desktop Hero | 16:9 | 2400 × 1350 px | Startseite, Kategorieheader |
-| Editorial Hero | 3:2 | 2400 × 1600 px | Artikel/Kritikdetail |
-| Mobile Hero | 4:5 | 1440 × 1800 px | mobile Hero-Alternative |
-| Card Landscape | 4:3 | 1600 × 1200 px | Karten, Listen |
-| Card Square | 1:1 | 1600 × 1600 px | Grid, Avatare, Icons mit Bild |
-| Portrait Feature | 4:5 | 1600 × 2000 px | Cocktails, Geräte, Zutaten |
-| Open Graph | 1.91:1 | 1200 × 630 px | Social Preview später |
-| Texture Tile | 1:1 | 1024 × 1024 px | dezente Hintergrundmuster |
-| Icon Master | SVG | 24/32/48 px | UI Icons |
-| Favicon/App Icon | 1:1 | 512 × 512 px | später |
+| Zweck            | Seitenverhältnis |    Mastergröße | Verwendung                    |
+| ---------------- | ---------------: | -------------: | ----------------------------- |
+| Desktop Hero     |             16:9 | 2400 × 1350 px | Startseite, Kategorieheader   |
+| Editorial Hero   |              3:2 | 2400 × 1600 px | Artikel/Kritikdetail          |
+| Mobile Hero      |              4:5 | 1440 × 1800 px | mobile Hero-Alternative       |
+| Card Landscape   |              4:3 | 1600 × 1200 px | Karten, Listen                |
+| Card Square      |              1:1 | 1600 × 1600 px | Grid, Avatare, Icons mit Bild |
+| Portrait Feature |              4:5 | 1600 × 2000 px | Cocktails, Geräte, Zutaten    |
+| Open Graph       |           1.91:1 |  1200 × 630 px | Social Preview später         |
+| Texture Tile     |              1:1 | 1024 × 1024 px | dezente Hintergrundmuster     |
+| Icon Master      |              SVG |    24/32/48 px | UI Icons                      |
+| Favicon/App Icon |              1:1 |   512 × 512 px | später                        |
 
 ### 5.2 Ausgabeformate
 
-| Assettyp | Primärformat | Alternative |
-|---|---|---|
-| Fotos / generierte Bilder | `.webp` | `.jpg` |
-| Icons | `.svg` | `.png` nur wenn nötig |
-| Muster / Texturen | `.webp` oder `.svg` | `.png` |
-| Logos | `.svg` | `.png` |
-| Open Graph | `.webp` / `.jpg` | `.png` |
+| Assettyp                  | Primärformat        | Alternative           |
+| ------------------------- | ------------------- | --------------------- |
+| Fotos / generierte Bilder | `.webp`             | `.jpg`                |
+| Icons                     | `.svg`              | `.png` nur wenn nötig |
+| Muster / Texturen         | `.webp` oder `.svg` | `.png`                |
+| Logos                     | `.svg`              | `.png`                |
+| Open Graph                | `.webp` / `.jpg`    | `.png`                |
 
 ### 5.3 Benennung
 
@@ -313,12 +313,12 @@ Noch nicht im MVP final, aber vorzubereiten.
 
 ### 8.2 Favicon / App Icons
 
-| Datei | Größe | Beschreibung |
-|---|---:|---|
-| `favicon-32.png` | 32×32 | kleines Browser-Favicon |
-| `favicon-192.png` | 192×192 | Android / PWA |
-| `apple-touch-icon.png` | 180×180 | Apple Touch Icon |
-| `brand-app-icon-512.png` | 512×512 | Master App Icon |
+| Datei                    |   Größe | Beschreibung            |
+| ------------------------ | ------: | ----------------------- |
+| `favicon-32.png`         |   32×32 | kleines Browser-Favicon |
+| `favicon-192.png`        | 192×192 | Android / PWA           |
+| `apple-touch-icon.png`   | 180×180 | Apple Touch Icon        |
+| `brand-app-icon-512.png` | 512×512 | Master App Icon         |
 
 **Stil:** Monogramm oder Badge, nicht detailreich.
 
@@ -713,17 +713,17 @@ Platzhalter müssen hochwertig sein, nicht nach „Missing Image“ aussehen.
 
 ### 17.1 Content-Type Placeholder
 
-| Datei | Zweck |
-|---|---|
+| Datei                                 | Zweck                |
+| ------------------------------------- | -------------------- |
 | `placeholder-restaurant-4x3-v01.webp` | Restaurant ohne Bild |
-| `placeholder-review-4x3-v01.webp` | Kritik ohne Bild |
-| `placeholder-recipe-4x3-v01.webp` | Rezept ohne Bild |
-| `placeholder-cocktail-4x5-v01.webp` | Cocktail ohne Bild |
-| `placeholder-ingredient-4x3-v01.webp` | Zutat ohne Bild |
-| `placeholder-equipment-4x3-v01.webp` | Gerät ohne Bild |
-| `placeholder-supplier-4x3-v01.webp` | Lieferant ohne Bild |
-| `placeholder-collection-4x3-v01.webp` | Sammlung ohne Bild |
-| `placeholder-link-4x3-v01.webp` | Link ohne Bild |
+| `placeholder-review-4x3-v01.webp`     | Kritik ohne Bild     |
+| `placeholder-recipe-4x3-v01.webp`     | Rezept ohne Bild     |
+| `placeholder-cocktail-4x5-v01.webp`   | Cocktail ohne Bild   |
+| `placeholder-ingredient-4x3-v01.webp` | Zutat ohne Bild      |
+| `placeholder-equipment-4x3-v01.webp`  | Gerät ohne Bild      |
+| `placeholder-supplier-4x3-v01.webp`   | Lieferant ohne Bild  |
+| `placeholder-collection-4x3-v01.webp` | Sammlung ohne Bild   |
+| `placeholder-link-4x3-v01.webp`       | Link ohne Bild       |
 
 ### 17.2 Stil
 
@@ -843,57 +843,57 @@ Icons sollen als SVG-Line-Icons umgesetzt werden.
 
 ### 20.2 Basis-Icons
 
-| Datei | Bedeutung |
-|---|---|
-| `icon-home-line-24.svg` | Startseite |
-| `icon-journal-line-24.svg` | Journal |
-| `icon-restaurant-line-24.svg` | Restaurant |
-| `icon-review-line-24.svg` | Kritik |
-| `icon-recipe-line-24.svg` | Rezept |
-| `icon-cocktail-line-24.svg` | Cocktail |
-| `icon-ingredient-line-24.svg` | Zutat |
-| `icon-supplier-line-24.svg` | Lieferant |
-| `icon-equipment-line-24.svg` | Gerät |
-| `icon-collection-line-24.svg` | Sammlung |
-| `icon-link-line-24.svg` | Link |
-| `icon-search-line-24.svg` | Suche |
-| `icon-filter-line-24.svg` | Filter |
-| `icon-menu-line-24.svg` | Burger Menu |
-| `icon-close-line-24.svg` | Schließen |
-| `icon-chevron-right-line-24.svg` | Navigation |
-| `icon-chevron-down-line-24.svg` | Dropdown |
-| `icon-external-link-line-24.svg` | externer Link |
-| `icon-map-pin-line-24.svg` | Ort |
-| `icon-calendar-line-24.svg` | Datum |
-| `icon-tag-line-24.svg` | Tag |
-| `icon-star-line-24.svg` | Bewertung leer |
-| `icon-star-filled-24.svg` | Bewertung gefüllt |
-| `icon-star-half-24.svg` | Bewertung halb, optional |
-| `icon-price-line-24.svg` | Preisniveau |
-| `icon-camera-line-24.svg` | Foto |
-| `icon-gallery-line-24.svg` | Galerie |
-| `icon-stats-line-24.svg` | Statistik |
-| `icon-lock-line-24.svg` | privat |
-| `icon-admin-line-24.svg` | Admin |
-| `icon-draft-line-24.svg` | Entwurf |
-| `icon-published-line-24.svg` | Veröffentlicht |
-| `icon-wishlist-line-24.svg` | Wunschliste |
-| `icon-visited-line-24.svg` | besucht |
-| `icon-reservation-line-24.svg` | Reservieren |
-| `icon-globe-line-24.svg` | Website |
-| `icon-clock-line-24.svg` | Zeit |
-| `icon-difficulty-line-24.svg` | Schwierigkeit |
-| `icon-serving-line-24.svg` | Portionen |
-| `icon-glass-line-24.svg` | Glas |
-| `icon-ice-line-24.svg` | Eis |
-| `icon-shaker-line-24.svg` | Shaker |
-| `icon-knife-line-24.svg` | Messer |
-| `icon-pan-line-24.svg` | Pfanne |
-| `icon-grill-line-24.svg` | Grill |
-| `icon-market-line-24.svg` | Markt |
-| `icon-box-line-24.svg` | Lieferung |
-| `icon-note-line-24.svg` | Notiz |
-| `icon-source-line-24.svg` | Quelle |
+| Datei                            | Bedeutung                |
+| -------------------------------- | ------------------------ |
+| `icon-home-line-24.svg`          | Startseite               |
+| `icon-journal-line-24.svg`       | Journal                  |
+| `icon-restaurant-line-24.svg`    | Restaurant               |
+| `icon-review-line-24.svg`        | Kritik                   |
+| `icon-recipe-line-24.svg`        | Rezept                   |
+| `icon-cocktail-line-24.svg`      | Cocktail                 |
+| `icon-ingredient-line-24.svg`    | Zutat                    |
+| `icon-supplier-line-24.svg`      | Lieferant                |
+| `icon-equipment-line-24.svg`     | Gerät                    |
+| `icon-collection-line-24.svg`    | Sammlung                 |
+| `icon-link-line-24.svg`          | Link                     |
+| `icon-search-line-24.svg`        | Suche                    |
+| `icon-filter-line-24.svg`        | Filter                   |
+| `icon-menu-line-24.svg`          | Burger Menu              |
+| `icon-close-line-24.svg`         | Schließen                |
+| `icon-chevron-right-line-24.svg` | Navigation               |
+| `icon-chevron-down-line-24.svg`  | Dropdown                 |
+| `icon-external-link-line-24.svg` | externer Link            |
+| `icon-map-pin-line-24.svg`       | Ort                      |
+| `icon-calendar-line-24.svg`      | Datum                    |
+| `icon-tag-line-24.svg`           | Tag                      |
+| `icon-star-line-24.svg`          | Bewertung leer           |
+| `icon-star-filled-24.svg`        | Bewertung gefüllt        |
+| `icon-star-half-24.svg`          | Bewertung halb, optional |
+| `icon-price-line-24.svg`         | Preisniveau              |
+| `icon-camera-line-24.svg`        | Foto                     |
+| `icon-gallery-line-24.svg`       | Galerie                  |
+| `icon-stats-line-24.svg`         | Statistik                |
+| `icon-lock-line-24.svg`          | privat                   |
+| `icon-admin-line-24.svg`         | Admin                    |
+| `icon-draft-line-24.svg`         | Entwurf                  |
+| `icon-published-line-24.svg`     | Veröffentlicht           |
+| `icon-wishlist-line-24.svg`      | Wunschliste              |
+| `icon-visited-line-24.svg`       | besucht                  |
+| `icon-reservation-line-24.svg`   | Reservieren              |
+| `icon-globe-line-24.svg`         | Website                  |
+| `icon-clock-line-24.svg`         | Zeit                     |
+| `icon-difficulty-line-24.svg`    | Schwierigkeit            |
+| `icon-serving-line-24.svg`       | Portionen                |
+| `icon-glass-line-24.svg`         | Glas                     |
+| `icon-ice-line-24.svg`           | Eis                      |
+| `icon-shaker-line-24.svg`        | Shaker                   |
+| `icon-knife-line-24.svg`         | Messer                   |
+| `icon-pan-line-24.svg`           | Pfanne                   |
+| `icon-grill-line-24.svg`         | Grill                    |
+| `icon-market-line-24.svg`        | Markt                    |
+| `icon-box-line-24.svg`           | Lieferung                |
+| `icon-note-line-24.svg`          | Notiz                    |
+| `icon-source-line-24.svg`        | Quelle                   |
 
 ### 20.3 Icon-Farbvarianten
 
@@ -912,16 +912,16 @@ Icons selbst als `currentColor`; Farbe über CSS:
 
 ### 21.1 Restaurantstatus-Badges
 
-| Datei / Token | Text | Farbe |
-|---|---|---|
-| `badge-status-discovered` | Entdeckt | Warmgrau + Dunkelgrau |
-| `badge-status-wishlist` | Merkliste | Petrol hell |
-| `badge-status-planned` | Geplant | Amber hell |
-| `badge-status-visited` | Besucht | Grün hell |
-| `badge-status-reviewed` | Kritik vorhanden | Joe Rot hell |
-| `badge-status-revisit` | Wieder besuchen | Petrol |
-| `badge-status-closed` | Geschlossen | Grau |
-| `badge-status-archived` | Archiviert | Grau |
+| Datei / Token             | Text             | Farbe                 |
+| ------------------------- | ---------------- | --------------------- |
+| `badge-status-discovered` | Entdeckt         | Warmgrau + Dunkelgrau |
+| `badge-status-wishlist`   | Merkliste        | Petrol hell           |
+| `badge-status-planned`    | Geplant          | Amber hell            |
+| `badge-status-visited`    | Besucht          | Grün hell             |
+| `badge-status-reviewed`   | Kritik vorhanden | Joe Rot hell          |
+| `badge-status-revisit`    | Wieder besuchen  | Petrol                |
+| `badge-status-closed`     | Geschlossen      | Grau                  |
+| `badge-status-archived`   | Archiviert       | Grau                  |
 
 ### 21.2 Contentstatus-Badges
 
@@ -949,16 +949,16 @@ Icons selbst als `currentColor`; Farbe über CSS:
 
 ### 22.1 Stat-Icons
 
-| Datei | Zweck |
-|---|---|
-| `stat-icon-restaurants-total.svg` | Restaurants insgesamt |
-| `stat-icon-restaurants-visited.svg` | besucht |
-| `stat-icon-restaurants-watchlist.svg` | Watchlist |
-| `stat-icon-top-cities.svg` | Top-Städte/Regionen |
-| `stat-icon-reviews-total.svg` | Kritiken später |
-| `stat-icon-recipes-total.svg` | Rezepte später |
-| `stat-icon-cocktails-total.svg` | Cocktails später |
-| `stat-icon-equipment-owned.svg` | Gerätebestand später |
+| Datei                                 | Zweck                 |
+| ------------------------------------- | --------------------- |
+| `stat-icon-restaurants-total.svg`     | Restaurants insgesamt |
+| `stat-icon-restaurants-visited.svg`   | besucht               |
+| `stat-icon-restaurants-watchlist.svg` | Watchlist             |
+| `stat-icon-top-cities.svg`            | Top-Städte/Regionen   |
+| `stat-icon-reviews-total.svg`         | Kritiken später       |
+| `stat-icon-recipes-total.svg`         | Rezepte später        |
+| `stat-icon-cocktails-total.svg`       | Cocktails später      |
+| `stat-icon-equipment-owned.svg`       | Gerätebestand später  |
 
 ### 22.2 Mini-Chart-Grafiken
 

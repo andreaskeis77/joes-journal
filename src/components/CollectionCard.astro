@@ -25,9 +25,7 @@ const { collection, itemCount } = Astro.props;
       <p class="type">{collection.typeLabel}</p>
       <h3>{collection.title}</h3>
       <p class="description">{collection.description}</p>
-      {typeof itemCount === "number" && (
-        <p class="count">{itemCount} Einträge</p>
-      )}
+      {typeof itemCount === "number" && <p class="count">{itemCount} Einträge</p>}
     </div>
   </a>
 </article>
@@ -39,7 +37,9 @@ const { collection, itemCount } = Astro.props;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-card);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
     height: 100%;
   }
 

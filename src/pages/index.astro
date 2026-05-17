@@ -6,12 +6,7 @@ import ReviewCard from "../components/ReviewCard.astro";
 import RestaurantCard from "../components/RestaurantCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 import StatCard from "../components/StatCard.astro";
-import {
-  reviewsByDateDesc,
-  restaurants,
-  categories,
-  stats,
-} from "../data/source";
+import { reviewsByDateDesc, restaurants, categories, stats } from "../data/source";
 
 const latestReviews = reviewsByDateDesc.slice(0, 3);
 const homeRestaurants = restaurants
@@ -36,9 +31,7 @@ const homeRestaurants = restaurants
         <a class="section-more" href="/kritiken">Alle Kritiken →</a>
       </header>
       <div class="grid grid-3">
-        {latestReviews.map((review) => (
-          <ReviewCard review={review} />
-        ))}
+        {latestReviews.map((review) => <ReviewCard review={review} />)}
       </div>
     </div>
   </section>
@@ -53,9 +46,7 @@ const homeRestaurants = restaurants
         <a class="section-more" href="/restaurants">Alle Restaurants →</a>
       </header>
       <div class="grid grid-3">
-        {homeRestaurants.map((restaurant) => (
-          <RestaurantCard restaurant={restaurant} />
-        ))}
+        {homeRestaurants.map((restaurant) => <RestaurantCard restaurant={restaurant} />)}
       </div>
     </div>
   </section>
@@ -69,9 +60,7 @@ const homeRestaurants = restaurants
         </div>
       </header>
       <div class="grid grid-3">
-        {categories.map((category) => (
-          <CategoryCard category={category} />
-        ))}
+        {categories.map((category) => <CategoryCard category={category} />)}
       </div>
     </div>
   </section>
@@ -85,9 +74,7 @@ const homeRestaurants = restaurants
         </div>
       </header>
       <div class="grid grid-4">
-        {stats.map((stat) => (
-          <StatCard stat={stat} />
-        ))}
+        {stats.map((stat) => <StatCard stat={stat} />)}
       </div>
     </div>
   </section>
@@ -107,7 +94,8 @@ const homeRestaurants = restaurants
         <h2>Ehrliche Kritiken. Gute Küche. Guter Geschmack.</h2>
         <p class="muted">
           „Zum Fettigen Joe“ ist ein privates kulinarisches Journal – Restaurants, eigene Küche,
-          Cocktails, Geräte, Bezugsquellen und kuratierte Links an einem Ort. Ruhig, persönlich, kuratiert.
+          Cocktails, Geräte, Bezugsquellen und kuratierte Links an einem Ort. Ruhig, persönlich,
+          kuratiert.
         </p>
         <a class="btn btn-secondary" href="/ueber-joe">Mehr über Joe</a>
       </div>
@@ -157,13 +145,21 @@ const homeRestaurants = restaurants
   }
 
   @media (min-width: 700px) {
-    .grid-3 { grid-template-columns: repeat(2, 1fr); }
-    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (min-width: 1000px) {
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .about-teaser {

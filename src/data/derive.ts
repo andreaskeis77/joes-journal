@@ -65,7 +65,10 @@ function joinLower(...parts: Array<string | undefined>): string {
   return parts.filter(Boolean).join(" ").toLowerCase();
 }
 
-function buildSearchIndex(raw: RawData, restaurantBySlug: Map<string, RestaurantStub>): SearchEntry[] {
+function buildSearchIndex(
+  raw: RawData,
+  restaurantBySlug: Map<string, RestaurantStub>,
+): SearchEntry[] {
   return [
     ...raw.restaurants.map<SearchEntry>((r) => ({
       kind: "restaurant",
@@ -104,7 +107,14 @@ function buildSearchIndex(raw: RawData, restaurantBySlug: Map<string, Restaurant
       href: `/cocktails/${co.slug}`,
       snippet: `${co.glass} · ${co.technique}`,
       image: co.image,
-      searchText: joinLower(co.name, co.type, co.glass, co.technique, co.flavorProfile, ...co.pours.map((p) => p.item)),
+      searchText: joinLower(
+        co.name,
+        co.type,
+        co.glass,
+        co.technique,
+        co.flavorProfile,
+        ...co.pours.map((p) => p.item),
+      ),
     })),
     ...raw.equipment.map<SearchEntry>((eq) => ({
       kind: "equipment",
@@ -113,7 +123,14 @@ function buildSearchIndex(raw: RawData, restaurantBySlug: Map<string, Restaurant
       href: `/geraete/${eq.slug}`,
       snippet: `${eq.category} · ${eq.statusLabel}`,
       image: eq.image,
-      searchText: joinLower(eq.name, eq.category, eq.manufacturer, eq.model, eq.note, eq.statusLabel),
+      searchText: joinLower(
+        eq.name,
+        eq.category,
+        eq.manufacturer,
+        eq.model,
+        eq.note,
+        eq.statusLabel,
+      ),
     })),
     ...raw.ingredients.map<SearchEntry>((ing) => ({
       kind: "ingredient",

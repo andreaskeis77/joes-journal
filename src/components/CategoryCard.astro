@@ -10,14 +10,7 @@ const { category } = Astro.props;
 
 <a class="category-card" href={category.href}>
   <div class="image-wrap">
-    <img
-      src={category.image}
-      alt=""
-      width="1600"
-      height="900"
-      loading="lazy"
-      decoding="async"
-    />
+    <img src={category.image} alt="" width="1600" height="900" loading="lazy" decoding="async" />
   </div>
   <div class="body">
     <h3>{category.title}</h3>
@@ -38,7 +31,9 @@ const { category } = Astro.props;
     color: inherit;
     text-decoration: none;
     box-shadow: var(--shadow-card);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
   }
 
   .category-card:hover {

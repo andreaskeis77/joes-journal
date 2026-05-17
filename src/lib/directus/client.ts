@@ -35,7 +35,9 @@ export interface DirectusConfig {
   password: string;
 }
 
-export function readConfig(env: Record<string, string | undefined> = import.meta.env as never): DirectusConfig {
+export function readConfig(
+  env: Record<string, string | undefined> = import.meta.env as never,
+): DirectusConfig {
   const url = env.JOES_DIRECTUS_URL ?? "http://127.0.0.1:8055";
   const email = env.JOES_DIRECTUS_EMAIL ?? "";
   const password = env.JOES_DIRECTUS_PASSWORD ?? "";
@@ -47,7 +49,12 @@ export function readConfig(env: Record<string, string | undefined> = import.meta
   return { url, email, password };
 }
 
-async function withRetry<T>(label: string, fn: () => Promise<T>, attempts = 3, delayMs = 500): Promise<T> {
+async function withRetry<T>(
+  label: string,
+  fn: () => Promise<T>,
+  attempts = 3,
+  delayMs = 500,
+): Promise<T> {
   let lastError: unknown;
   for (let i = 1; i <= attempts; i++) {
     try {
@@ -55,7 +62,10 @@ async function withRetry<T>(label: string, fn: () => Promise<T>, attempts = 3, d
     } catch (error) {
       lastError = error;
       const cause = (error as { cause?: { code?: string } }).cause;
-      const retryable = cause?.code === "ETIMEDOUT" || cause?.code === "ECONNREFUSED" || cause?.code === "ECONNRESET";
+      const retryable =
+        cause?.code === "ETIMEDOUT" ||
+        cause?.code === "ECONNREFUSED" ||
+        cause?.code === "ECONNRESET";
       if (!retryable || i === attempts) {
         throw error;
       }
@@ -114,9 +124,9 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
         sort: ["-visited_on"] as never,
       } as never),
     ) as Promise<DirectusReview[]>,
-    client.request(
-      readItems("recipes", { limit: -1, fields: ["*"] as never } as never),
-    ) as Promise<DirectusRecipe[]>,
+    client.request(readItems("recipes", { limit: -1, fields: ["*"] as never } as never)) as Promise<
+      DirectusRecipe[]
+    >,
     client.request(
       readItems("cocktails", { limit: -1, fields: ["*"] as never } as never),
     ) as Promise<DirectusCocktail[]>,
@@ -132,9 +142,9 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
     client.request(
       readItems("content_collections", { limit: -1, fields: ["*"] as never } as never),
     ) as Promise<DirectusContentCollection[]>,
-    client.request(
-      readItems("links", { limit: -1, fields: ["*"] as never } as never),
-    ) as Promise<DirectusLink[]>,
+    client.request(readItems("links", { limit: -1, fields: ["*"] as never } as never)) as Promise<
+      DirectusLink[]
+    >,
   ]);
 
   return {

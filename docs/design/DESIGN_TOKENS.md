@@ -17,39 +17,39 @@ umami = Kompetenz, Qualität, Ruhe
 
 ### Core Palette
 
-| Token | Farbe | Hex | Verwendung |
-|---|---|---|---|
-| `--color-joe-red` | BBQ-Rot | `#B23A32` | Primäraktionen, aktive Zustände, Akzente |
-| `--color-umami-petrol` | Petrol | `#2E7070` | Links, sekundäre Aktionen, Signatur |
-| `--color-bg-warm` | Warmgrau | `#F5F3F1` | Seitenhintergrund |
-| `--color-surface` | Weiß | `#FFFFFF` | Cards, Content-Flächen |
-| `--color-footer` | Hellgrau | `#EDEBE9` | Footer, abgesetzte Flächen |
-| `--color-text` | Dunkelgrau | `#222222` | Haupttext |
-| `--color-text-muted` | Mittelgrau | `#5F5A56` | Metadaten |
-| `--color-border` | Warmes Grau | `#DDD8D2` | Rahmen, Trennlinien |
+| Token                  | Farbe       | Hex       | Verwendung                               |
+| ---------------------- | ----------- | --------- | ---------------------------------------- |
+| `--color-joe-red`      | BBQ-Rot     | `#B23A32` | Primäraktionen, aktive Zustände, Akzente |
+| `--color-umami-petrol` | Petrol      | `#2E7070` | Links, sekundäre Aktionen, Signatur      |
+| `--color-bg-warm`      | Warmgrau    | `#F5F3F1` | Seitenhintergrund                        |
+| `--color-surface`      | Weiß        | `#FFFFFF` | Cards, Content-Flächen                   |
+| `--color-footer`       | Hellgrau    | `#EDEBE9` | Footer, abgesetzte Flächen               |
+| `--color-text`         | Dunkelgrau  | `#222222` | Haupttext                                |
+| `--color-text-muted`   | Mittelgrau  | `#5F5A56` | Metadaten                                |
+| `--color-border`       | Warmes Grau | `#DDD8D2` | Rahmen, Trennlinien                      |
 
 ### Semantik
 
-| Token | Wert |
-|---|---|
-| `--color-primary` | `var(--color-joe-red)` |
-| `--color-secondary` | `var(--color-umami-petrol)` |
-| `--color-background` | `var(--color-bg-warm)` |
-| `--color-card` | `var(--color-surface)` |
-| `--color-link` | `var(--color-umami-petrol)` |
-| `--color-danger` | `#9F2D24` |
-| `--color-success` | `#2F6F4E` |
-| `--color-warning` | `#B87514` |
+| Token                | Wert                        |
+| -------------------- | --------------------------- |
+| `--color-primary`    | `var(--color-joe-red)`      |
+| `--color-secondary`  | `var(--color-umami-petrol)` |
+| `--color-background` | `var(--color-bg-warm)`      |
+| `--color-card`       | `var(--color-surface)`      |
+| `--color-link`       | `var(--color-umami-petrol)` |
+| `--color-danger`     | `#9F2D24`                   |
+| `--color-success`    | `#2F6F4E`                   |
+| `--color-warning`    | `#B87514`                   |
 
 ## 4. Typografie
 
 ### Fonts MVP
 
-| Zweck | Font |
-|---|---|
-| Headlines | Poppins |
-| Body | Inter |
-| UI | Inter |
+| Zweck          | Font                    |
+| -------------- | ----------------------- |
+| Headlines      | Poppins                 |
+| Body           | Inter                   |
+| UI             | Inter                   |
 | Logo/Wortmarke | eigenes Branding später |
 
 CSS Tokens:
@@ -62,15 +62,15 @@ CSS Tokens:
 
 ### Schriftgrößen
 
-| Token | Mobile | Desktop | Verwendung |
-|---|---:|---:|---|
-| `--font-size-xs` | 12px | 12px | Labels, kleine Metadaten |
-| `--font-size-sm` | 14px | 14px | Meta, Tags |
-| `--font-size-base` | 17px | 18px | Fließtext |
-| `--font-size-lg` | 20px | 21px | Intro, Card Text |
-| `--font-size-xl` | 24px | 28px | H3 |
-| `--font-size-2xl` | 30px | 38px | H2 |
-| `--font-size-3xl` | 36px | 52px | H1/Hero |
+| Token              | Mobile | Desktop | Verwendung               |
+| ------------------ | -----: | ------: | ------------------------ |
+| `--font-size-xs`   |   12px |    12px | Labels, kleine Metadaten |
+| `--font-size-sm`   |   14px |    14px | Meta, Tags               |
+| `--font-size-base` |   17px |    18px | Fließtext                |
+| `--font-size-lg`   |   20px |    21px | Intro, Card Text         |
+| `--font-size-xl`   |   24px |    28px | H3                       |
+| `--font-size-2xl`  |   30px |    38px | H2                       |
+| `--font-size-3xl`  |   36px |    52px | H1/Hero                  |
 
 ### Line Height
 
@@ -85,10 +85,10 @@ CSS Tokens:
 
 8px-basierte Skala:
 
-| Token | Wert |
-|---|---:|
-| `--space-1` | 4px |
-| `--space-2` | 8px |
+| Token       | Wert |
+| ----------- | ---: |
+| `--space-1` |  4px |
+| `--space-2` |  8px |
 | `--space-3` | 12px |
 | `--space-4` | 16px |
 | `--space-5` | 24px |
@@ -101,29 +101,29 @@ CSS Tokens:
 
 ### Breakpoints
 
-| Token | Wert | Zweck |
-|---|---:|---|
-| `--bp-sm` | 600px | großes Smartphone |
-| `--bp-md` | 900px | Tablet |
-| `--bp-lg` | 1200px | Laptop/Desktop |
-| `--bp-xl` | 1440px | großer Desktop |
+| Token     |   Wert | Zweck             |
+| --------- | -----: | ----------------- |
+| `--bp-sm` |  600px | großes Smartphone |
+| `--bp-md` |  900px | Tablet            |
+| `--bp-lg` | 1200px | Laptop/Desktop    |
+| `--bp-xl` | 1440px | großer Desktop    |
 
 ### Max Widths
 
-| Token | Wert |
-|---|---:|
-| `--max-page` | 1200px |
-| `--max-content` | 760px |
-| `--max-detail` | 1080px |
-| `--max-wide` | 1320px |
+| Token           |   Wert |
+| --------------- | -----: |
+| `--max-page`    | 1200px |
+| `--max-content` |  760px |
+| `--max-detail`  | 1080px |
+| `--max-wide`    | 1320px |
 
 ## 7. Radius und Schatten
 
-| Token | Wert | Verwendung |
-|---|---:|---|
-| `--radius-sm` | 6px | kleine Chips |
-| `--radius-md` | 10px | Buttons |
-| `--radius-lg` | 14px | Cards |
+| Token         | Wert | Verwendung         |
+| ------------- | ---: | ------------------ |
+| `--radius-sm` |  6px | kleine Chips       |
+| `--radius-md` | 10px | Buttons            |
+| `--radius-lg` | 14px | Cards              |
 | `--radius-xl` | 22px | Hero/Feature Cards |
 
 ```css

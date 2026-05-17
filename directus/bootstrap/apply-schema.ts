@@ -14,7 +14,11 @@ import { authenticatedClient } from "./client.js";
 import { ensureCollection, snapshot, type CollectionDef } from "./schema-helpers.js";
 
 import { taxonomyCollections } from "./schema/taxonomies.js";
-import { restaurantCollection, reviewCollection, restaurantRelations } from "./schema/restaurants.js";
+import {
+  restaurantCollection,
+  reviewCollection,
+  restaurantRelations,
+} from "./schema/restaurants.js";
 import { ingredientCollection, supplierCollection } from "./schema/ingredients.js";
 import { equipmentCollection } from "./schema/equipment.js";
 import { recipeCollection } from "./schema/recipes.js";
@@ -67,9 +71,7 @@ async function main() {
     } catch (error) {
       const message = (error as { message?: string }).message ?? String(error);
       if (message.includes("already exists") || message.includes("duplicate")) {
-        console.log(
-          `[schema] relation already exists: ${relation.collection}.${relation.field}`,
-        );
+        console.log(`[schema] relation already exists: ${relation.collection}.${relation.field}`);
         continue;
       }
       throw error;

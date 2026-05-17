@@ -19,10 +19,10 @@ Wichtig:
 
 ## 2. Rollen
 
-| Rolle | Zweck |
-|---|---|
-| Administrator | volle Kontrolle |
-| Editor / Owner | Inhalte pflegen |
+| Rolle            | Zweck           |
+| ---------------- | --------------- |
+| Administrator    | volle Kontrolle |
+| Editor / Owner   | Inhalte pflegen |
 | Read-only Viewer | später optional |
 
 Im MVP kann Administrator/Owner identisch sein. Rollen werden trotzdem dokumentiert, damit spätere Freigabe kontrolliert möglich ist.

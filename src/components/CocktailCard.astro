@@ -11,17 +11,8 @@ const { cocktail } = Astro.props;
 <article class="cocktail-card">
   <a class="cocktail-link" href={`/cocktails/${cocktail.slug}`}>
     <div class="image-wrap">
-      <img
-        src={cocktail.image}
-        alt=""
-        width="1600"
-        height="2000"
-        loading="lazy"
-        decoding="async"
-      />
-      {cocktail.type === "alkoholfrei" && (
-        <span class="tag tag-alkoholfrei">alkoholfrei</span>
-      )}
+      <img src={cocktail.image} alt="" width="1600" height="2000" loading="lazy" decoding="async" />
+      {cocktail.type === "alkoholfrei" && <span class="tag tag-alkoholfrei">alkoholfrei</span>}
     </div>
     <div class="body">
       <h3>{cocktail.name}</h3>
@@ -42,7 +33,9 @@ const { cocktail } = Astro.props;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-card);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
     height: 100%;
   }
 

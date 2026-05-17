@@ -26,10 +26,7 @@ function dynamicCount(slug: string): number {
 }
 ---
 
-<BaseLayout
-  title="Sammlungen"
-  description="Kuratiert und gefiltert: Sammlungen aus dem Journal."
->
+<BaseLayout title="Sammlungen" description="Kuratiert und gefiltert: Sammlungen aus dem Journal.">
   <PageHeader
     eyebrow="Sammlungen"
     title="Kuratiert und gefiltert"
@@ -38,36 +35,45 @@ function dynamicCount(slug: string): number {
 
   <section class="collection-list">
     <div class="container">
-      {collections.length === 0 ? (
-        <EmptyState
-          title="Noch keine Sammlungen vorhanden."
-          description="Sobald die erste Sammlung angelegt ist, erscheint sie hier."
-        />
-      ) : (
-        <div class="grid">
-          {collections.map((collection) => {
-            const count =
-              collection.type === "manual"
-                ? manualCount(collection.slug)
-                : dynamicCount(collection.slug);
-            return <CollectionCard collection={collection} itemCount={count} />;
-          })}
-        </div>
-      )}
+      {
+        collections.length === 0 ? (
+          <EmptyState
+            title="Noch keine Sammlungen vorhanden."
+            description="Sobald die erste Sammlung angelegt ist, erscheint sie hier."
+          />
+        ) : (
+          <div class="grid">
+            {collections.map((collection) => {
+              const count =
+                collection.type === "manual"
+                  ? manualCount(collection.slug)
+                  : dynamicCount(collection.slug);
+              return <CollectionCard collection={collection} itemCount={count} />;
+            })}
+          </div>
+        )
+      }
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .collection-list { padding-block: var(--space-6) var(--space-9); }
+  .collection-list {
+    padding-block: var(--space-6) var(--space-9);
+  }
   .grid {
-    display: grid; gap: var(--space-5);
+    display: grid;
+    gap: var(--space-5);
     grid-template-columns: 1fr;
   }
   @media (min-width: 700px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (min-width: 1100px) {
-    .grid { grid-template-columns: repeat(3, 1fr); }
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 </style>

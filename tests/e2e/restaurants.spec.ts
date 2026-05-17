@@ -4,7 +4,9 @@ test.describe("Restaurantliste", () => {
   test("zeigt alle Restaurants und filtert auf Watchlist", async ({ page }) => {
     await page.goto("/restaurants");
 
-    await expect(page.getByRole("heading", { level: 1, name: /Watchlist & Besuche/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Watchlist & Besuche/i }),
+    ).toBeVisible();
 
     const cards = page.locator(".grid > .grid-item:not([hidden])");
     const allCount = await cards.count();

@@ -24,7 +24,12 @@ body {
     var(--color-background);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   line-height: var(--line-heading);
   margin: 0 0 var(--space-4);
@@ -33,9 +38,16 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.01em;
 }
 
-h1 { font-size: var(--font-size-3xl); line-height: var(--line-tight); }
-h2 { font-size: var(--font-size-2xl); }
-h3 { font-size: var(--font-size-xl); }
+h1 {
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-tight);
+}
+h2 {
+  font-size: var(--font-size-2xl);
+}
+h3 {
+  font-size: var(--font-size-xl);
+}
 
 p {
   margin: 0 0 var(--space-4);
@@ -90,7 +102,10 @@ img {
   font-weight: 500;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease;
 }
 
 .btn-primary {

@@ -21,23 +21,55 @@ const watchlistRestaurants = restaurants.filter(
 ).length;
 
 const restaurantStats = [
-  { label: "Restaurants insgesamt", value: totalRestaurants, icon: "/assets/stats/stat-icon-restaurants-total.svg" },
-  { label: "Mit Kritik", value: reviewedRestaurants, icon: "/assets/stats/stat-icon-reviews-total.svg" },
-  { label: "Auf der Watchlist", value: watchlistRestaurants, icon: "/assets/stats/stat-icon-restaurants-watchlist.svg" },
+  {
+    label: "Restaurants insgesamt",
+    value: totalRestaurants,
+    icon: "/assets/stats/stat-icon-restaurants-total.svg",
+  },
+  {
+    label: "Mit Kritik",
+    value: reviewedRestaurants,
+    icon: "/assets/stats/stat-icon-reviews-total.svg",
+  },
+  {
+    label: "Auf der Watchlist",
+    value: watchlistRestaurants,
+    icon: "/assets/stats/stat-icon-restaurants-watchlist.svg",
+  },
   { label: "Top-Städte", value: topCities.length, icon: "/assets/stats/stat-icon-top-cities.svg" },
 ];
 
 const contentStats = [
   { label: "Kritiken", value: reviews.length, icon: "/assets/stats/stat-icon-reviews-total.svg" },
   { label: "Rezepte", value: recipes.length, icon: "/assets/stats/stat-icon-recipes-total.svg" },
-  { label: "Cocktails", value: cocktails.length, icon: "/assets/stats/stat-icon-cocktails-total.svg" },
-  { label: "Alkoholfreie Cocktails", value: alcoholFreeCocktailCount, icon: "/assets/stats/stat-icon-cocktails-total.svg" },
+  {
+    label: "Cocktails",
+    value: cocktails.length,
+    icon: "/assets/stats/stat-icon-cocktails-total.svg",
+  },
+  {
+    label: "Alkoholfreie Cocktails",
+    value: alcoholFreeCocktailCount,
+    icon: "/assets/stats/stat-icon-cocktails-total.svg",
+  },
 ];
 
 const equipmentStats = [
-  { label: "Geräte insgesamt", value: equipment.length, icon: "/assets/stats/stat-icon-equipment-owned.svg" },
-  { label: "Im Besitz", value: ownedEquipmentCount, icon: "/assets/stats/stat-icon-equipment-owned.svg" },
-  { label: "Auf der Wunschliste", value: wishlistEquipmentCount, icon: "/assets/stats/stat-icon-equipment-owned.svg" },
+  {
+    label: "Geräte insgesamt",
+    value: equipment.length,
+    icon: "/assets/stats/stat-icon-equipment-owned.svg",
+  },
+  {
+    label: "Im Besitz",
+    value: ownedEquipmentCount,
+    icon: "/assets/stats/stat-icon-equipment-owned.svg",
+  },
+  {
+    label: "Auf der Wunschliste",
+    value: wishlistEquipmentCount,
+    icon: "/assets/stats/stat-icon-equipment-owned.svg",
+  },
 ];
 
 const cityMax = topCities[0]?.count ?? 1;
@@ -66,17 +98,22 @@ const cityMax = topCities[0]?.count ?? 1;
     <div class="container">
       <h2>Top-Städte und Regionen</h2>
       <ul class="city-list">
-        {topCities.map((city) => (
-          <li>
-            <div class="city-row">
-              <span class="city-name">{city.city}</span>
-              <span class="city-count">{city.count}</span>
-            </div>
-            <div class="city-bar">
-              <span class="city-bar-fill" style={`width: ${Math.round((city.count / cityMax) * 100)}%`}></span>
-            </div>
-          </li>
-        ))}
+        {
+          topCities.map((city) => (
+            <li>
+              <div class="city-row">
+                <span class="city-name">{city.city}</span>
+                <span class="city-count">{city.count}</span>
+              </div>
+              <div class="city-bar">
+                <span
+                  class="city-bar-fill"
+                  style={`width: ${Math.round((city.count / cityMax) * 100)}%`}
+                />
+              </div>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </section>
@@ -101,10 +138,17 @@ const cityMax = topCities[0]?.count ?? 1;
 </BaseLayout>
 
 <style>
-  .stats-section { padding-block: var(--space-7); }
-  .stats-section.alt { background: var(--color-footer); border-block: 1px solid var(--color-border); }
+  .stats-section {
+    padding-block: var(--space-7);
+  }
+  .stats-section.alt {
+    background: var(--color-footer);
+    border-block: 1px solid var(--color-border);
+  }
 
-  h2 { margin: 0 0 var(--space-5); }
+  h2 {
+    margin: 0 0 var(--space-5);
+  }
 
   .grid {
     display: grid;
@@ -113,12 +157,18 @@ const cityMax = topCities[0]?.count ?? 1;
   }
 
   @media (min-width: 700px) {
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .city-list {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
@@ -131,8 +181,13 @@ const cityMax = topCities[0]?.count ?? 1;
     margin-bottom: var(--space-1);
     font-size: var(--font-size-base);
   }
-  .city-name { color: var(--color-text); }
-  .city-count { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  .city-name {
+    color: var(--color-text);
+  }
+  .city-count {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
 
   .city-bar {
     height: 8px;

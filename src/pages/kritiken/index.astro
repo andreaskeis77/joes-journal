@@ -18,18 +18,20 @@ import { reviewsByDateDesc } from "../../data/source";
 
   <section class="review-list">
     <div class="container">
-      {reviewsByDateDesc.length === 0 ? (
-        <EmptyState
-          title="Noch keine Kritik veröffentlicht."
-          description="Sobald die erste Kritik fertig ist, erscheint sie hier."
-        />
-      ) : (
-        <div class="grid">
-          {reviewsByDateDesc.map((review) => (
-            <ReviewCard review={review} />
-          ))}
-        </div>
-      )}
+      {
+        reviewsByDateDesc.length === 0 ? (
+          <EmptyState
+            title="Noch keine Kritik veröffentlicht."
+            description="Sobald die erste Kritik fertig ist, erscheint sie hier."
+          />
+        ) : (
+          <div class="grid">
+            {reviewsByDateDesc.map((review) => (
+              <ReviewCard review={review} />
+            ))}
+          </div>
+        )
+      }
     </div>
   </section>
 </BaseLayout>

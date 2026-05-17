@@ -30,25 +30,28 @@ interface DirectusItem {
   url?: string;
 }
 
-async function existingSlugs(
-  client: Client,
-  collection: string,
-): Promise<Map<string, string>> {
+async function existingSlugs(client: Client, collection: string): Promise<Map<string, string>> {
   const items = (await client.request(
-    readItems(collection as never, {
-      fields: ["id", "slug"] as never,
-      limit: -1 as never,
-    } as never),
+    readItems(
+      collection as never,
+      {
+        fields: ["id", "slug"] as never,
+        limit: -1 as never,
+      } as never,
+    ),
   )) as DirectusItem[];
   return new Map(items.filter((i) => i.slug).map((i) => [i.slug as string, i.id]));
 }
 
 async function existingLinkUrls(client: Client): Promise<Set<string>> {
   const items = (await client.request(
-    readItems("links" as never, {
-      fields: ["id", "url"] as never,
-      limit: -1 as never,
-    } as never),
+    readItems(
+      "links" as never,
+      {
+        fields: ["id", "url"] as never,
+        limit: -1 as never,
+      } as never,
+    ),
   )) as DirectusItem[];
   return new Set(items.filter((i) => i.url).map((i) => i.url as string));
 }
@@ -77,9 +80,7 @@ async function insertIfNew<T extends { slug?: string; url?: string }>(
 async function seedTaxonomies(client: Client) {
   // Derive terms from the stub content.
   const cuisines = new Set(stubRestaurants.map((r) => r.cuisine));
-  const locations = new Set(
-    stubRestaurants.flatMap((r) => [r.city, r.region]).filter(Boolean),
-  );
+  const locations = new Set(stubRestaurants.flatMap((r) => [r.city, r.region]).filter(Boolean));
   const tags = new Set([
     ...stubRestaurants.flatMap((r) => r.tags),
     ...stubRecipes.flatMap((r) => r.tags),

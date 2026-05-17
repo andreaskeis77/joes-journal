@@ -18,18 +18,20 @@ import { recipes } from "../../data/source";
 
   <section class="recipe-list">
     <div class="container">
-      {recipes.length === 0 ? (
-        <EmptyState
-          title="Noch keine Rezepte hier."
-          description="Sobald das erste Rezept dokumentiert ist, erscheint es hier."
-        />
-      ) : (
-        <div class="grid">
-          {recipes.map((recipe) => (
-            <RecipeCard recipe={recipe} />
-          ))}
-        </div>
-      )}
+      {
+        recipes.length === 0 ? (
+          <EmptyState
+            title="Noch keine Rezepte hier."
+            description="Sobald das erste Rezept dokumentiert ist, erscheint es hier."
+          />
+        ) : (
+          <div class="grid">
+            {recipes.map((recipe) => (
+              <RecipeCard recipe={recipe} />
+            ))}
+          </div>
+        )
+      }
     </div>
   </section>
 </BaseLayout>

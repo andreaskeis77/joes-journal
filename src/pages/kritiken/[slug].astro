@@ -23,9 +23,7 @@ const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
   day: "numeric",
 });
 
-const related = reviewsByDateDesc
-  .filter((r) => r.slug !== review.slug)
-  .slice(0, 2);
+const related = reviewsByDateDesc.filter((r) => r.slug !== review.slug).slice(0, 2);
 ---
 
 <BaseLayout title={review.title} description={review.excerpt}>
@@ -37,23 +35,18 @@ const related = reviewsByDateDesc
     </nav>
 
     <div class="hero">
-      <img
-        src={review.image}
-        alt=""
-        width="1600"
-        height="1200"
-        loading="eager"
-        decoding="async"
-      />
+      <img src={review.image} alt="" width="1600" height="1200" loading="eager" decoding="async" />
     </div>
 
     <header class="container head">
       <div class="head-meta">
-        {restaurant && (
-          <a class="restaurant-link" href={`/restaurants/${restaurant.slug}`}>
-            {restaurant.name}
-          </a>
-        )}
+        {
+          restaurant && (
+            <a class="restaurant-link" href={`/restaurants/${restaurant.slug}`}>
+              {restaurant.name}
+            </a>
+          )
+        }
         {restaurant && <span aria-hidden="true">·</span>}
         {restaurant && <span>{restaurant.city}</span>}
         <span aria-hidden="true">·</span>
@@ -67,45 +60,49 @@ const related = reviewsByDateDesc
     </header>
 
     <div class="container body">
-      {review.body.map((paragraph) => (
-        <p>{paragraph}</p>
-      ))}
+      {review.body.map((paragraph) => <p>{paragraph}</p>)}
     </div>
 
-    {review.galleryImages.length > 0 && (
-      <section class="container gallery-section">
-        <h2>Galerie</h2>
-        <div class="gallery">
-          {review.galleryImages.map((src) => (
-            <figure>
-              <img src={src} alt="" loading="lazy" decoding="async" />
-            </figure>
-          ))}
-        </div>
-      </section>
-    )}
+    {
+      review.galleryImages.length > 0 && (
+        <section class="container gallery-section">
+          <h2>Galerie</h2>
+          <div class="gallery">
+            {review.galleryImages.map((src) => (
+              <figure>
+                <img src={src} alt="" loading="lazy" decoding="async" />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <section class="container details-section">
       <h2>Details</h2>
       <dl class="details">
-        {restaurant && (
-          <>
-            <div>
-              <dt>Restaurant</dt>
-              <dd>
-                <a href={`/restaurants/${restaurant.slug}`}>{restaurant.name}</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Ort</dt>
-              <dd>{restaurant.city}, {restaurant.region}</dd>
-            </div>
-            <div>
-              <dt>Küche</dt>
-              <dd>{restaurant.cuisine}</dd>
-            </div>
-          </>
-        )}
+        {
+          restaurant && (
+            <>
+              <div>
+                <dt>Restaurant</dt>
+                <dd>
+                  <a href={`/restaurants/${restaurant.slug}`}>{restaurant.name}</a>
+                </dd>
+              </div>
+              <div>
+                <dt>Ort</dt>
+                <dd>
+                  {restaurant.city}, {restaurant.region}
+                </dd>
+              </div>
+              <div>
+                <dt>Küche</dt>
+                <dd>{restaurant.cuisine}</dd>
+              </div>
+            </>
+          )
+        }
         <div>
           <dt>Besuchsdatum</dt>
           <dd><time datetime={review.visitedOn}>{visitedDate}</time></dd>
@@ -117,26 +114,28 @@ const related = reviewsByDateDesc
       </dl>
     </section>
 
-    {related.length > 0 && (
-      <section class="container related-section">
-        <h2>Weitere Kritiken</h2>
-        <ul class="related-list">
-          {related.map((r) => (
-            <li>
-              <a href={`/kritiken/${r.slug}`} class="related-link">
-                <img src={r.image} alt="" width="200" height="150" loading="lazy" />
-                <span>
-                  <span class="related-title">{r.title}</span>
-                  <span class="related-meta">
-                    {restaurantBySlug.get(r.restaurantSlug)?.name ?? ""}
+    {
+      related.length > 0 && (
+        <section class="container related-section">
+          <h2>Weitere Kritiken</h2>
+          <ul class="related-list">
+            {related.map((r) => (
+              <li>
+                <a href={`/kritiken/${r.slug}`} class="related-link">
+                  <img src={r.image} alt="" width="200" height="150" loading="lazy" />
+                  <span>
+                    <span class="related-title">{r.title}</span>
+                    <span class="related-meta">
+                      {restaurantBySlug.get(r.restaurantSlug)?.name ?? ""}
+                    </span>
                   </span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>
 

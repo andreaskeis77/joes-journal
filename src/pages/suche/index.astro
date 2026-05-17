@@ -61,7 +61,13 @@ const grouped = groupOrder
           placeholder="Suche nach Restaurant, Stadt, Rezept, Zutat, Cocktail, Gerät…"
           data-search-input
         />
-        <button type="button" class="clear-btn" data-search-clear hidden aria-label="Suche zurücksetzen">
+        <button
+          type="button"
+          class="clear-btn"
+          data-search-clear
+          hidden
+          aria-label="Suche zurücksetzen"
+        >
           ×
         </button>
       </form>
@@ -75,44 +81,49 @@ const grouped = groupOrder
       </div>
 
       <div class="groups" data-search-groups>
-        {grouped.map((group) => (
-          <section class="group" data-group-kind={group.kind}>
-            <header class="group-head">
-              <h2>{group.label}</h2>
-              <span class="group-count" data-group-count>{group.entries.length}</span>
-            </header>
-            <ul class="group-list">
-              {group.entries.map((entry) => (
-                <li
-                  class="result"
-                  data-result
-                  data-search-text={entry.searchText}
-                >
-                  {entry.kind === "link" ? (
-                    <a href={entry.href} target="_blank" rel="noopener noreferrer" class="result-link">
-                      <div class="result-body">
-                        <span class="result-kind">{entry.kindLabel}</span>
-                        <span class="result-title">{entry.title}</span>
-                        <span class="result-snippet">{entry.snippet}</span>
-                      </div>
-                    </a>
-                  ) : (
-                    <a href={entry.href} class="result-link">
-                      {entry.image && (
-                        <img src={entry.image} alt="" width="80" height="60" loading="lazy" />
-                      )}
-                      <div class="result-body">
-                        <span class="result-kind">{entry.kindLabel}</span>
-                        <span class="result-title">{entry.title}</span>
-                        <span class="result-snippet">{entry.snippet}</span>
-                      </div>
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+        {
+          grouped.map((group) => (
+            <section class="group" data-group-kind={group.kind}>
+              <header class="group-head">
+                <h2>{group.label}</h2>
+                <span class="group-count" data-group-count>
+                  {group.entries.length}
+                </span>
+              </header>
+              <ul class="group-list">
+                {group.entries.map((entry) => (
+                  <li class="result" data-result data-search-text={entry.searchText}>
+                    {entry.kind === "link" ? (
+                      <a
+                        href={entry.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="result-link"
+                      >
+                        <div class="result-body">
+                          <span class="result-kind">{entry.kindLabel}</span>
+                          <span class="result-title">{entry.title}</span>
+                          <span class="result-snippet">{entry.snippet}</span>
+                        </div>
+                      </a>
+                    ) : (
+                      <a href={entry.href} class="result-link">
+                        {entry.image && (
+                          <img src={entry.image} alt="" width="80" height="60" loading="lazy" />
+                        )}
+                        <div class="result-body">
+                          <span class="result-kind">{entry.kindLabel}</span>
+                          <span class="result-title">{entry.title}</span>
+                          <span class="result-snippet">{entry.snippet}</span>
+                        </div>
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -133,7 +144,8 @@ const grouped = groupOrder
 
       function setSummary(query, visible) {
         if (!query) {
-          summary.textContent = totalEntries + " Einträge im Journal · gib einen Begriff ein, um zu filtern.";
+          summary.textContent =
+            totalEntries + " Einträge im Journal · gib einen Begriff ein, um zu filtern.";
           return;
         }
         summary.textContent = visible + " Treffer für „" + query + "“";
@@ -211,7 +223,10 @@ const grouped = groupOrder
     box-shadow: var(--shadow-card);
   }
 
-  .search-form svg { color: var(--color-text-muted); flex-shrink: 0; }
+  .search-form svg {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
 
   .search-form input {
     flex: 1;
@@ -224,10 +239,13 @@ const grouped = groupOrder
     min-width: 0;
   }
 
-  .search-form input:focus { outline: none; }
+  .search-form input:focus {
+    outline: none;
+  }
 
   .clear-btn {
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--color-border);
     border-radius: 999px;
     background: var(--color-surface);
@@ -239,8 +257,13 @@ const grouped = groupOrder
     justify-content: center;
     line-height: 1;
   }
-  .clear-btn:hover { color: var(--color-text); border-color: var(--color-secondary); }
-  .clear-btn[hidden] { display: none; }
+  .clear-btn:hover {
+    color: var(--color-text);
+    border-color: var(--color-secondary);
+  }
+  .clear-btn[hidden] {
+    display: none;
+  }
 
   .result-summary {
     margin: var(--space-4) 0 var(--space-6);
@@ -248,7 +271,9 @@ const grouped = groupOrder
     font-size: var(--font-size-sm);
   }
 
-  .empty[hidden] { display: none; }
+  .empty[hidden] {
+    display: none;
+  }
   .empty {
     padding: var(--space-7);
     background: var(--color-surface);
@@ -257,16 +282,22 @@ const grouped = groupOrder
     text-align: center;
     color: var(--color-text-muted);
   }
-  .empty p { margin: 0; }
+  .empty p {
+    margin: 0;
+  }
 
   .groups {
     display: flex;
     flex-direction: column;
     gap: var(--space-7);
   }
-  .groups[hidden] { display: none; }
+  .groups[hidden] {
+    display: none;
+  }
 
-  .group[hidden] { display: none; }
+  .group[hidden] {
+    display: none;
+  }
 
   .group-head {
     display: flex;
@@ -276,7 +307,10 @@ const grouped = groupOrder
     border-bottom: 1px solid var(--color-border);
     padding-bottom: var(--space-2);
   }
-  .group-head h2 { margin: 0; font-size: var(--font-size-xl); }
+  .group-head h2 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
   .group-count {
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
@@ -284,13 +318,17 @@ const grouped = groupOrder
   }
 
   .group-list {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     gap: var(--space-3);
     grid-template-columns: 1fr;
   }
 
-  .result[hidden] { display: none; }
+  .result[hidden] {
+    display: none;
+  }
 
   .result-link {
     display: flex;
@@ -310,13 +348,20 @@ const grouped = groupOrder
   }
 
   .result-link img {
-    width: 72px; height: 54px;
+    width: 72px;
+    height: 54px;
     object-fit: cover;
     border-radius: var(--radius-sm);
     flex-shrink: 0;
   }
 
-  .result-body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .result-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
   .result-kind {
     font-size: var(--font-size-xs);
     text-transform: uppercase;
@@ -336,6 +381,8 @@ const grouped = groupOrder
   }
 
   @media (min-width: 800px) {
-    .group-list { grid-template-columns: repeat(2, 1fr); }
+    .group-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>

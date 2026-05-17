@@ -84,7 +84,7 @@ export function mapRestaurant(d: DirectusRestaurant): RestaurantStub {
 
 export function mapReview(d: DirectusReview): ReviewStub {
   const restaurantSlug =
-    typeof d.restaurant === "string" ? d.restaurant : d.restaurant?.slug ?? "";
+    typeof d.restaurant === "string" ? d.restaurant : (d.restaurant?.slug ?? "");
   return {
     slug: d.slug,
     title: d.title,

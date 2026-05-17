@@ -41,9 +41,7 @@ function stubRaw(): RawData {
 }
 
 const raw: RawData =
-  SOURCE === "directus"
-    ? await (await import("./loader-directus")).loadFromDirectus()
-    : stubRaw();
+  SOURCE === "directus" ? await (await import("./loader-directus")).loadFromDirectus() : stubRaw();
 
 if (SOURCE === "directus") {
   console.log(

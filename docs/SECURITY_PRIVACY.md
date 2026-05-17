@@ -8,31 +8,31 @@ Die Plattform ist nicht für eine unbekannte Öffentlichkeit gedacht. Spätere s
 
 ## 2. Grundentscheidungen
 
-| Thema | Entscheidung |
-|---|---|
-| Sichtbarkeit | erst privat, später selektiv öffentlich |
-| Zugriff Frontend | Cloudflare Access |
-| Zugriff Admin | Cloudflare Access + Directus Login |
-| Serverzugriff | Tailscale-RDP |
-| Tracking | kein Tracking im MVP |
-| Bilder | eigene oder klar lizenzierte Bilder |
-| Externe Bilder | nicht ungeprüft übernehmen |
+| Thema                    | Entscheidung                                 |
+| ------------------------ | -------------------------------------------- |
+| Sichtbarkeit             | erst privat, später selektiv öffentlich      |
+| Zugriff Frontend         | Cloudflare Access                            |
+| Zugriff Admin            | Cloudflare Access + Directus Login           |
+| Serverzugriff            | Tailscale-RDP                                |
+| Tracking                 | kein Tracking im MVP                         |
+| Bilder                   | eigene oder klar lizenzierte Bilder          |
+| Externe Bilder           | nicht ungeprüft übernehmen                   |
 | Personenbezogene Inhalte | keine öffentlichen personenbezogenen Inhalte |
-| API | keine öffentliche API im MVP |
+| API                      | keine öffentliche API im MVP                 |
 
 ## 3. Threat Model
 
-| Risiko | Gegenmaßnahme |
-|---|---|
-| Öffentlicher Zugriff auf private Inhalte | Cloudflare Access |
-| Directus Admin öffentlich erreichbar | eigene Admin-Subdomain + Access + Login |
-| RDP-Angriff | kein öffentliches RDP, Tailscale only |
-| Secret Leak | `.env` gitignored, Secret Scan |
-| Datenverlust | PostgreSQL- und Upload-Backups |
-| Unklare Bildrechte | eigene/legitime Fotos |
-| Externe Inhalte unzulässig kopiert | Links statt Kopie, keine fremden Bilder ungeprüft |
-| Agent schreibt Unsinn | Tranche, Review, Tests |
-| Schemaänderung bricht Daten | Backup vor Migration, Restore-Test |
+| Risiko                                   | Gegenmaßnahme                                     |
+| ---------------------------------------- | ------------------------------------------------- |
+| Öffentlicher Zugriff auf private Inhalte | Cloudflare Access                                 |
+| Directus Admin öffentlich erreichbar     | eigene Admin-Subdomain + Access + Login           |
+| RDP-Angriff                              | kein öffentliches RDP, Tailscale only             |
+| Secret Leak                              | `.env` gitignored, Secret Scan                    |
+| Datenverlust                             | PostgreSQL- und Upload-Backups                    |
+| Unklare Bildrechte                       | eigene/legitime Fotos                             |
+| Externe Inhalte unzulässig kopiert       | Links statt Kopie, keine fremden Bilder ungeprüft |
+| Agent schreibt Unsinn                    | Tranche, Review, Tests                            |
+| Schemaänderung bricht Daten              | Backup vor Migration, Restore-Test                |
 
 ## 4. Secrets
 

@@ -274,11 +274,11 @@ Yuzu Sour → yuzu-sour
 
 ## 10. Offene Modellentscheidungen
 
-| Thema | Status |
-|---|---|
-| Halbe Sterne | später prüfen |
-| Rezeptzutaten strukturiert vs. Text | MVP textnah, später strukturieren |
+| Thema                                   | Status                                 |
+| --------------------------------------- | -------------------------------------- |
+| Halbe Sterne                            | später prüfen                          |
+| Rezeptzutaten strukturiert vs. Text     | MVP textnah, später strukturieren      |
 | Cocktail-Zutaten als strukturierte Rows | sinnvoll, aber MVP pragmatisch starten |
-| Polymorphe Links | Many-to-Any testen |
-| Saved Views | JSON-Konfiguration definieren |
-| Geo-/Kartendaten | später |
+| Polymorphe Links                        | Many-to-Any testen                     |
+| Saved Views                             | JSON-Konfiguration definieren          |
+| Geo-/Kartendaten                        | später                                 |

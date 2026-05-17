@@ -39,7 +39,9 @@ const { cocktail } = Astro.props;
       </div>
 
       <div class="body">
-        <p class="eyebrow">Cocktail · {cocktail.type === "alkoholfrei" ? "alkoholfrei" : "alkoholisch"}</p>
+        <p class="eyebrow">
+          Cocktail · {cocktail.type === "alkoholfrei" ? "alkoholfrei" : "alkoholisch"}
+        </p>
         <h1>{cocktail.name}</h1>
         <p class="flavor">{cocktail.flavorProfile}</p>
 
@@ -53,17 +55,21 @@ const { cocktail } = Astro.props;
         <section class="recipe">
           <h2>Rezeptur</h2>
           <ul>
-            {cocktail.pours.map((pour) => {
-              const ref = pour.ingredientSlug ? ingredientBySlug.get(pour.ingredientSlug) : undefined;
-              return (
-                <li>
-                  <span class="amount">{pour.amount}</span>
-                  <span class="item">
-                    {ref ? <a href={`/zutaten#${ref.slug}`}>{pour.item}</a> : pour.item}
-                  </span>
-                </li>
-              );
-            })}
+            {
+              cocktail.pours.map((pour) => {
+                const ref = pour.ingredientSlug
+                  ? ingredientBySlug.get(pour.ingredientSlug)
+                  : undefined;
+                return (
+                  <li>
+                    <span class="amount">{pour.amount}</span>
+                    <span class="item">
+                      {ref ? <a href={`/zutaten#${ref.slug}`}>{pour.item}</a> : pour.item}
+                    </span>
+                  </li>
+                );
+              })
+            }
           </ul>
         </section>
 
@@ -74,21 +80,27 @@ const { cocktail } = Astro.props;
           </ol>
         </section>
 
-        {cocktail.variants && cocktail.variants.length > 0 && (
-          <section class="variants">
-            <h2>Varianten</h2>
-            <ul>
-              {cocktail.variants.map((v) => <li>{v}</li>)}
-            </ul>
-          </section>
-        )}
+        {
+          cocktail.variants && cocktail.variants.length > 0 && (
+            <section class="variants">
+              <h2>Varianten</h2>
+              <ul>
+                {cocktail.variants.map((v) => (
+                  <li>{v}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
       </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  .cocktail-detail { padding-bottom: var(--space-9); }
+  .cocktail-detail {
+    padding-bottom: var(--space-9);
+  }
 
   .breadcrumb {
     padding: var(--space-4) 0;
@@ -98,8 +110,13 @@ const { cocktail } = Astro.props;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
   }
-  .breadcrumb a { color: var(--color-text-muted); }
-  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+  .breadcrumb a {
+    color: var(--color-text-muted);
+  }
+  .breadcrumb span[aria-current] {
+    color: var(--color-text);
+    font-weight: 500;
+  }
 
   .layout {
     display: grid;
@@ -118,7 +135,11 @@ const { cocktail } = Astro.props;
     box-shadow: var(--shadow-card);
   }
 
-  .hero img { width: 100%; height: 100%; object-fit: cover; }
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   .tag {
     position: absolute;
@@ -126,7 +147,7 @@ const { cocktail } = Astro.props;
     left: var(--space-4);
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.96);
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--color-umami-petrol);
     color: var(--color-umami-petrol);
     font-size: var(--font-size-xs);
@@ -134,7 +155,9 @@ const { cocktail } = Astro.props;
     letter-spacing: 0.04em;
   }
 
-  .body h1 { margin: 0 0 var(--space-3); }
+  .body h1 {
+    margin: 0 0 var(--space-3);
+  }
   .flavor {
     margin: 0 0 var(--space-5);
     font-size: var(--font-size-lg);
@@ -151,14 +174,20 @@ const { cocktail } = Astro.props;
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
   }
-  .facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+  .facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
   .facts dt {
     font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-text-muted);
   }
-  .facts dd { margin: 0; }
+  .facts dd {
+    margin: 0;
+  }
 
   .recipe,
   .prep,
@@ -190,8 +219,14 @@ const { cocktail } = Astro.props;
     padding-bottom: var(--space-2);
     border-bottom: 1px dashed var(--color-border);
   }
-  .recipe li:last-child { border-bottom: 0; padding-bottom: 0; }
-  .amount { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  .recipe li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .amount {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
 
   .prep ol {
     margin: 0;
@@ -211,7 +246,13 @@ const { cocktail } = Astro.props;
   }
 
   @media (min-width: 900px) {
-    .layout { grid-template-columns: minmax(300px, 380px) 1fr; align-items: start; }
-    .hero { position: sticky; top: var(--space-8); }
+    .layout {
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      align-items: start;
+    }
+    .hero {
+      position: sticky;
+      top: var(--space-8);
+    }
   }
 </style>

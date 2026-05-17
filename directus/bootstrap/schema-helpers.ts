@@ -122,10 +122,7 @@ export async function ensureField(
   console.log(`[schema] created field: ${key}`);
 }
 
-export async function ensureRelation(
-  client: Client,
-  relation: RelationDef,
-): Promise<void> {
+export async function ensureRelation(client: Client, relation: RelationDef): Promise<void> {
   try {
     await client.request(
       createRelation({

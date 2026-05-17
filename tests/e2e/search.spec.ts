@@ -3,7 +3,9 @@ import { test, expect } from "@playwright/test";
 test.describe("Globale Suche", () => {
   test("findet Cocktail anhand des Namens", async ({ page }) => {
     await page.goto("/suche");
-    await expect(page.getByRole("heading", { level: 1, name: /Alles im Journal durchsuchen/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Alles im Journal durchsuchen/ }),
+    ).toBeVisible();
 
     const input = page.getByPlaceholder(/Suche nach Restaurant/i);
     await input.fill("mocktail");

@@ -4,7 +4,9 @@ test.describe("Kritikdetail", () => {
   test("zeigt Titel, Bewertung und Restaurant-Link", async ({ page }) => {
     await page.goto("/kritiken/berlin-fine-dining-fruehlingsmenue");
 
-    await expect(page.getByRole("heading", { level: 1, name: /Frühlingsmenü mit ruhiger Hand/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Frühlingsmenü mit ruhiger Hand/ }),
+    ).toBeVisible();
 
     // Rating element exposes ARIA label with numeric value (not only stars).
     const rating = page.getByLabel(/Bewertung 4,5 von 5/);
@@ -18,7 +20,9 @@ test.describe("Kritikdetail", () => {
 
   test("Kritikenliste verlinkt zur Detailseite", async ({ page }) => {
     await page.goto("/kritiken");
-    await expect(page.getByRole("heading", { level: 1, name: /Aus der Restaurant-Schreibwerkstatt/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Aus der Restaurant-Schreibwerkstatt/ }),
+    ).toBeVisible();
 
     const firstCardLink = page.locator(".review-card .review-link").first();
     await firstCardLink.click();

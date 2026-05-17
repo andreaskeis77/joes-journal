@@ -6,20 +6,20 @@ Runbook für die lokale Entwicklungsumgebung auf Windows.
 
 ## 1. Komponenten
 
-| Komponente | Port | Lokale Konfig |
-|---|---:|---|
-| Astro Frontend | 4321 | Repo-Root (`pnpm dev`) |
-| Directus Admin + API | 8055 | `directus/` (`pnpm start`) |
-| Datenbank (Dev) | – | SQLite-Datei unter `directus/data/joes-journal.db` |
-| Datenbank (Prod, später) | 5432 | PostgreSQL auf dem VPS |
+| Komponente               | Port | Lokale Konfig                                      |
+| ------------------------ | ---: | -------------------------------------------------- |
+| Astro Frontend           | 4321 | Repo-Root (`pnpm dev`)                             |
+| Directus Admin + API     | 8055 | `directus/` (`pnpm start`)                         |
+| Datenbank (Dev)          |    – | SQLite-Datei unter `directus/data/joes-journal.db` |
+| Datenbank (Prod, später) | 5432 | PostgreSQL auf dem VPS                             |
 
 ## 2. Voraussetzungen
 
-| Tool | Version | Hinweis |
-|---|---|---|
+| Tool    | Version  | Hinweis                                                                                                                                                                        |
+| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Node.js | 22.x LTS | Directus 11 ist **nicht** mit Node 24 kompatibel (native `isolated-vm` fehlt Prebuild). Empfohlen: Node 22 LTS via offiziellem Installer von [nodejs.org](https://nodejs.org). |
-| pnpm | 9.x | Über Corepack: `corepack enable && corepack prepare pnpm@9.12.0 --activate` (Admin-Shell beim `enable`, sonst per `corepack pnpm <cmd>`) |
-| Git | – | – |
+| pnpm    | 9.x      | Über Corepack: `corepack enable && corepack prepare pnpm@9.12.0 --activate` (Admin-Shell beim `enable`, sonst per `corepack pnpm <cmd>`)                                       |
+| Git     | –        | –                                                                                                                                                                              |
 
 ## 3. Erstes Setup (einmalig)
 
@@ -33,6 +33,7 @@ pnpm build
 ```
 
 Akzeptanz:
+
 - `pnpm typecheck` 0 Errors / 0 Warnings
 - `pnpm build` erfolgreich
 
@@ -53,6 +54,7 @@ pnpm bootstrap
 ```
 
 Akzeptanz:
+
 - Logs enden mit `Adding first admin user…` und `Done`.
 - `directus/data/joes-journal.db` existiert.
 
@@ -67,6 +69,7 @@ pnpm schema:apply
 ```
 
 Akzeptanz:
+
 - 15 Collections angelegt:
   - 6 Taxonomien: `tax_cuisines`, `tax_locations`, `tax_tags`, `tax_ingredient_categories`, `tax_equipment_categories`, `tax_supplier_types`
   - 9 Inhalts-Collections: `restaurants`, `restaurant_reviews`, `recipes`, `cocktails`, `equipment`, `ingredients`, `suppliers`, `content_collections`, `links`
@@ -81,23 +84,23 @@ pnpm seed
 
 Akzeptanz nach [MVP_SCOPE §4](MVP_SCOPE.md):
 
-| Collection | Erwartete Anzahl |
-|---|---:|
-| restaurants | 8 |
-| restaurant_reviews | 3 |
-| recipes | 3 |
-| cocktails | 3 (davon 1 alkoholfrei) |
-| equipment | 4 (2 owned, 2 wishlist) |
-| ingredients | 6 |
-| suppliers | 3 |
-| content_collections | 3 (2 manual, 1 saved_view) |
-| links | 10 |
-| tax_cuisines | ≥ 6 |
-| tax_locations | ≥ 8 |
-| tax_tags | ≥ 20 |
-| tax_ingredient_categories | ≥ 5 |
-| tax_equipment_categories | ≥ 3 |
-| tax_supplier_types | ≥ 3 |
+| Collection                |           Erwartete Anzahl |
+| ------------------------- | -------------------------: |
+| restaurants               |                          8 |
+| restaurant_reviews        |                          3 |
+| recipes                   |                          3 |
+| cocktails                 |    3 (davon 1 alkoholfrei) |
+| equipment                 |    4 (2 owned, 2 wishlist) |
+| ingredients               |                          6 |
+| suppliers                 |                          3 |
+| content_collections       | 3 (2 manual, 1 saved_view) |
+| links                     |                         10 |
+| tax_cuisines              |                        ≥ 6 |
+| tax_locations             |                        ≥ 8 |
+| tax_tags                  |                       ≥ 20 |
+| tax_ingredient_categories |                        ≥ 5 |
+| tax_equipment_categories  |                        ≥ 3 |
+| tax_supplier_types        |                        ≥ 3 |
 
 ## 4. Tägliches Entwickeln
 
@@ -174,13 +177,13 @@ Schritte:
 
 ## 9. Bekannte Stolpersteine
 
-| Problem | Lösung |
-|---|---|
-| `node-gyp` / `isolated-vm` Build-Fehler beim Install | Node ≥ 23 verwendet → wechsle zu Node 22 LTS. |
-| `SQLITE_CANTOPEN` beim Bootstrap | `directus/data/` Ordner fehlt – `mkdir data` vor `pnpm bootstrap`. |
-| `Validation failed for field "email"` beim Bootstrap | `ADMIN_EMAIL` in `.env` muss eine gültige TLD enthalten (`.local` wird abgelehnt). |
-| Schema-Apply schlägt mit `Invalid foreign key` fehl | `meta.group` zeigt auf nicht existente Folder-Collection. Im Helper bereits unterdrückt. |
-| Astro-Build findet `../../src/data/stub.ts` nicht | Im Astro-Build irrelevant – die Datei ist nur Seed-Quelle für `directus/bootstrap/seed.ts`. |
+| Problem                                              | Lösung                                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `node-gyp` / `isolated-vm` Build-Fehler beim Install | Node ≥ 23 verwendet → wechsle zu Node 22 LTS.                                               |
+| `SQLITE_CANTOPEN` beim Bootstrap                     | `directus/data/` Ordner fehlt – `mkdir data` vor `pnpm bootstrap`.                          |
+| `Validation failed for field "email"` beim Bootstrap | `ADMIN_EMAIL` in `.env` muss eine gültige TLD enthalten (`.local` wird abgelehnt).          |
+| Schema-Apply schlägt mit `Invalid foreign key` fehl  | `meta.group` zeigt auf nicht existente Folder-Collection. Im Helper bereits unterdrückt.    |
+| Astro-Build findet `../../src/data/stub.ts` nicht    | Im Astro-Build irrelevant – die Datei ist nur Seed-Quelle für `directus/bootstrap/seed.ts`. |
 
 ## 10. Verifikation per API
 

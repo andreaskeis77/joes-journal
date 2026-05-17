@@ -5,9 +5,7 @@ import RestaurantCard from "../../components/RestaurantCard.astro";
 import EmptyState from "../../components/EmptyState.astro";
 import { restaurants, statusOrder } from "../../data/source";
 
-const sorted = [...restaurants].sort(
-  (a, b) => statusOrder[a.status] - statusOrder[b.status],
-);
+const sorted = [...restaurants].sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
 
 const counts = {
   all: restaurants.length,
@@ -38,38 +36,42 @@ const filterOptions = [
     <div class="container">
       <nav class="filter-chips" aria-label="Restaurants filtern" data-filter-nav>
         <ul>
-          {filterOptions.map((option) => (
-            <li>
-              <button
-                type="button"
-                class:list={["chip", { active: option.active }]}
-                data-view={option.view}
-                aria-pressed={option.active ? "true" : "false"}
-              >
-                {option.label}
-                <span class="count">{option.count}</span>
-              </button>
-            </li>
-          ))}
+          {
+            filterOptions.map((option) => (
+              <li>
+                <button
+                  type="button"
+                  class:list={["chip", { active: option.active }]}
+                  data-view={option.view}
+                  aria-pressed={option.active ? "true" : "false"}
+                >
+                  {option.label}
+                  <span class="count">{option.count}</span>
+                </button>
+              </li>
+            ))
+          }
         </ul>
       </nav>
 
       <div class="grid" data-restaurant-grid>
-        {sorted.map((restaurant) => (
-          <div
-            class="grid-item"
-            data-status={restaurant.status}
-            data-view-match={
-              restaurant.status === "reviewed"
-                ? "all reviewed visited"
-                : restaurant.status === "visited"
-                ? "all visited"
-                : "all wishlist"
-            }
-          >
-            <RestaurantCard restaurant={restaurant} />
-          </div>
-        ))}
+        {
+          sorted.map((restaurant) => (
+            <div
+              class="grid-item"
+              data-status={restaurant.status}
+              data-view-match={
+                restaurant.status === "reviewed"
+                  ? "all reviewed visited"
+                  : restaurant.status === "visited"
+                    ? "all visited"
+                    : "all wishlist"
+              }
+            >
+              <RestaurantCard restaurant={restaurant} />
+            </div>
+          ))
+        }
       </div>
 
       <div class="empty-wrap" data-empty hidden>
@@ -159,7 +161,9 @@ const filterOptions = [
     font-size: var(--font-size-sm);
     font-family: var(--font-ui);
     cursor: pointer;
-    transition: border-color 120ms ease, background 120ms ease;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease;
   }
 
   .chip:hover {

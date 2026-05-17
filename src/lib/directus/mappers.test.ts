@@ -183,9 +183,7 @@ describe("mapCocktail", () => {
       technique: "shake & strain",
       flavor_profile: "frisch",
       image: "/c.webp",
-      pours: [
-        { amount: "30 ml", item: "Ingwersaft", ingredient_slug: "ingwer-frisch" },
-      ],
+      pours: [{ amount: "30 ml", item: "Ingwersaft", ingredient_slug: "ingwer-frisch" }],
       garnish: "Limettenrad",
       preparation: ["Step 1"],
       variants: ["Variante A"],

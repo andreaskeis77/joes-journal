@@ -12,10 +12,7 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
 }));
 ---
 
-<BaseLayout
-  title="Zutaten"
-  description="Zutaten, Bezugsquellen und Notizen aus der eigenen Küche."
->
+<BaseLayout title="Zutaten" description="Zutaten, Bezugsquellen und Notizen aus der eigenen Küche.">
   <PageHeader
     eyebrow="Zutaten & Lieferanten"
     title="Was im Regal steht, woher es kommt"
@@ -26,29 +23,31 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
     <div class="container">
       <h2>Zutaten</h2>
       <ul class="ingredient-list">
-        {ingredientsWithSuppliers.map(({ ingredient: ing, resolvedSuppliers }) => (
-          <li id={ing.slug} class="ingredient">
-            <div class="image">
-              <img src={ing.image} alt="" width="120" height="90" loading="lazy" />
-            </div>
-            <div class="body">
-              <p class="category">{ing.category}</p>
-              <h3>{ing.name}</h3>
-              <p class="note">{ing.note}</p>
-              {resolvedSuppliers.length > 0 && (
-                <p class="meta">
-                  Bezug:{" "}
-                  {resolvedSuppliers.map((s, i) => (
-                    <>
-                      <a href={`#${s.slug}`}>{s.name}</a>
-                      {i < resolvedSuppliers.length - 1 ? ", " : ""}
-                    </>
-                  ))}
-                </p>
-              )}
-            </div>
-          </li>
-        ))}
+        {
+          ingredientsWithSuppliers.map(({ ingredient: ing, resolvedSuppliers }) => (
+            <li id={ing.slug} class="ingredient">
+              <div class="image">
+                <img src={ing.image} alt="" width="120" height="90" loading="lazy" />
+              </div>
+              <div class="body">
+                <p class="category">{ing.category}</p>
+                <h3>{ing.name}</h3>
+                <p class="note">{ing.note}</p>
+                {resolvedSuppliers.length > 0 && (
+                  <p class="meta">
+                    Bezug:{" "}
+                    {resolvedSuppliers.map((s, i) => (
+                      <>
+                        <a href={`#${s.slug}`}>{s.name}</a>
+                        {i < resolvedSuppliers.length - 1 ? ", " : ""}
+                      </>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </section>
@@ -57,16 +56,22 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
     <div class="container">
       <h2>Lieferanten</h2>
       <ul class="supplier-list">
-        {suppliers.map((s) => (
-          <li id={s.slug} class="supplier">
-            <p class="type">{s.type} · {s.city}</p>
-            <h3>{s.name}</h3>
-            <p class="note">{s.note}</p>
-            {s.website && (
-              <a href={s.website} target="_blank" rel="noopener noreferrer">{s.website}</a>
-            )}
-          </li>
-        ))}
+        {
+          suppliers.map((s) => (
+            <li id={s.slug} class="supplier">
+              <p class="type">
+                {s.type} · {s.city}
+              </p>
+              <h3>{s.name}</h3>
+              <p class="note">{s.note}</p>
+              {s.website && (
+                <a href={s.website} target="_blank" rel="noopener noreferrer">
+                  {s.website}
+                </a>
+              )}
+            </li>
+          ))
+        }
       </ul>
     </div>
   </section>
@@ -89,7 +94,9 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
 
   .ingredient-list,
   .supplier-list {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     gap: var(--space-4);
     grid-template-columns: 1fr;
@@ -107,13 +114,16 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
   }
 
   .image img {
-    width: 96px; height: 72px;
+    width: 96px;
+    height: 72px;
     object-fit: cover;
     border-radius: var(--radius-sm);
     flex-shrink: 0;
   }
 
-  .body { flex: 1; }
+  .body {
+    flex: 1;
+  }
   .category {
     margin: 0 0 var(--space-1);
     font-size: var(--font-size-xs);

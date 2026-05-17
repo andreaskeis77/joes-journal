@@ -46,10 +46,10 @@ C:\joes-journal\
 
 ## 3. Domains
 
-| Zweck | Domain | Ziel |
-|---|---|---|
-| Frontend | `zumfettigenjoe.com` | Astro |
-| Admin | `admin.zumfettigenjoe.com` | Directus |
+| Zweck    | Domain                     | Ziel     |
+| -------- | -------------------------- | -------- |
+| Frontend | `zumfettigenjoe.com`       | Astro    |
+| Admin    | `admin.zumfettigenjoe.com` | Directus |
 
 Beide zunächst privat via Cloudflare Access.
 
@@ -71,29 +71,29 @@ Beide zunächst privat via Cloudflare Access.
 
 Vorläufige Service-Namen:
 
-| Service | Zweck |
-|---|---|
-| `JoesJournal-PostgreSQL` | PostgreSQL Service |
-| `JoesJournal-Directus` | Directus Admin/API |
-| `JoesJournal-Astro` | Frontend Runtime, falls nicht statisch |
-| `cloudflared` | Cloudflare Tunnel |
-| `Tailscale` | Admin-Netz |
+| Service                  | Zweck                                  |
+| ------------------------ | -------------------------------------- |
+| `JoesJournal-PostgreSQL` | PostgreSQL Service                     |
+| `JoesJournal-Directus`   | Directus Admin/API                     |
+| `JoesJournal-Astro`      | Frontend Runtime, falls nicht statisch |
+| `cloudflared`            | Cloudflare Tunnel                      |
+| `Tailscale`              | Admin-Netz                             |
 
 ## 6. Ports
 
-| Dienst | Host | Port | Zugriff |
-|---|---|---:|---|
-| PostgreSQL | `127.0.0.1` | 5432 | lokal |
-| Directus | `127.0.0.1` | 8055 | Cloudflare Tunnel |
-| Astro | `127.0.0.1` | 4321 oder statisch | Cloudflare Tunnel |
-| RDP | Tailscale-IP | 3389 | nur Tailscale |
+| Dienst     | Host         |               Port | Zugriff           |
+| ---------- | ------------ | -----------------: | ----------------- |
+| PostgreSQL | `127.0.0.1`  |               5432 | lokal             |
+| Directus   | `127.0.0.1`  |               8055 | Cloudflare Tunnel |
+| Astro      | `127.0.0.1`  | 4321 oder statisch | Cloudflare Tunnel |
+| RDP        | Tailscale-IP |               3389 | nur Tailscale     |
 
 ## 7. Cloudflare Tunnel Routes
 
-| Hostname | Service |
-|---|---|
-| `zumfettigenjoe.com` | `http://localhost:4321` oder statische Auslieferung |
-| `admin.zumfettigenjoe.com` | `http://localhost:8055` |
+| Hostname                   | Service                                             |
+| -------------------------- | --------------------------------------------------- |
+| `zumfettigenjoe.com`       | `http://localhost:4321` oder statische Auslieferung |
+| `admin.zumfettigenjoe.com` | `http://localhost:8055`                             |
 
 Cloudflare Access:
 
@@ -229,10 +229,10 @@ Später:
 
 ## 15. Offene Deployment-Entscheidungen
 
-| Entscheidung | Zeitpunkt |
-|---|---|
-| WinSW vs. NSSM vs. Scheduled Task | vor VPS-Setup |
-| Astro statisch vs. Node-Server | vor Frontend-Deployment |
-| PostgreSQL Installationspfad | VPS-Setup |
-| Cloudflare Access Policies | VPS-Setup |
-| Backup-Ziel extern | nach MVP |
+| Entscheidung                      | Zeitpunkt               |
+| --------------------------------- | ----------------------- |
+| WinSW vs. NSSM vs. Scheduled Task | vor VPS-Setup           |
+| Astro statisch vs. Node-Server    | vor Frontend-Deployment |
+| PostgreSQL Installationspfad      | VPS-Setup               |
+| Cloudflare Access Policies        | VPS-Setup               |
+| Backup-Ziel extern                | nach MVP                |

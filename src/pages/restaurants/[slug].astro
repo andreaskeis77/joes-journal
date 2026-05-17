@@ -71,66 +71,95 @@ const visitedDate = review
           <dt>Priorität</dt>
           <dd>{restaurant.priority}</dd>
         </div>
-        {restaurant.tags.length > 0 && (
-          <div>
-            <dt>Tags</dt>
-            <dd>
-              <ul class="tags">
-                {restaurant.tags.map((tag) => <li>#{tag}</li>)}
-              </ul>
-            </dd>
-          </div>
-        )}
+        {
+          restaurant.tags.length > 0 && (
+            <div>
+              <dt>Tags</dt>
+              <dd>
+                <ul class="tags">
+                  {restaurant.tags.map((tag) => (
+                    <li>#{tag}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )
+        }
       </dl>
 
       <div class="ctas">
-        {restaurant.website && (
-          <a class="btn btn-primary" href={restaurant.website} target="_blank" rel="noopener noreferrer">
-            Website
-          </a>
-        )}
-        {restaurant.reservationUrl && (
-          <a class="btn btn-secondary" href={restaurant.reservationUrl} target="_blank" rel="noopener noreferrer">
-            Reservieren
-          </a>
-        )}
-        {restaurant.mapsUrl && (
-          <a class="btn btn-secondary" href={restaurant.mapsUrl} target="_blank" rel="noopener noreferrer">
-            Auf Karte
-          </a>
-        )}
+        {
+          restaurant.website && (
+            <a
+              class="btn btn-primary"
+              href={restaurant.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Website
+            </a>
+          )
+        }
+        {
+          restaurant.reservationUrl && (
+            <a
+              class="btn btn-secondary"
+              href={restaurant.reservationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Reservieren
+            </a>
+          )
+        }
+        {
+          restaurant.mapsUrl && (
+            <a
+              class="btn btn-secondary"
+              href={restaurant.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Auf Karte
+            </a>
+          )
+        }
       </div>
     </header>
 
     <section class="container review-section">
       <h2>Kritik</h2>
-      {review ? (
-        <a class="review-link" href={`/kritiken/${review.slug}`}>
-          <div class="review-card">
-            <div>
-              <p class="review-eyebrow eyebrow">Aus dem Journal</p>
-              <h3>{review.title}</h3>
-              <p class="review-excerpt">{review.excerpt}</p>
-              <RatingStars value={review.rating} />
-              {visitedDate && <p class="visited muted">Besucht im {visitedDate}</p>}
+      {
+        review ? (
+          <a class="review-link" href={`/kritiken/${review.slug}`}>
+            <div class="review-card">
+              <div>
+                <p class="review-eyebrow eyebrow">Aus dem Journal</p>
+                <h3>{review.title}</h3>
+                <p class="review-excerpt">{review.excerpt}</p>
+                <RatingStars value={review.rating} />
+                {visitedDate && <p class="visited muted">Besucht im {visitedDate}</p>}
+              </div>
+              <span class="arrow" aria-hidden="true">
+                →
+              </span>
             </div>
-            <span class="arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      ) : (
-        <EmptyState
-          title={
-            restaurant.status === "planned"
-              ? "Reservierung steht – Kritik folgt."
-              : "Noch keine Kritik vorhanden."
-          }
-          description={
-            restaurant.status === "planned"
-              ? "Dieses Restaurant ist eingeplant. Eine Kritik erscheint nach dem Besuch."
-              : "Dieses Restaurant steht auf der Merkliste. Sobald der Besuch stattgefunden hat, kommt hier die Kritik."
-          }
-        />
-      )}
+          </a>
+        ) : (
+          <EmptyState
+            title={
+              restaurant.status === "planned"
+                ? "Reservierung steht – Kritik folgt."
+                : "Noch keine Kritik vorhanden."
+            }
+            description={
+              restaurant.status === "planned"
+                ? "Dieses Restaurant ist eingeplant. Eine Kritik erscheint nach dem Besuch."
+                : "Dieses Restaurant steht auf der Merkliste. Sobald der Besuch stattgefunden hat, kommt hier die Kritik."
+            }
+          />
+        )
+      }
     </section>
   </article>
 </BaseLayout>
@@ -284,7 +313,9 @@ const visitedDate = review
     border-radius: var(--radius-lg);
     padding: var(--space-6);
     box-shadow: var(--shadow-card);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
   }
 
   .review-link:hover .review-card {

@@ -37,13 +37,15 @@ const isActive = (href: string) =>
 
     <nav class="site-nav" aria-label="Hauptnavigation">
       <ul>
-        {navItems.map((item) => (
-          <li>
-            <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
@@ -101,13 +103,15 @@ const isActive = (href: string) =>
       </div>
       <nav aria-label="Mobile Hauptnavigation">
         <ul>
-          {navItems.map((item) => (
-            <li>
-              <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {
+            navItems.map((item) => (
+              <li>
+                <a href={item.href} class:list={[{ active: isActive(item.href) }]}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
       <a class="drawer-search" href="/suche">

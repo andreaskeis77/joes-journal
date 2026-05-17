@@ -1,9 +1,5 @@
 import type { CollectionDef, RelationDef } from "../schema-helpers.js";
-import {
-  CONTENT_STATUS_OPTIONS,
-  PRIORITY_OPTIONS,
-  RESTAURANT_STATUS_OPTIONS,
-} from "./status.js";
+import { CONTENT_STATUS_OPTIONS, PRIORITY_OPTIONS, RESTAURANT_STATUS_OPTIONS } from "./status.js";
 
 export const restaurantCollection: CollectionDef = {
   collection: "restaurants",

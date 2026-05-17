@@ -16,18 +16,18 @@ Administrative Serverzugriffe erfolgen ausschließlich über Tailscale/RDP, nich
 
 ## 2. Stack
 
-| Schicht | Entscheidung |
-|---|---|
-| Frontend | Astro + TypeScript |
-| CMS/Admin | Directus |
-| Datenbank | PostgreSQL |
-| Package Manager | pnpm |
-| VPS | Windows VPS, native Installation im MVP |
-| Externer Zugriff | Cloudflare Access + Cloudflare Tunnel |
-| Adminzugang Server | Tailscale-RDP |
-| Suche MVP | Directus/PostgreSQL |
-| Suche später | Pagefind oder Meilisearch prüfen |
-| E2E/UX-Smokes | Playwright später |
+| Schicht            | Entscheidung                            |
+| ------------------ | --------------------------------------- |
+| Frontend           | Astro + TypeScript                      |
+| CMS/Admin          | Directus                                |
+| Datenbank          | PostgreSQL                              |
+| Package Manager    | pnpm                                    |
+| VPS                | Windows VPS, native Installation im MVP |
+| Externer Zugriff   | Cloudflare Access + Cloudflare Tunnel   |
+| Adminzugang Server | Tailscale-RDP                           |
+| Suche MVP          | Directus/PostgreSQL                     |
+| Suche später       | Pagefind oder Meilisearch prüfen        |
+| E2E/UX-Smokes      | Playwright später                       |
 
 ## 3. Betriebsmodell MVP
 
@@ -44,9 +44,9 @@ Docker wird neu bewertet, wenn mehrere Services wachsen, ein Umzug geplant ist o
 
 ## 4. Domains
 
-| Zweck | Domain |
-|---|---|
-| Frontend | `https://zumfettigenjoe.com` |
+| Zweck          | Domain                             |
+| -------------- | ---------------------------------- |
+| Frontend       | `https://zumfettigenjoe.com`       |
 | Directus Admin | `https://admin.zumfettigenjoe.com` |
 
 Beide Domains sind im MVP privat/kontrolliert über Cloudflare Access geschützt. Directus Admin bleibt dauerhaft geschützt.
@@ -88,12 +88,12 @@ Beide Domains sind im MVP privat/kontrolliert über Cloudflare Access geschützt
 
 ## 6. Ports
 
-| Dienst | Host | Port | Öffentlich? |
-|---|---|---:|---|
-| Directus | `127.0.0.1` | `8055` | nein, nur via Cloudflare |
-| Astro | `127.0.0.1` | `4321` oder statisch | nein, nur via Cloudflare |
-| PostgreSQL | `127.0.0.1` | `5432` | nein |
-| RDP | Tailscale-IP | `3389` | nur Tailscale |
+| Dienst     | Host         |                 Port | Öffentlich?              |
+| ---------- | ------------ | -------------------: | ------------------------ |
+| Directus   | `127.0.0.1`  |               `8055` | nein, nur via Cloudflare |
+| Astro      | `127.0.0.1`  | `4321` oder statisch | nein, nur via Cloudflare |
+| PostgreSQL | `127.0.0.1`  |               `5432` | nein                     |
+| RDP        | Tailscale-IP |               `3389` | nur Tailscale            |
 
 ## 7. Pfade
 
@@ -147,10 +147,10 @@ DEV-LAPTOP → GitHub → VPS Pull/Deploy → Services Restart → Smoke Tests
 
 ## 10. Offene Architekturpunkte
 
-| Punkt | Status |
-|---|---|
-| Astro statisch vs. SSR | vor technischem Setup entscheiden |
-| Directus Schema Snapshot Format | beim Setup konkretisieren |
-| Windows-Service-Mechanismus | WinSW / NSSM / Scheduled Task prüfen |
-| Backup-Ziel | lokal zuerst, externe Kopie später |
-| Suche nach MVP | Pagefind vs. Meilisearch später evaluieren |
+| Punkt                           | Status                                     |
+| ------------------------------- | ------------------------------------------ |
+| Astro statisch vs. SSR          | vor technischem Setup entscheiden          |
+| Directus Schema Snapshot Format | beim Setup konkretisieren                  |
+| Windows-Service-Mechanismus     | WinSW / NSSM / Scheduled Task prüfen       |
+| Backup-Ziel                     | lokal zuerst, externe Kopie später         |
+| Suche nach MVP                  | Pagefind vs. Meilisearch später evaluieren |

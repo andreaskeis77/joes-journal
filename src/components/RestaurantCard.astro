@@ -31,7 +31,9 @@ const priceDisplay = "€".repeat(restaurant.priceLevel);
       <div class="meta">
         <span class="cuisine">{restaurant.cuisine}</span>
         <span class="dot" aria-hidden="true">·</span>
-        <span class="price" aria-label={`Preisniveau ${restaurant.priceLevel} von 4`}>{priceDisplay}</span>
+        <span class="price" aria-label={`Preisniveau ${restaurant.priceLevel} von 4`}
+          >{priceDisplay}</span
+        >
       </div>
     </div>
   </a>
@@ -44,7 +46,9 @@ const priceDisplay = "€".repeat(restaurant.priceLevel);
     overflow: hidden;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-card);
-    transition: transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
     height: 100%;
   }
 

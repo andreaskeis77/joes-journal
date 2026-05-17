@@ -37,21 +37,21 @@ Jeder Agent muss vor Umsetzung lesen:
 
 ## 4. Phasenübersicht
 
-| Phase | Ziel |
-|---|---|
-| P0 | Repo-Bootstrap und Methodik |
-| P1 | Directus/PostgreSQL lokales Grundsetup |
-| P2 | Datenmodell und Schema-Snapshots |
-| P3 | Seed-/Testdaten |
-| P4 | Astro Frontend Grundgerüst |
-| P5 | Restaurant/Kritik MVP |
-| P6 | Rezepte, Cocktails, Geräte, Links, Sammlungen |
-| P7 | Suche, Filter, Statistik |
-| P8 | UX-Smokes, Accessibility, Mobile |
-| P9 | Native Windows VPS Deployment |
-| P10 | Private Cloudflare Access Freigabe |
-| P11 | Hardening, Backup, Restore |
-| P12 | Spätere Erweiterungen |
+| Phase | Ziel                                          |
+| ----- | --------------------------------------------- |
+| P0    | Repo-Bootstrap und Methodik                   |
+| P1    | Directus/PostgreSQL lokales Grundsetup        |
+| P2    | Datenmodell und Schema-Snapshots              |
+| P3    | Seed-/Testdaten                               |
+| P4    | Astro Frontend Grundgerüst                    |
+| P5    | Restaurant/Kritik MVP                         |
+| P6    | Rezepte, Cocktails, Geräte, Links, Sammlungen |
+| P7    | Suche, Filter, Statistik                      |
+| P8    | UX-Smokes, Accessibility, Mobile              |
+| P9    | Native Windows VPS Deployment                 |
+| P10   | Private Cloudflare Access Freigabe            |
+| P11   | Hardening, Backup, Restore                    |
+| P12   | Spätere Erweiterungen                         |
 
 ## 5. P0 – Repo-Bootstrap
 

@@ -28,6 +28,8 @@ test.describe("Mobile Navigation", () => {
     await restaurantsLink.click();
 
     await expect(page).toHaveURL(/\/restaurants\/?$/);
-    await expect(page.getByRole("heading", { level: 1, name: /Watchlist & Besuche/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Watchlist & Besuche/i }),
+    ).toBeVisible();
   });
 });

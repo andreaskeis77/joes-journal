@@ -18,11 +18,11 @@ powered by umami
 
 ### Markenrollen
 
-| Rolle | Bedeutung |
-|---|---|
+| Rolle            | Bedeutung                                                            |
+| ---------------- | -------------------------------------------------------------------- |
 | Zum Fettigen Joe | sichtbare Hauptmarke, kulinarisches Alter Ego, humorvoll, persönlich |
-| umami | dezente Kompetenz- und Qualitätssignatur |
-| joes-journal | technischer Repo-/Projektname |
+| umami            | dezente Kompetenz- und Qualitätssignatur                             |
+| joes-journal     | technischer Repo-/Projektname                                        |
 
 ## 3. Zielbild
 
@@ -39,11 +39,11 @@ Die Plattform soll drei Dinge verbinden:
 
 ## 4. Hauptnutzer
 
-| Nutzer | Rolle |
-|---|---|
-| Andreas | Owner, Redakteur, Admin, Leser |
-| Vertraute Personen | später optional lesender Zugriff |
-| Öffentlichkeit | nicht Ziel des MVP; später selektiv möglich |
+| Nutzer             | Rolle                                       |
+| ------------------ | ------------------------------------------- |
+| Andreas            | Owner, Redakteur, Admin, Leser              |
+| Vertraute Personen | später optional lesender Zugriff            |
+| Öffentlichkeit     | nicht Ziel des MVP; später selektiv möglich |
 
 ## 5. Kern-Use-Cases
 
@@ -89,22 +89,22 @@ Später:
 
 ## 6. Verbindliche Leitentscheidungen
 
-| Thema | Entscheidung |
-|---|---|
-| Architektur | Directus + PostgreSQL + Astro + Cloudflare Access + Tailscale |
-| VPS-Betrieb | Native Windows für MVP, Docker später neu bewerten |
-| Sichtbarkeit | zuerst privat, später selektiv öffentlich |
-| Domain Frontend | `zumfettigenjoe.com` |
-| Domain Admin | `admin.zumfettigenjoe.com` |
-| Bewertung | 5 Sterne wie Tripadvisor, prominent, keine Subscores |
-| Links | eigene Collection `links`, mit Objekten verknüpfbar |
-| Sammlungen | `manual_collection` und `saved_view` |
-| Suche MVP | Directus/PostgreSQL-Suche + Filter |
-| Typografie MVP | Poppins für Headlines, Inter für Body/UI |
-| Mobile Navigation | Header + Burger Drawer + prominente Suche |
-| Hero | starke Bildstimmung, kurzer Claim, globale Suche, zwei CTAs |
-| Tracking | kein Tracking im MVP |
-| Bilder | eigene oder klar lizenzierte Bilder; externe Bilder nicht ungeprüft übernehmen |
+| Thema             | Entscheidung                                                                   |
+| ----------------- | ------------------------------------------------------------------------------ |
+| Architektur       | Directus + PostgreSQL + Astro + Cloudflare Access + Tailscale                  |
+| VPS-Betrieb       | Native Windows für MVP, Docker später neu bewerten                             |
+| Sichtbarkeit      | zuerst privat, später selektiv öffentlich                                      |
+| Domain Frontend   | `zumfettigenjoe.com`                                                           |
+| Domain Admin      | `admin.zumfettigenjoe.com`                                                     |
+| Bewertung         | 5 Sterne wie Tripadvisor, prominent, keine Subscores                           |
+| Links             | eigene Collection `links`, mit Objekten verknüpfbar                            |
+| Sammlungen        | `manual_collection` und `saved_view`                                           |
+| Suche MVP         | Directus/PostgreSQL-Suche + Filter                                             |
+| Typografie MVP    | Poppins für Headlines, Inter für Body/UI                                       |
+| Mobile Navigation | Header + Burger Drawer + prominente Suche                                      |
+| Hero              | starke Bildstimmung, kurzer Claim, globale Suche, zwei CTAs                    |
+| Tracking          | kein Tracking im MVP                                                           |
+| Bilder            | eigene oder klar lizenzierte Bilder; externe Bilder nicht ungeprüft übernehmen |
 
 ## 7. Nicht-Ziele im MVP
 

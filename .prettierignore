@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+playwright/
+.venv/
+tools/
+directus/node_modules/
+directus/data/
+directus/uploads/
+directus/pnpm-lock.yaml
+pnpm-lock.yaml
+public/asset-gallery.html
+public/assets/
+docs/design/ASSET_FILE_INDEX.json
