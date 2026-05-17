@@ -506,3 +506,602 @@ assets:
     '
   composition: Wide 1.91:1 social preview. Leave safe quiet space for later frontend or OG text overlay.
     No text in image, no logos, no people, no real restaurant.
+- id: restaurant_interior_open_kitchen_counter
+  filename: restaurant-interior-open-kitchen-counter-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Premium open kitchen or chef counter restaurant interior, stainless steel, warm lamps, wood,
+    ceramic plates, refined atmosphere, no visible staff, no logos, no readable text.
+
+    '
+  composition: 'Landscape 4:3. Calm restaurant card image with counter and kitchen depth, soft background
+    blur, warm editorial light, no identifiable people, no readable menus or signage.
+
+    '
+- id: restaurant_interior_casual_wine_bar
+  filename: restaurant-interior-casual-wine-bar-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Quiet casual wine bar interior with warm light, small plates, glassware, bottles blurred without
+    labels, wood and stone, inviting refined mood.
+
+    '
+  composition: 'Landscape 4:3. Calm wine bar scene, no people, no readable labels, no brands, no signs.
+    Soft depth of field, warm editorial atmosphere.
+
+    '
+- id: restaurant_interior_terrace_evening
+  filename: restaurant-interior-terrace-evening-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Elegant restaurant terrace in the evening, set tables, plants, warm ambient light, refined
+    outdoor dining mood, no people, no real location.
+
+    '
+  composition: 'Landscape 4:3. Terrace card image with soft lights and plants, no readable signs, no logos,
+    no identifiable restaurant, calm premium mood.
+
+    '
+- id: restaurant_watchlist_map_notebook
+  filename: restaurant-watchlist-map-notebook-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Restaurant watchlist concept image with notebook, abstract map without readable street names,
+    cards without readable text, pen, glass, warm table, personal culinary planning mood.
+
+    '
+  composition: 'Landscape 4:3. Calm tabletop planning scene. Notes and map must be blank, blurred or abstract.
+    No readable handwriting, no logos, no real places.
+
+    '
+- id: restaurant_watchlist_empty_table_reserved
+  filename: restaurant-watchlist-empty-table-reserved-4x3-v01.webp
+  folder: restaurants
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Beautiful empty restaurant table with a reserved feeling but no visible reserved sign, linen,
+    glassware, ceramic, candlelight, warm anticipation.
+
+    '
+  composition: 'Landscape 4:3. Quiet empty table scene, no text, no people, no menus, no signage. Warm
+    premium restaurant atmosphere.
+
+    '
+- id: review_service_table_detail
+  filename: review-service-table-detail-4x3-v01.webp
+  folder: reviews
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Editorial detail of restaurant service quality: polished cutlery, elegant glass, linen napkin,
+    small ceramic plate, warm light, refined table detail.
+
+    '
+  composition: 'Landscape 4:3. Close table detail, calm premium atmosphere, shallow depth of field, no
+    text, no logos, no people.
+
+    '
+- id: review_dessert_plate_editorial
+  filename: review-dessert-plate-editorial-4x3-v01.webp
+  folder: reviews
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Elegant dessert plate in warm restaurant light, cream, fruit, fine texture, subtle red accent,
+    realistic and appetizing, not overdesigned.
+
+    '
+  composition: 'Landscape 4:3. Dessert plate in lower and central area, soft background, refined editorial
+    mood, no text, no logos, no people.
+
+    '
+- id: review_wine_glass_table
+  filename: review-wine-glass-table-4x3-v01.webp
+  folder: reviews
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Wine glass or non-alcoholic aperitif glass on a warm restaurant table, linen, ceramic, candlelight,
+    quiet reflective review atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Glass and table detail, no bottle labels, no readable text, no people,
+    soft depth of field, premium editorial mood.
+
+    '
+- id: review_after_dinner_table
+  filename: review-after-dinner-table-4x3-v01.webp
+  folder: reviews
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Calm after-dinner restaurant table, glassware, folded napkin, small remaining elegant plate
+    detail, personal journal moment, not messy.
+
+    '
+  composition: 'Landscape 4:3. Quiet reflective table scene, refined but natural, no dirty clutter, no
+    text, no logos, no people.
+
+    '
+- id: recipe_card_pasta_sauce_pan
+  filename: recipe-card-pasta-sauce-pan-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Pasta or sauce cooking scene in a pan, warm steam, herbs, wooden spoon, ceramic bowl, premium
+    private kitchen atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Pan and sauce detail in lower/central area, warm light, realistic food,
+    no hands, no labels, no readable text.
+
+    '
+- id: recipe_card_grill_vegetables
+  filename: recipe-card-grill-vegetables-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Grilled vegetables with elegant grill marks, herbs, olive oil, ceramic plate, warm kitchen
+    or grill light, refined food photography.
+
+    '
+  composition: 'Landscape 4:3. Vegetables arranged naturally, appetizing and realistic, not over-saturated,
+    no labels, no people, no logos.
+
+    '
+- id: recipe_card_steak_cutting_board
+  filename: recipe-card-steak-cutting-board-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Steak on wooden cutting board, chef knife, herbs, salt, warm light, premium but natural cooking
+    journal mood, not bloody or exaggerated.
+
+    '
+  composition: 'Landscape 4:3. Steak and board in lower/central area, refined realistic texture, no hands,
+    no labels, no logos, no excessive blood.
+
+    '
+- id: recipe_card_dessert_cream_fruit
+  filename: recipe-card-dessert-cream-fruit-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Dessert with cream, fruit, fine texture, ceramic dish, warm natural light, refined private
+    kitchen or dining table atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Dessert detail in lower/central frame, subtle red fruit accent, soft background,
+    no text, no logos, no people.
+
+    '
+- id: recipe_method_sauce_reduction_pan
+  filename: recipe-method-sauce-reduction-pan-4x3-v01.webp
+  folder: recipes
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Sauce reduction in a pan or small pot, warm steam, glossy texture, stainless steel, wooden
+    surface, professional cooking method mood.
+
+    '
+  composition: 'Landscape 4:3. Sauce and pan detail, warm light, realistic steam, no hands, no logos,
+    no readable text, no dirty kitchen.
+
+    '
+- id: cocktail_card_coupe_red_accent
+  filename: cocktail-card-coupe-red-accent-4x5-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:5'
+  target_size:
+  - 1600
+  - 2000
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Elegant coupe glass cocktail or mocktail with restrained red accent, citrus twist, clear glass,
+    warm bar light, refined and calm.
+
+    '
+  composition: 'Portrait 4:5. Coupe in lower/central area, quiet upper negative space, no bottle labels,
+    no text, no logos, no people.
+
+    '
+- id: cocktail_card_mocktail_ginger_lime
+  filename: cocktail-card-mocktail-ginger-lime-4x5-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:5'
+  target_size:
+  - 1600
+  - 2000
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Alcohol-free mocktail with ginger and lime impression, clear ice, premium glassware, citrus
+    garnish, fresh but warm editorial bar mood.
+
+    '
+  composition: 'Portrait 4:5. Drink in lower/central part, calm background, realistic ice and lime, no
+    labels, no readable text, no logos.
+
+    '
+- id: cocktail_card_shaker_tools
+  filename: cocktail-card-shaker-tools-4x3-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Cocktail shaker, jigger, strainer, bar spoon, citrus, small glass, stainless steel reflections,
+    warm bar surface, no brands.
+
+    '
+  composition: 'Landscape 4:3. Clear bar tools still life, sparse and refined, no labels, no readable
+    text, no logos, no people.
+
+    '
+- id: bar_detail_ice_glass_reflection
+  filename: bar-detail-ice-glass-reflection-4x3-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Abstract premium bar detail with clear ice, glass reflections, warm light, subtle shadows,
+    refined cocktail atmosphere.
+
+    '
+  composition: 'Landscape 4:3. Close-up abstract detail, calm and not too dark, no bottles, no labels,
+    no readable text, no logos.
+
+    '
+- id: bar_detail_garnish_citrus_herbs
+  filename: bar-detail-garnish-citrus-herbs-4x3-v01.webp
+  folder: cocktails
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Cocktail garnish still life with citrus peels, lime, herbs, small ceramic bowl, bar tweezers,
+    warm light, premium editorial detail.
+
+    '
+  composition: 'Landscape 4:3. Garnishes arranged elegantly and sparsely, no labels, no readable text,
+    no logos, no hands.
+
+    '
+- id: ingredient_category_citrus_syrup_glass
+  filename: ingredient-category-citrus-syrup-glass-4x3-v01.webp
+  folder: ingredients
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Citrus, neutral unlabeled syrup bottle, glass, bar or kitchen surface, warm light, refined
+    ingredient category mood.
+
+    '
+  composition: 'Landscape 4:3. Citrus and glass detail, no readable labels, no logos, no brands, calm
+    composition.
+
+    '
+- id: ingredient_category_oil_vinegar_ceramic
+  filename: ingredient-category-oil-vinegar-ceramic-4x3-v01.webp
+  folder: ingredients
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Olive oil and vinegar in neutral unlabeled glass bottles, ceramic bowl, bread, herbs, warm
+    wood and stone surface, premium ingredient mood.
+
+    '
+  composition: 'Landscape 4:3. Calm ingredient still life, no labels, no text, no logos, warm natural
+    light, refined but simple.
+
+    '
+- id: ingredient_category_vegetables_market
+  filename: ingredient-category-vegetables-market-4x3-v01.webp
+  folder: ingredients
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Seasonal vegetables in a premium market-style still life, baskets, herbs, warm natural light,
+    refined culinary journal style, no people.
+
+    '
+  composition: 'Landscape 4:3. Vegetables arranged naturally, no signs, no labels, no readable text, no
+    logos, no identifiable market.
+
+    '
+- id: ingredient_drink_ginger_lime
+  filename: ingredient-drink-ginger-lime-4x3-v01.webp
+  folder: ingredients
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Ginger, lime, glass, bubbles or ginger drink impression without bottle, warm bar or kitchen
+    surface, premium ingredient photography.
+
+    '
+  composition: 'Landscape 4:3. Ginger and lime detail, no labels, no brands, no readable text, calm warm
+    editorial composition.
+
+    '
+- id: equipment_card_knife_set
+  filename: equipment-card-knife-set-4x3-v01.webp
+  folder: equipment
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Premium chef knives on wood or magnetic rack impression, warm light, stainless steel, refined
+    kitchen equipment mood, no brand logos.
+
+    '
+  composition: 'Landscape 4:3. Knives arranged clearly and safely, product-style still life, no logos,
+    no text, no people.
+
+    '
+- id: equipment_card_cast_iron_pan
+  filename: equipment-card-cast-iron-pan-4x3-v01.webp
+  folder: equipment
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Cast iron pan with oil, herbs, warm light, wooden board, ceramic detail, premium cooking equipment
+    atmosphere, no logos.
+
+    '
+  composition: 'Landscape 4:3. Pan detail in lower/central area, warm shadows, no brand marks, no readable
+    text, no people.
+
+    '
+- id: equipment_card_kamado_grill
+  filename: equipment-card-kamado-grill-4x3-v01.webp
+  folder: equipment
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Generic ceramic kamado-style grill scene without logos, glowing charcoal, grill grate, warm
+    outdoor cooking atmosphere, refined and realistic.
+
+    '
+  composition: 'Landscape 4:3. Grill detail, no brand identity, no text, no people, no aggressive flames,
+    premium BBQ mood.
+
+    '
+- id: equipment_card_gas_grill
+  filename: equipment-card-gas-grill-4x3-v01.webp
+  folder: equipment
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Generic gas grill scene with stainless steel, grill grate, warm light, clean premium outdoor
+    cooking atmosphere, no logo or brand.
+
+    '
+  composition: 'Landscape 4:3. Grill surface and utensils, no brand marks, no text, no people, clean and
+    realistic.
+
+    '
+- id: collection_card_bar_basics
+  filename: collection-card-bar-basics-4x3-v01.webp
+  folder: collections
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Bar basics collection image with tools, citrus, glass, neutral syrup bottle without label,
+    warm light, refined personal journal mood.
+
+    '
+  composition: 'Landscape 4:3. Curated bar basics still life, no labels, no text, no logos, calm composition.
+
+    '
+- id: collection_card_bbq_grill_notes
+  filename: collection-card-bbq-grill-notes-4x3-v01.webp
+  folder: collections
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'BBQ grill notes collection image with spices, charcoal or grill detail, notebook without readable
+    text, wooden board, warm light.
+
+    '
+  composition: 'Landscape 4:3. Calm curated BBQ journal still life, notes must be blank or unreadable,
+    no logos, no people, no text.
+
+    '
+- id: collection_card_wishlist_tools
+  filename: collection-card-wishlist-tools-4x3-v01.webp
+  folder: collections
+  aspect_ratio: '4:3'
+  target_size:
+  - 1600
+  - 1200
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos,
+    suitable for extended visual asset library.
+  subject: 'Wishlist tools research scene with kitchen tools, blank cards, notebook, laptop with blank
+    or blurred screen, warm premium desk mood.
+
+    '
+  composition: 'Landscape 4:3. No readable text, no website, no app UI, no logos, no brands, calm personal
+    research atmosphere.
+
+    '

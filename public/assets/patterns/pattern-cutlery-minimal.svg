@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-hidden="true">
+  <rect width="180" height="180" fill="#F5F3F1"/>
+  <g fill="none" stroke="#222222" stroke-width="1.5" stroke-linecap="round" opacity="0.045">
+    <path d="M42 30 V86"/>
+    <path d="M36 30 V48"/>
+    <path d="M42 30 V48"/>
+    <path d="M48 30 V48"/>
+    <path d="M132 30 V86"/>
+    <path d="M126 30 C126 54,138 54,138 30"/>
+    <path d="M42 120 V156"/>
+    <path d="M132 120 V156"/>
+  </g>
+</svg>
