@@ -1,0 +1,86 @@
+:root {
+  /* Core palette */
+  --color-joe-red: #b23a32;
+  --color-umami-petrol: #2e7070;
+  --color-bg-warm: #f5f3f1;
+  --color-surface: #ffffff;
+  --color-footer: #edebe9;
+  --color-text: #222222;
+  --color-text-muted: #5f5a56;
+  --color-border: #ddd8d2;
+
+  /* Semantic */
+  --color-primary: var(--color-joe-red);
+  --color-secondary: var(--color-umami-petrol);
+  --color-background: var(--color-bg-warm);
+  --color-card: var(--color-surface);
+  --color-link: var(--color-umami-petrol);
+  --color-danger: #9f2d24;
+  --color-success: #2f6f4e;
+  --color-warning: #b87514;
+
+  /* Typography */
+  --font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 17px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 36px;
+
+  --line-tight: 1.12;
+  --line-heading: 1.18;
+  --line-body: 1.62;
+  --line-meta: 1.42;
+
+  /* Spacing 8px scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Layout */
+  --bp-sm: 600px;
+  --bp-md: 900px;
+  --bp-lg: 1200px;
+  --bp-xl: 1440px;
+
+  --max-page: 1200px;
+  --max-content: 760px;
+  --max-detail: 1080px;
+  --max-wide: 1320px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+
+  /* Shadows */
+  --shadow-card: 0 8px 24px rgba(34, 34, 34, 0.08);
+  --shadow-card-hover: 0 14px 34px rgba(34, 34, 34, 0.14);
+  --shadow-panel: 0 18px 48px rgba(34, 34, 34, 0.12);
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px rgba(46, 112, 112, 0.35);
+  --focus-outline-color: var(--color-umami-petrol);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --font-size-base: 18px;
+    --font-size-lg: 21px;
+    --font-size-xl: 28px;
+    --font-size-2xl: 38px;
+    --font-size-3xl: 52px;
+  }
+}

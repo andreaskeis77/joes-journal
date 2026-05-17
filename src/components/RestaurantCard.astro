@@ -1,0 +1,114 @@
+---
+import type { RestaurantStub } from "../data/stub";
+
+interface Props {
+  restaurant: RestaurantStub;
+}
+
+const { restaurant } = Astro.props;
+
+const statusColor: Record<RestaurantStub["status"], string> = {
+  wishlist: "var(--color-umami-petrol)",
+  visited: "var(--color-success)",
+  reviewed: "var(--color-joe-red)",
+};
+---
+
+<article class="restaurant-card">
+  <a class="restaurant-link" href={`/restaurants/${restaurant.slug}`}>
+    <div class="image-wrap">
+      <img
+        src={restaurant.image}
+        alt=""
+        width="1600"
+        height="1200"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="status" style={`--badge-color: ${statusColor[restaurant.status]}`}>
+        {restaurant.statusLabel}
+      </span>
+    </div>
+    <div class="body">
+      <p class="city">{restaurant.city}</p>
+      <h3 class="name">{restaurant.name}</h3>
+      <p class="cuisine">{restaurant.cuisine}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .restaurant-card {
+    background: var(--color-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .restaurant-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+  .restaurant-link:hover {
+    text-decoration: none;
+  }
+
+  .image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .status {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--badge-color);
+    border: 1px solid var(--badge-color);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .body {
+    padding: var(--space-5);
+  }
+
+  .city {
+    margin: 0 0 var(--space-1);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+
+  .name {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-lg);
+  }
+
+  .cuisine {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>

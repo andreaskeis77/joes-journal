@@ -1,0 +1,51 @@
+---
+import { quickChips } from "../data/stub";
+---
+
+<section class="quick-chips" aria-label="Schnelleinstiege">
+  <div class="container">
+    <ul>
+      {quickChips.map((chip) => (
+        <li>
+          <a href={chip.href}>{chip.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .quick-chips {
+    margin-block: calc(var(--space-9) * -1 + var(--space-6)) var(--space-8);
+    position: relative;
+    z-index: 3;
+  }
+
+  .quick-chips ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .quick-chips a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+  }
+
+  .quick-chips a:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+</style>

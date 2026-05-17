@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeHero from "../components/HomeHero.astro";
+import QuickChips from "../components/QuickChips.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import RestaurantCard from "../components/RestaurantCard.astro";
+import CategoryCard from "../components/CategoryCard.astro";
+import StatCard from "../components/StatCard.astro";
+import { reviews, restaurants, categories, stats } from "../data/stub";
+---
+
+<BaseLayout
+  title="Zum Fettigen Joe"
+  description="Ein persönliches Journal über Restaurants, Küche, Cocktails und guten Geschmack."
+>
+  <HomeHero />
+  <QuickChips />
+
+  <section class="home-section">
+    <div class="container">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">Neueste Kritiken</p>
+          <h2>Aus der Restaurant-Schreibwerkstatt</h2>
+        </div>
+        <a class="section-more" href="/kritiken">Alle Kritiken →</a>
+      </header>
+      <div class="grid grid-3">
+        {reviews.map((review) => (
+          <ReviewCard review={review} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section alt-bg">
+    <div class="container">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">Restaurants entdecken</p>
+          <h2>Watchlist & frisch besucht</h2>
+        </div>
+        <a class="section-more" href="/restaurants">Alle Restaurants →</a>
+      </header>
+      <div class="grid grid-3">
+        {restaurants.map((restaurant) => (
+          <RestaurantCard restaurant={restaurant} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="container">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">Kategorien</p>
+          <h2>Alle Einstiege im Überblick</h2>
+        </div>
+      </header>
+      <div class="grid grid-3">
+        {categories.map((category) => (
+          <CategoryCard category={category} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section alt-bg">
+    <div class="container">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">Joe in Zahlen</p>
+          <h2>Wo das Journal aktuell steht</h2>
+        </div>
+      </header>
+      <div class="grid grid-4">
+        {stats.map((stat) => (
+          <StatCard stat={stat} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-teaser">
+    <div class="container about-inner">
+      <img
+        class="about-badge"
+        src="/assets/brand/brand-badge-joe-round.svg"
+        alt=""
+        width="96"
+        height="96"
+        loading="lazy"
+      />
+      <div>
+        <p class="eyebrow">Über Joe</p>
+        <h2>Ehrliche Kritiken. Gute Küche. Guter Geschmack.</h2>
+        <p class="muted">
+          „Zum Fettigen Joe“ ist ein privates kulinarisches Journal – Restaurants, eigene Küche,
+          Cocktails, Geräte, Bezugsquellen und kuratierte Links an einem Ort. Ruhig, persönlich, kuratiert.
+        </p>
+        <a class="btn btn-secondary" href="/ueber-joe">Mehr über Joe</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-section {
+    padding-block: var(--space-8);
+  }
+
+  .home-section.alt-bg {
+    background: var(--color-footer);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .section-header h2 {
+    margin: 0;
+  }
+
+  .section-more {
+    color: var(--color-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1000px) {
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .about-teaser {
+    padding-block: var(--space-8) var(--space-9);
+  }
+
+  .about-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-7);
+    box-shadow: var(--shadow-card);
+  }
+
+  .about-badge {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+  }
+
+  .about-inner h2 {
+    margin: 0 0 var(--space-3);
+    max-width: 22ch;
+  }
+
+  .about-inner p.muted {
+    max-width: 60ch;
+    margin: 0 0 var(--space-5);
+  }
+
+  @media (min-width: 800px) {
+    .about-inner {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-7);
+      padding: var(--space-8);
+    }
+  }
+</style>

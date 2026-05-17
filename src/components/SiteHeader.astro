@@ -1,0 +1,167 @@
+---
+const navItems: Array<{ label: string; href: string }> = [
+  { label: "Journal", href: "/journal" },
+  { label: "Restaurants", href: "/restaurants" },
+  { label: "Kritiken", href: "/kritiken" },
+  { label: "Rezepte", href: "/rezepte" },
+  { label: "Cocktails", href: "/cocktails" },
+  { label: "Zutaten", href: "/zutaten" },
+  { label: "Geräte", href: "/geraete" },
+  { label: "Sammlungen", href: "/sammlungen" },
+  { label: "Über Joe", href: "/ueber-joe" },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Zum Fettigen Joe – Startseite">
+      <img
+        class="brand-badge"
+        src="/assets/brand/brand-badge-joe-round.svg"
+        alt=""
+        width="36"
+        height="36"
+        loading="eager"
+        decoding="async"
+      />
+      <span class="brand-wordmark">
+        <span class="brand-line-1">Zum Fettigen Joe</span>
+        <span class="brand-line-2">powered by umami</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      <ul>
+        {navItems.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a class="search-link" href="/suche" aria-label="Suche">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <span>Suche</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: saturate(140%) blur(6px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    min-height: 72px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .brand-badge {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-wordmark {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+
+  .brand-line-1 {
+    font-size: var(--font-size-lg);
+    letter-spacing: -0.01em;
+  }
+
+  .brand-line-2 {
+    font-size: var(--font-size-xs);
+    color: var(--color-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .site-nav {
+    margin-inline-start: auto;
+    display: none;
+  }
+
+  .site-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .site-nav a {
+    color: var(--color-text);
+    font-family: var(--font-ui);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    padding: var(--space-2) 0;
+  }
+
+  .site-nav a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .search-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+  }
+
+  .search-link:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  @media (min-width: 1100px) {
+    .site-nav {
+      display: block;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import type { StatStub } from "../data/stub";
+
+interface Props {
+  stat: StatStub;
+}
+
+const { stat } = Astro.props;
+---
+
+<div class="stat-card">
+  <img src={stat.icon} alt="" width="40" height="40" loading="lazy" />
+  <div>
+    <p class="value">{stat.value}</p>
+    <p class="label">{stat.label}</p>
+  </div>
+</div>
+
+<style>
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-card);
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-tight);
+    color: var(--color-text);
+  }
+
+  .label {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>
