@@ -1,0 +1,327 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { recipes, equipmentBySlug, ingredientBySlug } from "../../data/stub";
+import type { RecipeStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug },
+    props: { recipe },
+  }));
+}
+
+interface Props {
+  recipe: RecipeStub;
+}
+
+const { recipe } = Astro.props;
+const totalMin = recipe.prepMin + recipe.cookMin;
+const linkedEquipment = recipe.equipmentSlugs
+  .map((slug) => equipmentBySlug.get(slug))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+---
+
+<BaseLayout title={recipe.title} description={recipe.summary}>
+  <article class="recipe-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/rezepte">Rezepte</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{recipe.title}</span>
+    </nav>
+
+    <div class="hero">
+      <img
+        src={recipe.image}
+        alt=""
+        width="1600"
+        height="1200"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <header class="container head">
+      <p class="eyebrow">Rezept</p>
+      <h1>{recipe.title}</h1>
+      <p class="lede">{recipe.summary}</p>
+
+      <dl class="facts">
+        <div>
+          <dt>Gesamt</dt>
+          <dd>{totalMin} min</dd>
+        </div>
+        <div>
+          <dt>Vorbereitung</dt>
+          <dd>{recipe.prepMin} min</dd>
+        </div>
+        <div>
+          <dt>Kochen</dt>
+          <dd>{recipe.cookMin} min</dd>
+        </div>
+        <div>
+          <dt>Portionen</dt>
+          <dd>{recipe.servings}</dd>
+        </div>
+        <div>
+          <dt>Schwierigkeit</dt>
+          <dd class="cap">{recipe.difficulty}</dd>
+        </div>
+      </dl>
+
+      {recipe.tags.length > 0 && (
+        <ul class="tags">
+          {recipe.tags.map((tag) => <li>#{tag}</li>)}
+        </ul>
+      )}
+    </header>
+
+    <section class="container content">
+      <div class="ingredients">
+        <h2>Zutaten</h2>
+        <ul>
+          {recipe.ingredients.map((ing) => {
+            const ref = ing.ingredientSlug ? ingredientBySlug.get(ing.ingredientSlug) : undefined;
+            return (
+              <li>
+                <span class="amount">{ing.amount}</span>
+                <span class="item">
+                  {ref ? (
+                    <a href={`/zutaten#${ref.slug}`}>{ing.item}</a>
+                  ) : (
+                    ing.item
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div class="steps">
+        <h2>Schritte</h2>
+        <ol>
+          {recipe.steps.map((step) => <li>{step}</li>)}
+        </ol>
+      </div>
+    </section>
+
+    {linkedEquipment.length > 0 && (
+      <section class="container equipment-section">
+        <h2>Geräte</h2>
+        <ul class="equipment-list">
+          {linkedEquipment.map((eq) => (
+            <li>
+              <a href={`/geraete/${eq.slug}`} class="equipment-link">
+                <img src={eq.image} alt="" width="80" height="60" loading="lazy" />
+                <span>
+                  <span class="equipment-name">{eq.name}</span>
+                  <span class="equipment-meta">{eq.category} · {eq.statusLabel}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {recipe.notes && (
+      <section class="container notes-section">
+        <h2>Notizen</h2>
+        <p>{recipe.notes}</p>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .recipe-detail {
+    padding-bottom: var(--space-9);
+  }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb a { color: var(--color-text-muted); }
+  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+
+  .hero {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 540px;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .hero img { width: 100%; height: 100%; object-fit: cover; }
+
+  .head {
+    padding-block: var(--space-7) var(--space-5);
+    max-width: var(--max-detail);
+  }
+
+  .head h1 { margin: 0 0 var(--space-3); }
+
+  .lede {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  .facts {
+    margin: 0 0 var(--space-5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-5);
+  }
+
+  .facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+  .facts dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .facts dd { margin: 0; font-size: var(--font-size-base); }
+  .cap { text-transform: capitalize; }
+
+  .tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tags li {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  .content {
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: 1fr;
+    padding-block: var(--space-7);
+    max-width: var(--max-detail);
+  }
+
+  .ingredients h2,
+  .steps h2,
+  .equipment-section h2,
+  .notes-section h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-xl);
+  }
+
+  .ingredients ul {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .ingredients li {
+    display: grid;
+    grid-template-columns: minmax(90px, auto) 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+    padding-bottom: var(--space-2);
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .ingredients li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .ingredients .amount { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  .ingredients .item { color: var(--color-text); }
+
+  .steps ol {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .steps li {
+    line-height: var(--line-body);
+  }
+
+  .equipment-section,
+  .notes-section {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--color-border);
+    max-width: var(--max-detail);
+  }
+
+  .equipment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-link {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+
+  .equipment-link:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .equipment-link img {
+    width: 72px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .equipment-name {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  .equipment-meta {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .notes-section p { color: var(--color-text-muted); max-width: 64ch; }
+
+  @media (min-width: 800px) {
+    .facts { grid-template-columns: repeat(5, 1fr); }
+    .content { grid-template-columns: minmax(280px, 320px) 1fr; }
+    .equipment-list { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

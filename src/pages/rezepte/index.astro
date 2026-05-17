@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { recipes } from "../../data/stub";
+---
+
+<BaseLayout
+  title="Rezepte"
+  description="Rezepte aus der eigenen Küche – mise en place, Methode, Varianten."
+>
+  <PageHeader
+    eyebrow="Rezepte"
+    title="Aus der eigenen Küche"
+    lede="Rezepte, die wirklich zubereitet wurden. Keine Theorie, kein Influencer-Plating."
+  />
+
+  <section class="recipe-list">
+    <div class="container">
+      {recipes.length === 0 ? (
+        <EmptyState
+          title="Noch keine Rezepte hier."
+          description="Sobald das erste Rezept dokumentiert ist, erscheint es hier."
+        />
+      ) : (
+        <div class="grid">
+          {recipes.map((recipe) => (
+            <RecipeCard recipe={recipe} />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .recipe-list {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

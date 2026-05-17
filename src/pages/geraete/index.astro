@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import EquipmentCard from "../../components/EquipmentCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { equipment } from "../../data/stub";
+
+const counts = {
+  all: equipment.length,
+  owned: equipment.filter((e) => e.status === "owned").length,
+  wishlist: equipment.filter((e) => e.status === "wishlist").length,
+};
+---
+
+<BaseLayout
+  title="Geräte"
+  description="Werkzeug, das wirklich benutzt wird – und was noch auf die Wunschliste gehört."
+>
+  <PageHeader
+    eyebrow="Geräte"
+    title="Werkzeug und Wunschliste"
+    lede="Was im Einsatz ist und was als nächstes kommen soll. Marken nur, wenn relevant."
+  />
+
+  <section class="equipment-list">
+    <div class="container">
+      <nav class="filter-chips" aria-label="Geräte filtern" data-filter-nav>
+        <ul>
+          <li><button type="button" class="chip active" data-view="all" aria-pressed="true">Alle <span class="count">{counts.all}</span></button></li>
+          <li><button type="button" class="chip" data-view="owned" aria-pressed="false">Im Besitz <span class="count">{counts.owned}</span></button></li>
+          <li><button type="button" class="chip" data-view="wishlist" aria-pressed="false">Wunschliste <span class="count">{counts.wishlist}</span></button></li>
+        </ul>
+      </nav>
+
+      <div class="grid" data-equipment-grid>
+        {equipment.map((eq) => (
+          <div class="grid-item" data-status={eq.status}>
+            <EquipmentCard equipment={eq} />
+          </div>
+        ))}
+      </div>
+
+      <div class="empty-wrap" data-empty hidden>
+        <EmptyState
+          title="Keine Geräte in dieser Ansicht."
+          description="Passe den Filter an oder gehe zurück zur Gesamtliste."
+        />
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      const nav = document.querySelector("[data-filter-nav]");
+      const grid = document.querySelector("[data-equipment-grid]");
+      const empty = document.querySelector("[data-empty]");
+      if (!nav || !grid || !empty) return;
+      const buttons = nav.querySelectorAll("button[data-view]");
+      function applyView(view) {
+        let visible = 0;
+        grid.querySelectorAll("[data-status]").forEach((item) => {
+          const s = item.getAttribute("data-status");
+          const match = view === "all" || s === view;
+          item.toggleAttribute("hidden", !match);
+          if (match) visible++;
+        });
+        empty.toggleAttribute("hidden", visible !== 0);
+        buttons.forEach((b) => {
+          const active = b.getAttribute("data-view") === view;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        if (view === "all") history.replaceState(null, "", location.pathname);
+        else history.replaceState(null, "", `${location.pathname}#${view}`);
+      }
+      buttons.forEach((b) => b.addEventListener("click", () => applyView(b.getAttribute("data-view") ?? "all")));
+      const initial = location.hash.replace("#", "");
+      if (["owned", "wishlist"].includes(initial)) applyView(initial);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .equipment-list { padding-block: var(--space-6) var(--space-9); }
+
+  .filter-chips { margin-block: var(--space-5) var(--space-6); }
+  .filter-chips ul {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-ui);
+    cursor: pointer;
+  }
+  .chip:hover { border-color: var(--color-secondary); color: var(--color-secondary); }
+  .chip.active { background: var(--color-text); color: #fff; border-color: var(--color-text); }
+  .count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 24px; padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+  }
+  .chip.active .count { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.92); }
+
+  .grid {
+    display: grid; gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+  .grid-item[hidden] { display: none; }
+  .empty-wrap[hidden] { display: none; }
+
+  @media (min-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

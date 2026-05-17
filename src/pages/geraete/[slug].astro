@@ -1,0 +1,263 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  equipment,
+  recipeBySlug,
+  cocktailBySlug,
+  links,
+} from "../../data/stub";
+import type { EquipmentStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return equipment.map((eq) => ({
+    params: { slug: eq.slug },
+    props: { equipment: eq },
+  }));
+}
+
+interface Props {
+  equipment: EquipmentStub;
+}
+
+const { equipment: eq } = Astro.props;
+const linkedRecipes = eq.linkedRecipes
+  .map((slug) => recipeBySlug.get(slug))
+  .filter((r): r is NonNullable<typeof r> => Boolean(r));
+const linkedCocktails = eq.linkedCocktails
+  .map((slug) => cocktailBySlug.get(slug))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+const equipmentLinks = links.filter((l) => l.equipmentSlug === eq.slug);
+const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--color-warning)";
+---
+
+<BaseLayout title={eq.name} description={eq.note}>
+  <article class="equipment-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/geraete">Geräte</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{eq.name}</span>
+    </nav>
+
+    <div class="hero">
+      <img src={eq.image} alt="" width="1600" height="1200" loading="eager" decoding="async" />
+    </div>
+
+    <header class="container head">
+      <div class="head-top">
+        <span class="status" style={`--badge-color: ${statusColor}`}>{eq.statusLabel}</span>
+        <span class="category">{eq.category}</span>
+      </div>
+      <h1>{eq.name}</h1>
+      <p class="lede">{eq.note}</p>
+
+      <dl class="facts">
+        {eq.manufacturer && (
+          <div><dt>Hersteller</dt><dd>{eq.manufacturer}</dd></div>
+        )}
+        {eq.model && (
+          <div><dt>Modell</dt><dd>{eq.model}</dd></div>
+        )}
+        <div><dt>Kategorie</dt><dd>{eq.category}</dd></div>
+        <div><dt>Status</dt><dd>{eq.statusLabel}</dd></div>
+      </dl>
+
+      {eq.productUrl && (
+        <div class="ctas">
+          <a class="btn btn-primary" href={eq.productUrl} target="_blank" rel="noopener noreferrer">
+            Produktseite
+          </a>
+        </div>
+      )}
+    </header>
+
+    {(linkedRecipes.length > 0 || linkedCocktails.length > 0) && (
+      <section class="container used-section">
+        <h2>Wofür im Einsatz</h2>
+        <ul class="used-list">
+          {linkedRecipes.map((r) => (
+            <li>
+              <a href={`/rezepte/${r.slug}`} class="used-link">
+                <img src={r.image} alt="" width="80" height="60" loading="lazy" />
+                <span>
+                  <span class="used-eyebrow">Rezept</span>
+                  <span class="used-title">{r.title}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+          {linkedCocktails.map((c) => (
+            <li>
+              <a href={`/cocktails/${c.slug}`} class="used-link">
+                <img src={c.image} alt="" width="80" height="60" loading="lazy" />
+                <span>
+                  <span class="used-eyebrow">Cocktail</span>
+                  <span class="used-title">{c.name}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {equipmentLinks.length > 0 && (
+      <section class="container links-section">
+        <h2>Links</h2>
+        <ul class="link-list">
+          {equipmentLinks.map((l) => (
+            <li>
+              <a href={l.url} target="_blank" rel="noopener noreferrer">
+                {l.label}
+              </a>
+              <span class="link-source">{l.source}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .equipment-detail { padding-bottom: var(--space-9); }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); }
+  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+
+  .hero {
+    width: 100%; aspect-ratio: 16 / 9; max-height: 540px;
+    overflow: hidden; background: var(--color-bg-warm);
+  }
+  .hero img { width: 100%; height: 100%; object-fit: cover; }
+
+  .head {
+    padding-block: var(--space-6) var(--space-5);
+    max-width: var(--max-detail);
+  }
+
+  .head-top {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .status {
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.96);
+    color: var(--badge-color);
+    border: 1px solid var(--badge-color);
+    font-size: var(--font-size-xs); font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .category {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 { margin: 0 0 var(--space-3); }
+
+  .lede {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  .facts {
+    margin: 0 0 var(--space-5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-5);
+  }
+  .facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+  .facts dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .facts dd { margin: 0; }
+
+  .ctas { display: flex; gap: var(--space-3); }
+
+  .used-section,
+  .links-section {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--color-border);
+    max-width: var(--max-detail);
+  }
+
+  .used-section h2,
+  .links-section h2 {
+    margin: 0 0 var(--space-5);
+  }
+
+  .used-list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .used-link {
+    display: flex; gap: var(--space-4); align-items: center;
+    color: inherit; text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+  .used-link:hover { border-color: var(--color-secondary); text-decoration: none; }
+
+  .used-link img {
+    width: 80px; height: 60px;
+    object-fit: cover; border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .used-eyebrow {
+    display: block;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .used-title { display: block; font-weight: 600; }
+
+  .link-list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column;
+    gap: var(--space-3);
+  }
+  .link-list li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .link-list a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+  .link-source {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 700px) {
+    .used-list { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

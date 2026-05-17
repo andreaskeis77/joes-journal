@@ -1,0 +1,217 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { cocktails, ingredientBySlug } from "../../data/stub";
+import type { CocktailStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return cocktails.map((cocktail) => ({
+    params: { slug: cocktail.slug },
+    props: { cocktail },
+  }));
+}
+
+interface Props {
+  cocktail: CocktailStub;
+}
+
+const { cocktail } = Astro.props;
+---
+
+<BaseLayout title={cocktail.name} description={`${cocktail.flavorProfile} – ${cocktail.glass}.`}>
+  <article class="cocktail-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/cocktails">Cocktails</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{cocktail.name}</span>
+    </nav>
+
+    <div class="layout container">
+      <div class="hero">
+        <img
+          src={cocktail.image}
+          alt=""
+          width="1600"
+          height="2000"
+          loading="eager"
+          decoding="async"
+        />
+        {cocktail.type === "alkoholfrei" && <span class="tag">alkoholfrei</span>}
+      </div>
+
+      <div class="body">
+        <p class="eyebrow">Cocktail · {cocktail.type === "alkoholfrei" ? "alkoholfrei" : "alkoholisch"}</p>
+        <h1>{cocktail.name}</h1>
+        <p class="flavor">{cocktail.flavorProfile}</p>
+
+        <dl class="facts">
+          <div><dt>Glas</dt><dd>{cocktail.glass}</dd></div>
+          <div><dt>Eis</dt><dd>{cocktail.ice}</dd></div>
+          <div><dt>Technik</dt><dd>{cocktail.technique}</dd></div>
+          <div><dt>Garnitur</dt><dd>{cocktail.garnish}</dd></div>
+        </dl>
+
+        <section class="recipe">
+          <h2>Rezeptur</h2>
+          <ul>
+            {cocktail.pours.map((pour) => {
+              const ref = pour.ingredientSlug ? ingredientBySlug.get(pour.ingredientSlug) : undefined;
+              return (
+                <li>
+                  <span class="amount">{pour.amount}</span>
+                  <span class="item">
+                    {ref ? <a href={`/zutaten#${ref.slug}`}>{pour.item}</a> : pour.item}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section class="prep">
+          <h2>Zubereitung</h2>
+          <ol>
+            {cocktail.preparation.map((step) => <li>{step}</li>)}
+          </ol>
+        </section>
+
+        {cocktail.variants && cocktail.variants.length > 0 && (
+          <section class="variants">
+            <h2>Varianten</h2>
+            <ul>
+              {cocktail.variants.map((v) => <li>{v}</li>)}
+            </ul>
+          </section>
+        )}
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .cocktail-detail { padding-bottom: var(--space-9); }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); }
+  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    padding-block: var(--space-7);
+    max-width: var(--max-detail);
+  }
+
+  .hero {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-warm);
+    box-shadow: var(--shadow-card);
+  }
+
+  .hero img { width: 100%; height: 100%; object-fit: cover; }
+
+  .tag {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.96);
+    border: 1px solid var(--color-umami-petrol);
+    color: var(--color-umami-petrol);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .body h1 { margin: 0 0 var(--space-3); }
+  .flavor {
+    margin: 0 0 var(--space-5);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  .facts {
+    margin: 0 0 var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+  .facts dt {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .facts dd { margin: 0; }
+
+  .recipe,
+  .prep,
+  .variants {
+    margin-bottom: var(--space-6);
+  }
+  .recipe h2,
+  .prep h2,
+  .variants h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-xl);
+  }
+
+  .recipe ul {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .recipe li {
+    display: grid;
+    grid-template-columns: minmax(90px, auto) 1fr;
+    gap: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px dashed var(--color-border);
+  }
+  .recipe li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .amount { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+  .prep ol {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .variants ul {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 900px) {
+    .layout { grid-template-columns: minmax(300px, 380px) 1fr; align-items: start; }
+    .hero { position: sticky; top: var(--space-8); }
+  }
+</style>

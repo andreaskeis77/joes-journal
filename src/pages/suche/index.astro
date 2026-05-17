@@ -1,0 +1,341 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { searchIndex } from "../../data/stub";
+import type { SearchKind } from "../../data/stub";
+
+const groupOrder: Array<{ kind: SearchKind; label: string }> = [
+  { kind: "restaurant", label: "Restaurants" },
+  { kind: "review", label: "Kritiken" },
+  { kind: "recipe", label: "Rezepte" },
+  { kind: "cocktail", label: "Cocktails" },
+  { kind: "ingredient", label: "Zutaten" },
+  { kind: "equipment", label: "Geräte" },
+  { kind: "supplier", label: "Lieferanten" },
+  { kind: "collection", label: "Sammlungen" },
+  { kind: "link", label: "Links" },
+];
+
+const grouped = groupOrder
+  .map((g) => ({
+    ...g,
+    entries: searchIndex.filter((e) => e.kind === g.kind),
+  }))
+  .filter((g) => g.entries.length > 0);
+---
+
+<BaseLayout
+  title="Suche"
+  description="Globale Suche über Restaurants, Kritiken, Rezepte, Cocktails, Zutaten, Geräte und Sammlungen."
+>
+  <PageHeader
+    eyebrow="Suche"
+    title="Alles im Journal durchsuchen"
+    lede="Eine kurze Anfrage genügt. Ergebnisse werden nach Inhaltstyp gruppiert."
+  />
+
+  <section class="search-section">
+    <div class="container">
+      <form class="search-form" role="search" data-search-form>
+        <label for="q" class="visually-hidden">Suchbegriff</label>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input
+          id="q"
+          name="q"
+          type="search"
+          autocomplete="off"
+          autofocus
+          placeholder="Suche nach Restaurant, Stadt, Rezept, Zutat, Cocktail, Gerät…"
+          data-search-input
+        />
+        <button type="button" class="clear-btn" data-search-clear hidden aria-label="Suche zurücksetzen">
+          ×
+        </button>
+      </form>
+
+      <p class="result-summary" data-search-summary>
+        {searchIndex.length} Einträge im Journal · gib einen Begriff ein, um zu filtern.
+      </p>
+
+      <div class="empty" data-search-empty hidden>
+        <p>Keine Treffer. Versuche einen anderen Begriff oder eine Stadt.</p>
+      </div>
+
+      <div class="groups" data-search-groups>
+        {grouped.map((group) => (
+          <section class="group" data-group-kind={group.kind}>
+            <header class="group-head">
+              <h2>{group.label}</h2>
+              <span class="group-count" data-group-count>{group.entries.length}</span>
+            </header>
+            <ul class="group-list">
+              {group.entries.map((entry) => (
+                <li
+                  class="result"
+                  data-result
+                  data-search-text={entry.searchText}
+                >
+                  {entry.kind === "link" ? (
+                    <a href={entry.href} target="_blank" rel="noopener noreferrer" class="result-link">
+                      <div class="result-body">
+                        <span class="result-kind">{entry.kindLabel}</span>
+                        <span class="result-title">{entry.title}</span>
+                        <span class="result-snippet">{entry.snippet}</span>
+                      </div>
+                    </a>
+                  ) : (
+                    <a href={entry.href} class="result-link">
+                      {entry.image && (
+                        <img src={entry.image} alt="" width="80" height="60" loading="lazy" />
+                      )}
+                      <div class="result-body">
+                        <span class="result-kind">{entry.kindLabel}</span>
+                        <span class="result-title">{entry.title}</span>
+                        <span class="result-snippet">{entry.snippet}</span>
+                      </div>
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      const form = document.querySelector("[data-search-form]");
+      form?.addEventListener("submit", (e) => e.preventDefault());
+      const input = document.querySelector("[data-search-input]");
+      const clear = document.querySelector("[data-search-clear]");
+      const empty = document.querySelector("[data-search-empty]");
+      const summary = document.querySelector("[data-search-summary]");
+      const groupsRoot = document.querySelector("[data-search-groups]");
+      if (!input || !empty || !summary || !groupsRoot) return;
+
+      const totalEntries = groupsRoot.querySelectorAll("[data-result]").length;
+      const groups = groupsRoot.querySelectorAll(".group");
+
+      function setSummary(query, visible) {
+        if (!query) {
+          summary.textContent = totalEntries + " Einträge im Journal · gib einen Begriff ein, um zu filtern.";
+          return;
+        }
+        summary.textContent = visible + " Treffer für „" + query + "“";
+      }
+
+      function applyQuery(rawQuery) {
+        const query = rawQuery.trim().toLowerCase();
+        let totalVisible = 0;
+
+        groups.forEach((group) => {
+          let groupVisible = 0;
+          group.querySelectorAll("[data-result]").forEach((result) => {
+            const text = result.getAttribute("data-search-text") || "";
+            const match = query === "" || text.includes(query);
+            result.toggleAttribute("hidden", !match);
+            if (match) groupVisible++;
+          });
+          const countEl = group.querySelector("[data-group-count]");
+          if (countEl) countEl.textContent = String(groupVisible);
+          group.toggleAttribute("hidden", groupVisible === 0);
+          totalVisible += groupVisible;
+        });
+
+        empty.toggleAttribute("hidden", query === "" || totalVisible > 0);
+        groupsRoot.toggleAttribute("hidden", query !== "" && totalVisible === 0);
+        clear?.toggleAttribute("hidden", query === "");
+        setSummary(rawQuery.trim(), totalVisible);
+
+        const url = new URL(location.href);
+        if (query) url.searchParams.set("q", rawQuery.trim());
+        else url.searchParams.delete("q");
+        history.replaceState(null, "", url.toString().replace(/\/\?$/, "/"));
+      }
+
+      input.addEventListener("input", (e) => applyQuery(e.target.value));
+      clear?.addEventListener("click", () => {
+        input.value = "";
+        input.focus();
+        applyQuery("");
+      });
+
+      const initial = new URL(location.href).searchParams.get("q") || "";
+      if (initial) {
+        input.value = initial;
+        applyQuery(initial);
+      }
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .search-section {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    box-shadow: var(--shadow-card);
+  }
+
+  .search-form svg { color: var(--color-text-muted); flex-shrink: 0; }
+
+  .search-form input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    padding: var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    min-width: 0;
+  }
+
+  .search-form input:focus { outline: none; }
+
+  .clear-btn {
+    width: 32px; height: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .clear-btn:hover { color: var(--color-text); border-color: var(--color-secondary); }
+  .clear-btn[hidden] { display: none; }
+
+  .result-summary {
+    margin: var(--space-4) 0 var(--space-6);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .empty[hidden] { display: none; }
+  .empty {
+    padding: var(--space-7);
+    background: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+  .empty p { margin: 0; }
+
+  .groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+  .groups[hidden] { display: none; }
+
+  .group[hidden] { display: none; }
+
+  .group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+  }
+  .group-head h2 { margin: 0; font-size: var(--font-size-xl); }
+  .group-count {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .group-list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+
+  .result[hidden] { display: none; }
+
+  .result-link {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    transition: border-color 120ms ease;
+  }
+  .result-link:hover {
+    border-color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .result-link img {
+    width: 72px; height: 54px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .result-body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .result-kind {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+  .result-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+  }
+  .result-snippet {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (min-width: 800px) {
+    .group-list { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

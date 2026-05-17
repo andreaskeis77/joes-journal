@@ -1,0 +1,180 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RestaurantCard from "../../components/RestaurantCard.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+import CocktailCard from "../../components/CocktailCard.astro";
+import EquipmentCard from "../../components/EquipmentCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import {
+  collections,
+  restaurants,
+  restaurantBySlug,
+  recipeBySlug,
+  cocktailBySlug,
+  equipmentBySlug,
+} from "../../data/stub";
+import type { CollectionStub } from "../../data/stub";
+
+export function getStaticPaths() {
+  return collections.map((collection) => ({
+    params: { slug: collection.slug },
+    props: { collection },
+  }));
+}
+
+interface Props {
+  collection: CollectionStub;
+}
+
+const { collection } = Astro.props;
+
+const manualRestaurants = collection.restaurantSlugs
+  .map((s) => restaurantBySlug.get(s))
+  .filter((r): r is NonNullable<typeof r> => Boolean(r));
+const manualRecipes = collection.recipeSlugs
+  .map((s) => recipeBySlug.get(s))
+  .filter((r): r is NonNullable<typeof r> => Boolean(r));
+const manualCocktails = collection.cocktailSlugs
+  .map((s) => cocktailBySlug.get(s))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+const manualEquipment = collection.equipmentSlugs
+  .map((s) => equipmentBySlug.get(s))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+
+const dynamicRestaurants =
+  collection.type === "saved_view" && collection.slug === "watchlist-mit-hoher-prio"
+    ? restaurants.filter(
+        (r) => (r.status === "wishlist" || r.status === "planned") && r.priority === "hoch",
+      )
+    : [];
+
+const allRestaurants = [...manualRestaurants, ...dynamicRestaurants];
+const totalItems =
+  allRestaurants.length + manualRecipes.length + manualCocktails.length + manualEquipment.length;
+---
+
+<BaseLayout title={collection.title} description={collection.description}>
+  <article class="collection-detail">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/sammlungen">Sammlungen</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{collection.title}</span>
+    </nav>
+
+    <div class="hero">
+      <img src={collection.image} alt="" width="1600" height="1200" loading="eager" decoding="async" />
+    </div>
+
+    <header class="container head">
+      <p class="eyebrow">{collection.typeLabel}</p>
+      <h1>{collection.title}</h1>
+      <p class="lede">{collection.description}</p>
+      <p class="count muted">{totalItems} Einträge</p>
+    </header>
+
+    <div class="container content">
+      {totalItems === 0 ? (
+        <EmptyState
+          title="Diese Sammlung ist aktuell leer."
+          description="Sobald passende Einträge vorhanden sind, erscheinen sie hier."
+        />
+      ) : (
+        <>
+          {allRestaurants.length > 0 && (
+            <section class="section">
+              <h2>Restaurants</h2>
+              <div class="grid">
+                {allRestaurants.map((r) => <RestaurantCard restaurant={r} />)}
+              </div>
+            </section>
+          )}
+
+          {manualRecipes.length > 0 && (
+            <section class="section">
+              <h2>Rezepte</h2>
+              <div class="grid">
+                {manualRecipes.map((r) => <RecipeCard recipe={r} />)}
+              </div>
+            </section>
+          )}
+
+          {manualCocktails.length > 0 && (
+            <section class="section">
+              <h2>Cocktails</h2>
+              <div class="grid">
+                {manualCocktails.map((c) => <CocktailCard cocktail={c} />)}
+              </div>
+            </section>
+          )}
+
+          {manualEquipment.length > 0 && (
+            <section class="section">
+              <h2>Geräte</h2>
+              <div class="grid">
+                {manualEquipment.map((e) => <EquipmentCard equipment={e} />)}
+              </div>
+            </section>
+          )}
+        </>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .collection-detail { padding-bottom: var(--space-9); }
+
+  .breadcrumb {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); }
+  .breadcrumb span[aria-current] { color: var(--color-text); font-weight: 500; }
+
+  .hero {
+    width: 100%; aspect-ratio: 16 / 9; max-height: 540px;
+    overflow: hidden; background: var(--color-bg-warm);
+  }
+  .hero img { width: 100%; height: 100%; object-fit: cover; }
+
+  .head {
+    padding-block: var(--space-6) var(--space-5);
+    max-width: var(--max-detail);
+  }
+  .head h1 { margin: 0 0 var(--space-3); }
+  .head .lede {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+  .count { font-size: var(--font-size-sm); margin: 0; }
+
+  .content {
+    padding-block: var(--space-7);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .section h2 {
+    margin: 0 0 var(--space-5);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import type { CollectionStub } from "../data/stub";
+
+interface Props {
+  collection: CollectionStub;
+  itemCount?: number;
+}
+
+const { collection, itemCount } = Astro.props;
+---
+
+<article class="collection-card">
+  <a class="collection-link" href={`/sammlungen/${collection.slug}`}>
+    <div class="image-wrap">
+      <img
+        src={collection.image}
+        alt=""
+        width="1600"
+        height="1200"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="body">
+      <p class="type">{collection.typeLabel}</p>
+      <h3>{collection.title}</h3>
+      <p class="description">{collection.description}</p>
+      {typeof itemCount === "number" && (
+        <p class="count">{itemCount} Einträge</p>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .collection-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+    height: 100%;
+  }
+
+  .collection-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .collection-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  .collection-link:hover {
+    text-decoration: none;
+  }
+
+  .image-wrap {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .type {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .description {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--line-body);
+  }
+
+  .count {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>

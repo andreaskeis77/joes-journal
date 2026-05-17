@@ -1,0 +1,165 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { ingredients, suppliers, supplierBySlug } from "../../data/stub";
+import type { SupplierStub } from "../../data/stub";
+
+const ingredientsWithSuppliers = ingredients.map((ing) => ({
+  ingredient: ing,
+  resolvedSuppliers: ing.supplierSlugs
+    .map((s) => supplierBySlug.get(s))
+    .filter((s): s is SupplierStub => Boolean(s)),
+}));
+---
+
+<BaseLayout
+  title="Zutaten"
+  description="Zutaten, Bezugsquellen und Notizen aus der eigenen Küche."
+>
+  <PageHeader
+    eyebrow="Zutaten & Lieferanten"
+    title="Was im Regal steht, woher es kommt"
+    lede="Zutaten, die regelmäßig in Verwendung sind – mit den Stellen, an denen sie gekauft werden."
+  />
+
+  <section class="zutaten-section">
+    <div class="container">
+      <h2>Zutaten</h2>
+      <ul class="ingredient-list">
+        {ingredientsWithSuppliers.map(({ ingredient: ing, resolvedSuppliers }) => (
+          <li id={ing.slug} class="ingredient">
+            <div class="image">
+              <img src={ing.image} alt="" width="120" height="90" loading="lazy" />
+            </div>
+            <div class="body">
+              <p class="category">{ing.category}</p>
+              <h3>{ing.name}</h3>
+              <p class="note">{ing.note}</p>
+              {resolvedSuppliers.length > 0 && (
+                <p class="meta">
+                  Bezug:{" "}
+                  {resolvedSuppliers.map((s, i) => (
+                    <>
+                      <a href={`#${s.slug}`}>{s.name}</a>
+                      {i < resolvedSuppliers.length - 1 ? ", " : ""}
+                    </>
+                  ))}
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="supplier-section">
+    <div class="container">
+      <h2>Lieferanten</h2>
+      <ul class="supplier-list">
+        {suppliers.map((s) => (
+          <li id={s.slug} class="supplier">
+            <p class="type">{s.type} · {s.city}</p>
+            <h3>{s.name}</h3>
+            <p class="note">{s.note}</p>
+            {s.website && (
+              <a href={s.website} target="_blank" rel="noopener noreferrer">{s.website}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .zutaten-section,
+  .supplier-section {
+    padding-block: var(--space-7);
+  }
+
+  .supplier-section {
+    background: var(--color-footer);
+    border-block: 1px solid var(--color-border);
+  }
+
+  h2 {
+    margin: 0 0 var(--space-5);
+  }
+
+  .ingredient-list,
+  .supplier-list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  .ingredient {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    scroll-margin-top: 90px;
+  }
+
+  .image img {
+    width: 96px; height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .body { flex: 1; }
+  .category {
+    margin: 0 0 var(--space-1);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+
+  .ingredient h3,
+  .supplier h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-lg);
+  }
+
+  .note {
+    margin: 0 0 var(--space-2);
+    color: var(--color-text-muted);
+    line-height: var(--line-body);
+  }
+
+  .meta {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .supplier {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    scroll-margin-top: 90px;
+  }
+
+  .type {
+    margin: 0 0 var(--space-1);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 800px) {
+    .ingredient-list,
+    .supplier-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

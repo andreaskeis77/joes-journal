@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Über Joe"
+  description="Ein persönliches Journal über Restaurants, Küche, Cocktails und guten Geschmack."
+>
+  <article class="about">
+    <div class="container about-inner">
+      <div class="text">
+        <p class="eyebrow">Über Joe</p>
+        <h1>Ehrliche Kritiken. Gute Küche. Guter Geschmack.</h1>
+        <p class="lede">
+          „Zum Fettigen Joe“ ist ein privates kulinarisches Journal. Restaurantkritiken, eigene
+          Küche, Cocktails, Geräte, Bezugsquellen und kuratierte Links – an einem Ort, ruhig,
+          persönlich, kuratiert.
+        </p>
+
+        <h2>Was hier passiert</h2>
+        <ul>
+          <li>Restaurants werden besucht und ehrlich besprochen – mit klarer 5-Sterne-Bewertung.</li>
+          <li>Rezepte sind selbst gekocht. Nichts, was nicht funktioniert hat, schafft es auf die Seite.</li>
+          <li>Cocktails sind mit Technik dokumentiert. Mindestens ein Eintrag ist immer alkoholfrei.</li>
+          <li>Geräte und Bezugsquellen werden nach echter Nutzung gepflegt – kein Affiliate, kein Sponsoring.</li>
+        </ul>
+
+        <h2>Warum „powered by umami“</h2>
+        <p>
+          „Joe“ steht für Charakter, Wärme und Haltung. „umami“ ist die ruhige Kompetenzsignatur
+          dahinter. Die beiden Namen geben dem Projekt seine Doppelrolle: persönliche Geschichten
+          mit kulinarischer Ernsthaftigkeit.
+        </p>
+
+        <h2>Wer hier liest</h2>
+        <p>
+          Primär ich selbst. Erweitert um wenige vertraute Personen, die etwas damit anfangen können.
+          Eine breitere Öffentlichkeit ist im Moment nicht das Ziel.
+        </p>
+      </div>
+
+      <aside class="brand-block">
+        <img
+          src="/assets/brand/brand-badge-joe-round.svg"
+          alt=""
+          width="160"
+          height="160"
+          loading="lazy"
+        />
+        <p class="signature">powered by umami</p>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-7) var(--space-9);
+  }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    max-width: var(--max-detail);
+  }
+
+  .text h1 { margin: 0 0 var(--space-4); }
+  .text h2 {
+    margin: var(--space-6) 0 var(--space-3);
+    font-size: var(--font-size-xl);
+  }
+
+  .lede {
+    margin: 0 0 var(--space-5);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  .text p, .text ul {
+    color: var(--color-text);
+    line-height: var(--line-body);
+  }
+  .text ul { padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+
+  .brand-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-7);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+  }
+
+  .brand-block img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .signature {
+    margin: 0;
+    color: var(--color-secondary);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+  }
+
+  @media (min-width: 900px) {
+    .about-inner {
+      grid-template-columns: 1fr 300px;
+      align-items: start;
+    }
+    .brand-block {
+      position: sticky;
+      top: var(--space-8);
+    }
+  }
+</style>
