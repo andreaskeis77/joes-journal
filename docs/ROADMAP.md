@@ -15,8 +15,8 @@ Jeder Agent muss vor Umsetzung lesen:
 3. `docs/DATA_MODEL.md`
 4. `docs/MVP_SCOPE.md`
 5. für UI-Arbeiten zusätzlich:
-   - `docs/DESIGN_TOKENS.md`
-   - `docs/FRONTEND_UX_SPEC.md`
+   - `docs/design/DESIGN_TOKENS.md`
+   - `docs/design/FRONTEND_UX_SPEC.md`
 6. für Directus:
    - `docs/DIRECTUS_ADMIN_UX.md`
 7. für Deploy:
