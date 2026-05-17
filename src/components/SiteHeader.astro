@@ -65,17 +65,16 @@ const isActive = (href: string) =>
       <span class="search-label">Suche</span>
     </a>
 
-    <input id="mobile-drawer-toggle" type="checkbox" class="drawer-toggle" aria-hidden="true" />
-    <label
-      class="burger"
-      for="mobile-drawer-toggle"
-      aria-label="Menü öffnen"
-      role="button"
-      tabindex="0"
-    >
-      <span class="burger-bar" aria-hidden="true"></span>
-      <span class="burger-bar" aria-hidden="true"></span>
-      <span class="burger-bar" aria-hidden="true"></span>
+    <input
+      id="mobile-drawer-toggle"
+      type="checkbox"
+      class="drawer-toggle"
+      aria-label="Menü öffnen oder schließen"
+    />
+    <label class="burger" for="mobile-drawer-toggle" aria-hidden="true">
+      <span class="burger-bar"></span>
+      <span class="burger-bar"></span>
+      <span class="burger-bar"></span>
     </label>
 
     <label class="drawer-scrim" for="mobile-drawer-toggle" aria-hidden="true"></label>
@@ -239,13 +238,26 @@ const isActive = (href: string) =>
     display: none;
   }
 
-  /* Mobile drawer (CSS-only checkbox hack) */
+  /* Mobile drawer (CSS-only checkbox hack).
+     The checkbox is the focusable element (sr-only positioning); the
+     label is the visual control bound via `for=`. Keyboard users tab to
+     the checkbox and toggle with Space. */
   .drawer-toggle {
     position: absolute;
     width: 1px;
     height: 1px;
-    opacity: 0;
-    pointer-events: none;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .drawer-toggle:focus-visible + .burger {
+    outline: 2px solid var(--focus-outline-color);
+    outline-offset: 2px;
+    box-shadow: var(--focus-ring);
   }
 
   .burger {
