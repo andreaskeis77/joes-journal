@@ -1105,3 +1105,39 @@ assets:
     research atmosphere.
 
     '
+- id: hero_home_editorial_restaurant_table
+  filename: hero-home-editorial-restaurant-table-16x9-v01.webp
+  folder: heroes
+  aspect_ratio: '16:9'
+  target_size:
+  - 2400
+  - 1350
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after final asset audit. Home hero asset required for MVP and consistent with
+    Joe/umami visual style.
+  subject: 'Premium editorial restaurant table scene shortly before dinner: linen napkin, elegant glassware,
+    ceramic plate, warm light, soft background blur, one elegant but not overdone dish, subtle BBQ red
+    accent such as napkin or sauce, refined personal culinary journal atmosphere.'
+  composition: Landscape 16:9 desktop hero. Calm restaurant table in lower and central area, warm wall
+    or softly blurred background, enough quiet negative space for frontend text overlay. No people, no
+    readable text, no logos, no real restaurant identity.
+- id: hero_home_mobile_restaurant_table
+  filename: hero-home-mobile-restaurant-table-4x5-v01.webp
+  folder: heroes
+  aspect_ratio: '4:5'
+  target_size:
+  - 1440
+  - 1800
+  quality: high
+  status: accepted
+  generated_at: '2026-05-17'
+  review_note: Accepted after final asset audit. Home hero asset required for MVP and consistent with
+    Joe/umami visual style.
+  subject: 'Vertical sister asset of the premium editorial restaurant table hero: warm natural light,
+    refined restaurant table, elegant glass, ceramic, linen napkin, culinary detail or elegant plate,
+    subtle BBQ red and petrol accents.'
+  composition: Portrait 4:5 mobile hero. Leave a large calm upper third for text overlay. Restaurant table,
+    glassware, ceramic and linen in lower/central area. Warm editorial light, subtle depth of field, no
+    people, no text, no logos.

@@ -3,6 +3,8 @@ from __future__ import annotations
 import html
 from pathlib import Path
 
+from PIL import Image
+
 
 IMAGE_EXTENSIONS = {".webp", ".png", ".jpg", ".jpeg", ".svg"}
 
@@ -11,12 +13,23 @@ def repo_root_from_script() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
+def rel_posix(path: Path, root: Path) -> str:
+    return path.relative_to(root).as_posix()
+
+
 def is_asset_file(path: Path) -> bool:
     return path.suffix.lower() in IMAGE_EXTENSIONS
 
 
-def rel_posix(path: Path, root: Path) -> str:
-    return path.relative_to(root).as_posix()
+def image_dimensions(path: Path) -> str:
+    if path.suffix.lower() == ".svg":
+        return "SVG"
+    try:
+        with Image.open(path) as img:
+            w, h = img.size
+            return f"{w}×{h}"
+    except Exception:
+        return ""
 
 
 def collect_assets(public_root: Path) -> list[Path]:
@@ -57,22 +70,22 @@ def build_card(path: Path, public_root: Path) -> str:
     rel = rel_posix(path, public_root)
     filename = path.name
     ext = path.suffix.lower().replace(".", "")
-    web_src = "/" + rel
-
-    escaped_rel = html.escape(rel)
-    escaped_filename = html.escape(filename)
-    escaped_ext = html.escape(ext.upper())
+    src = rel
+    size_kb = round(path.stat().st_size / 1024, 1)
+    dims = image_dimensions(path)
 
     return f"""
-      <article class="asset-card">
-        <div class="asset-preview">
-          <img src="{html.escape(web_src)}" alt="{escaped_filename}" loading="lazy" />
-        </div>
+      <article class="asset-card" data-group="{html.escape(path.parent.name)}" data-ext="{html.escape(ext)}">
+        <a class="asset-preview" href="{html.escape(src)}" target="_blank" rel="noreferrer">
+          <img src="{html.escape(src)}" alt="{html.escape(filename)}" loading="lazy" />
+        </a>
         <div class="asset-meta">
-          <div class="asset-name" title="{escaped_filename}">{escaped_filename}</div>
-          <div class="asset-path" title="{escaped_rel}">{escaped_rel}</div>
+          <div class="asset-name" title="{html.escape(filename)}">{html.escape(filename)}</div>
+          <div class="asset-path" title="{html.escape(rel)}">{html.escape(rel)}</div>
           <div class="asset-tags">
-            <span>{escaped_ext}</span>
+            <span>{html.escape(ext.upper())}</span>
+            <span>{size_kb} KB</span>
+            {f"<span>{html.escape(dims)}</span>" if dims else ""}
           </div>
         </div>
       </article>
@@ -105,8 +118,6 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
 """
         )
 
-    sections_html = "\n".join(sections)
-
     return f"""<!doctype html>
 <html lang="de">
 <head>
@@ -129,9 +140,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
       --radius-xl: 22px;
     }}
 
-    * {{
-      box-sizing: border-box;
-    }}
+    * {{ box-sizing: border-box; }}
 
     body {{
       margin: 0;
@@ -158,7 +167,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
 
     .eyebrow {{
       color: var(--umami-petrol);
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-size: 12px;
@@ -175,7 +184,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
     .summary {{
       color: var(--text-muted);
       font-size: 18px;
-      max-width: 780px;
+      max-width: 860px;
       margin: 0;
     }}
 
@@ -205,12 +214,10 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
       border-radius: 999px;
       padding: 1px 7px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
     }}
 
-    .asset-section {{
-      margin: 40px 0;
-    }}
+    .asset-section {{ margin: 40px 0; }}
 
     .section-header {{
       display: flex;
@@ -260,6 +267,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
       display: grid;
       place-items: center;
       padding: 14px;
+      text-decoration: none;
     }}
 
     .asset-preview img {{
@@ -276,7 +284,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
     }}
 
     .asset-name {{
-      font-weight: 700;
+      font-weight: 800;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
@@ -301,7 +309,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
 
     .asset-tags span {{
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--umami-petrol);
       background: rgba(46, 112, 112, 0.10);
       border-radius: 999px;
@@ -309,17 +317,9 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
     }}
 
     @media (max-width: 700px) {{
-      .page {{
-        padding: 16px;
-      }}
-
-      .hero {{
-        padding: 22px;
-      }}
-
-      .asset-grid {{
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      }}
+      .page {{ padding: 16px; }}
+      .hero {{ padding: 22px; }}
+      .asset-grid {{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }}
     }}
   </style>
 </head>
@@ -329,8 +329,8 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
       <div class="eyebrow">Zum Fettigen Joe · Asset Library</div>
       <h1>Asset Gallery</h1>
       <p class="summary">
-        Lokale Übersicht über {total} generierte Bilder, SVG-Grafiken, Icons, Brand-Assets und Favicons.
-        Quelle: <code>public/assets</code> und <code>public</code>.
+        Lokale Übersicht über {total} Bilder, SVG-Grafiken, Icons, Brand-Assets und Favicons.
+        Aus <code>public/assets</code>. Karten öffnen die Quelldatei in einem neuen Tab.
       </p>
     </section>
 
@@ -338,7 +338,7 @@ def build_html(groups: dict[str, list[Path]], public_root: Path) -> str:
 {nav}
     </nav>
 
-{sections_html}
+{''.join(sections)}
   </main>
 </body>
 </html>
@@ -354,7 +354,6 @@ def main() -> int:
     groups = group_assets(assets, public_root)
     html_content = build_html(groups, public_root)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html_content, encoding="utf-8")
 
     print(f"[OK] Wrote gallery: {output_path}")

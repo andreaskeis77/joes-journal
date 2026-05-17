@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 140" role="img" aria-label="Zum Fettigen Joe">
+  <title>Zum Fettigen Joe</title>
+  <text x="8" y="84"
+        fill="#222222"
+        font-family="Poppins, Inter, system-ui, sans-serif"
+        font-size="68"
+        font-weight="700"
+        letter-spacing="-2">
+    Zum Fettigen Joe
+  </text>
+  <path d="M12 112 H292"
+        fill="none"
+        stroke="#B23A32"
+        stroke-width="8"
+        stroke-linecap="round"/>
+  <path d="M316 112 H426"
+        fill="none"
+        stroke="#2E7070"
+        stroke-width="8"
+        stroke-linecap="round"/>
+</svg>

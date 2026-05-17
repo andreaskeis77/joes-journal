@@ -72,13 +72,15 @@ Sie dient als schnelle Übersicht, was geplant, generiert, akzeptiert oder offen
 | collection_card_bar_basics | accepted | yes | collection-card-bar-basics-4x3-v01.webp | collections | 4:3 | 1600x1200 | 1600x1200 | Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos, suitable for extended visual asset library. |
 | collection_card_bbq_grill_notes | accepted | yes | collection-card-bbq-grill-notes-4x3-v01.webp | collections | 4:3 | 1600x1200 | 1600x1200 | Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos, suitable for extended visual asset library. |
 | collection_card_wishlist_tools | accepted | yes | collection-card-wishlist-tools-4x3-v01.webp | collections | 4:3 | 1600x1200 | 1600x1200 | Accepted after visual review. Fits the Joe/umami visual style, no visible text or logos, suitable for extended visual asset library. |
+| hero_home_editorial_restaurant_table | accepted | yes | hero-home-editorial-restaurant-table-16x9-v01.webp | heroes | 16:9 | 2400x1350 | 2400x1350 | Accepted after final asset audit. Home hero asset required for MVP and consistent with Joe/umami visual style. |
+| hero_home_mobile_restaurant_table | accepted | yes | hero-home-mobile-restaurant-table-4x5-v01.webp | heroes | 4:5 | 1440x1800 | 1440x1800 | Accepted after final asset audit. Home hero asset required for MVP and consistent with Joe/umami visual style. |
 
 ## Zusammenfassung
 
-- Assets im Manifest: **54**
-- Dateien vorhanden: **54**
+- Assets im Manifest: **56**
+- Dateien vorhanden: **56**
 
-- `accepted`: **54**
+- `accepted`: **56**
 
 ## Nächster Review-Schritt
 

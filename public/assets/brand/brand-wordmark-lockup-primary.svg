@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 210" role="img" aria-label="Zum Fettigen Joe powered by umami">
+  <title>Zum Fettigen Joe powered by umami</title>
+  <rect width="820" height="210" rx="28" fill="none"/>
+  <text x="8" y="88"
+        fill="#222222"
+        font-family="Poppins, Inter, system-ui, sans-serif"
+        font-size="72"
+        font-weight="700"
+        letter-spacing="-2.2">
+    Zum Fettigen Joe
+  </text>
+  <path d="M12 118 H302"
+        fill="none"
+        stroke="#B23A32"
+        stroke-width="8"
+        stroke-linecap="round"/>
+  <path d="M326 118 H444"
+        fill="none"
+        stroke="#2E7070"
+        stroke-width="8"
+        stroke-linecap="round"/>
+  <text x="10" y="166"
+        fill="#5F5A56"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="24"
+        font-weight="500">
+    Ein persönliches Journal über Restaurants, Küche, Cocktails und guten Geschmack.
+  </text>
+  <text x="10" y="198"
+        fill="#2E7070"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="20"
+        font-weight="700">
+    powered by umami
+  </text>
+</svg>
