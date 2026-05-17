@@ -16,7 +16,7 @@
     "filename": "asset-gallery.html",
     "extension": "html",
     "group": "root",
-    "size_bytes": 130749,
+    "size_bytes": 132615,
     "dimensions": "",
     "git_tracked": true,
     "manifested": false,
@@ -198,7 +198,7 @@
     "group": "brand",
     "size_bytes": 619,
     "dimensions": "",
-    "git_tracked": false,
+    "git_tracked": true,
     "manifested": false,
     "manifest_id": "",
     "manifest_status": ""
@@ -210,7 +210,7 @@
     "group": "brand",
     "size_bytes": 1165,
     "dimensions": "",
-    "git_tracked": false,
+    "git_tracked": true,
     "manifested": false,
     "manifest_id": "",
     "manifest_status": ""
@@ -222,7 +222,7 @@
     "group": "brand",
     "size_bytes": 636,
     "dimensions": "",
-    "git_tracked": false,
+    "git_tracked": true,
     "manifested": false,
     "manifest_id": "",
     "manifest_status": ""
@@ -534,7 +534,7 @@
     "group": "heroes",
     "size_bytes": 275836,
     "dimensions": "2400x1350",
-    "git_tracked": false,
+    "git_tracked": true,
     "manifested": true,
     "manifest_id": "hero_home_editorial_restaurant_table",
     "manifest_status": "accepted"
@@ -546,7 +546,7 @@
     "group": "heroes",
     "size_bytes": 252990,
     "dimensions": "1440x1800",
-    "git_tracked": false,
+    "git_tracked": true,
     "manifested": true,
     "manifest_id": "hero_home_mobile_restaurant_table",
     "manifest_status": "accepted"

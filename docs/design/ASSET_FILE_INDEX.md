@@ -5,7 +5,7 @@ Diese Datei wird aus `public/assets`, `public/favicon-*` und `tools/asset_factor
 ## Summary
 
 - Files indexed: **151**
-- Git tracked: **146**
+- Git tracked: **151**
 - Manifested: **56**
 - Unmanifested: **95**
 
@@ -37,7 +37,7 @@ Diese Datei wird aus `public/assets`, `public/favicon-*` und `tools/asset_factor
 | Path | Group | Ext | Size KB | Dimensions | Git | Manifest | Status |
 |---|---|---:|---:|---:|---:|---:|---|
 | public/apple-touch-icon.png | root | png | 13.7 | 180x180 | yes | no |  |
-| public/asset-gallery.html | root | html | 127.7 |  | yes | no |  |
+| public/asset-gallery.html | root | html | 129.5 |  | yes | no |  |
 | public/assets/admin/admin-empty-link.svg | admin | svg | 0.5 |  | yes | no |  |
 | public/assets/admin/admin-empty-restaurant.svg | admin | svg | 0.5 |  | yes | no |  |
 | public/assets/admin/admin-empty-review.svg | admin | svg | 0.5 |  | yes | no |  |
@@ -52,9 +52,9 @@ Diese Datei wird aus `public/assets`, `public/favicon-*` und `tools/asset_factor
 | public/assets/brand/brand-app-icon-512.png | brand | png | 3.9 | 512x512 | yes | no |  |
 | public/assets/brand/brand-badge-joe-round.svg | brand | svg | 0.9 |  | yes | no |  |
 | public/assets/brand/brand-monogram-jj.svg | brand | svg | 0.9 |  | yes | no |  |
-| public/assets/brand/brand-signature-powered-by-umami.svg | brand | svg | 0.6 |  | no | no |  |
-| public/assets/brand/brand-wordmark-lockup-primary.svg | brand | svg | 1.1 |  | no | no |  |
-| public/assets/brand/brand-wordmark-zum-fettigen-joe-primary.svg | brand | svg | 0.6 |  | no | no |  |
+| public/assets/brand/brand-signature-powered-by-umami.svg | brand | svg | 0.6 |  | yes | no |  |
+| public/assets/brand/brand-wordmark-lockup-primary.svg | brand | svg | 1.1 |  | yes | no |  |
+| public/assets/brand/brand-wordmark-zum-fettigen-joe-primary.svg | brand | svg | 0.6 |  | yes | no |  |
 | public/assets/cocktails/bar-detail-garnish-citrus-herbs-4x3-v01.webp | cocktails | webp | 401.4 | 1600x1200 | yes | yes | accepted |
 | public/assets/cocktails/bar-detail-ice-glass-reflection-4x3-v01.webp | cocktails | webp | 300.8 | 1600x1200 | yes | yes | accepted |
 | public/assets/cocktails/cocktail-card-coupe-red-accent-4x5-v01.webp | cocktails | webp | 253.8 | 1600x2000 | yes | yes | accepted |
@@ -80,8 +80,8 @@ Diese Datei wird aus `public/assets`, `public/favicon-*` und `tools/asset_factor
 | public/assets/equipment/equipment-card-knife-set-4x3-v01.webp | equipment | webp | 327.7 | 1600x1200 | yes | yes | accepted |
 | public/assets/heroes/hero-cocktails-moody-bar-glassware-16x9-v01.webp | heroes | webp | 497.0 | 2400x1350 | yes | yes | accepted |
 | public/assets/heroes/hero-equipment-kitchen-tools-still-life-16x9-v01.webp | heroes | webp | 634.6 | 2400x1350 | yes | yes | accepted |
-| public/assets/heroes/hero-home-editorial-restaurant-table-16x9-v01.webp | heroes | webp | 269.4 | 2400x1350 | no | yes | accepted |
-| public/assets/heroes/hero-home-mobile-restaurant-table-4x5-v01.webp | heroes | webp | 247.1 | 1440x1800 | no | yes | accepted |
+| public/assets/heroes/hero-home-editorial-restaurant-table-16x9-v01.webp | heroes | webp | 269.4 | 2400x1350 | yes | yes | accepted |
+| public/assets/heroes/hero-home-mobile-restaurant-table-4x5-v01.webp | heroes | webp | 247.1 | 1440x1800 | yes | yes | accepted |
 | public/assets/heroes/hero-recipes-kitchen-counter-mise-en-place-16x9-v01.webp | heroes | webp | 401.2 | 2400x1350 | yes | yes | accepted |
 | public/assets/heroes/hero-restaurants-cool-dining-room-16x9-v01.webp | heroes | webp | 509.2 | 2400x1350 | yes | yes | accepted |
 | public/assets/heroes/hero-reviews-table-after-service-16x9-v01.webp | heroes | webp | 354.7 | 2400x1350 | yes | yes | accepted |
