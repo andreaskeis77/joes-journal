@@ -1,17 +1,64 @@
-
+# Python
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
 
 # Astro / Node
 node_modules/
 dist/
 .astro/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment / secrets
 .env
 .env.*
 !.env.example
+
+# Directus local/runtime data
+directus/data/
+directus/uploads/
+directus/.cache/
+directus/extensions/.cache/
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+*.sqlite-shm
+*.sqlite-wal
 
 # Playwright
 test-results/
 playwright-report/
 playwright/.cache/
+
+# Runtime / deployment output
+logs/
+backups/
+restore-test/
+vps-discovery/
+*.log
+
+# Windows / editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
