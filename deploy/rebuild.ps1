@@ -45,6 +45,7 @@ param(
   [string]$DirectusUrl = "http://127.0.0.1:8055",
   [switch]$WithCodeUpdate,
   [switch]$SkipBake,
+  [switch]$SkipSearchIndex,
   [string]$RestartService = ""
 )
 
@@ -126,6 +127,22 @@ try {
   }
   if (Test-Path $distBak) { Remove-Item $distBak -Recurse -Force }
   Write-Log "Build erfolgreich. dist/ aktualisiert."
+
+  # 3.5 Pagefind-Suchindex (E3.2) ueber das frische dist/. Erzeugt dist/pagefind/,
+  #     das die /suche-Seite progressiv nutzt. Self-guarding: faellt pagefind aus
+  #     (z.B. nicht installiert), bricht der Rebuild NICHT ab - die clientseitige
+  #     Fallback-Suche bleibt funktionsfaehig.
+  if (-not $SkipSearchIndex) {
+    Write-Log "corepack pnpm exec pagefind --site dist"
+    corepack pnpm exec pagefind --site dist
+    if ($LASTEXITCODE -ne 0) {
+      Write-Log "WARN: pagefind fehlgeschlagen (exit $LASTEXITCODE) - Fallback-Suche bleibt aktiv."
+    } else {
+      Write-Log "Pagefind-Index erstellt: dist/pagefind/"
+    }
+  } else {
+    Write-Log "Pagefind uebersprungen (-SkipSearchIndex)"
+  }
 
   # 4. Optionaler Service-Restart (nur falls dist/ nicht direkt ausgeliefert wird).
   if ($RestartService) {

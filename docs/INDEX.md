@@ -21,6 +21,7 @@
 | `ADMIN_ACCESS.md`            | Directus-Admin hinter Cloudflare Access + Dauerbetrieb (E1.1, VPS-Runbook)      |
 | `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen               |
 | `MEDIA_BAKE.md`              | Bild-Upload via Directus Files + Build-Zeit-Bake nach `public/_uploads/` (E1.3) |
+| `SEARCH.md`                  | Suche: Pagefind (Prod) + clientseitiger Fallback, Indexierung (E3.2)            |
 | `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)           |
 | `MIGRATION_E2.md`            | Relationale Migration (Taxonomien/Tags/Ort): Backup, Drill, idempotent (E2)     |
 | `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets        |

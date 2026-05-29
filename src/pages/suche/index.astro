@@ -35,9 +35,16 @@ const grouped = groupOrder
     lede="Eine kurze Anfrage genügt. Ergebnisse werden nach Inhaltstyp gruppiert."
   />
 
-  <section class="search-section">
+  <section class="search-section" data-pagefind-ignore>
     <div class="container">
-      <form class="search-form" role="search" data-search-form>
+      {
+        /* E3.2: Pagefind-UI (Produktion, statischer Index). Erscheint nur, wenn
+          /pagefind/ vorhanden ist; sonst bleibt die clientseitige Suche unten
+          als Fallback (Dev + falls kein Index gebaut wurde). */
+      }
+      <div id="pagefind-ui" class="pagefind-ui-wrap" hidden></div>
+
+      <form class="search-form" role="search" data-search-form data-fallback-search>
         <label for="q" class="visually-hidden">Suchbegriff</label>
         <svg
           width="22"
@@ -73,15 +80,15 @@ const grouped = groupOrder
         </button>
       </form>
 
-      <p class="result-summary" data-search-summary>
+      <p class="result-summary" data-search-summary data-fallback-search>
         {searchIndex.length} Einträge im Journal · gib einen Begriff ein, um zu filtern.
       </p>
 
-      <div class="empty" data-search-empty hidden>
+      <div class="empty" data-search-empty data-fallback-search hidden>
         <p>Keine Treffer. Versuche einen anderen Begriff oder eine Stadt.</p>
       </div>
 
-      <div class="groups" data-search-groups>
+      <div class="groups" data-search-groups data-fallback-search>
         {
           grouped.map((group) => (
             <section class="group" data-group-kind={group.kind}>
@@ -192,6 +199,64 @@ const grouped = groupOrder
       if (initial) {
         input.value = initial;
         applyQuery(initial);
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    /* E3.2: progressive enhancement. If the Pagefind index (/pagefind/) exists
+       — i.e. in production after `pagefind --site dist` ran — replace the
+       client-side fuzzy search with the scalable Pagefind UI and hide the
+       fallback. If the bundle is absent (dev / no index), nothing happens and
+       the fallback stays. Wrapped defensively so an error never breaks the page. */
+    (function () {
+      try {
+        const container = document.getElementById("pagefind-ui");
+        if (!container) return;
+        const css = document.createElement("link");
+        css.rel = "stylesheet";
+        css.href = "/pagefind/pagefind-ui.css";
+        const js = document.createElement("script");
+        js.src = "/pagefind/pagefind-ui.js";
+        js.onload = function () {
+          try {
+            new PagefindUI({
+              element: "#pagefind-ui",
+              showSubResults: true,
+              showImages: true,
+              pageSize: 8,
+              translations: {
+                placeholder: "Suche nach Restaurant, Stadt, Rezept, Zutat, Cocktail, Gerät…",
+                clear_search: "Zurücksetzen",
+                load_more: "Mehr anzeigen",
+                zero_results: "Keine Treffer für [SEARCH_TERM]",
+                many_results: "[COUNT] Treffer für [SEARCH_TERM]",
+                one_result: "[COUNT] Treffer für [SEARCH_TERM]",
+              },
+            });
+            container.hidden = false;
+            document.querySelectorAll("[data-fallback-search]").forEach(function (el) {
+              el.hidden = true;
+            });
+            const q = new URL(location.href).searchParams.get("q");
+            if (q) {
+              const field = container.querySelector("input[type=text]");
+              if (field) {
+                field.value = q;
+                field.dispatchEvent(new Event("input", { bubbles: true }));
+              }
+            }
+          } catch {
+            /* keep fallback */
+          }
+        };
+        js.onerror = function () {
+          /* no /pagefind/ -> keep fallback */
+        };
+        document.head.appendChild(css);
+        document.head.appendChild(js);
+      } catch {
+        /* keep fallback */
       }
     })();
   </script>
