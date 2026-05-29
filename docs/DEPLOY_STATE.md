@@ -100,17 +100,23 @@ Invoke-WebRequest http://127.0.0.1:4321/ -UseBasicParsing | Select-Object Status
 
 Public: `https://zumfettigenjoe.com` → Access-Login → Joe-Startseite.
 
-## 9. Offene Punkte
+## 9. Status der Maßnahmen
 
-- [ ] **Cloudflare-Tunnel-Token rotieren** – war im Klartext exponiert; betrifft denselben Tunnel
-      wie CapsuleWardrobe (Connector-Neustart → kurze Unterbrechung beider Seiten)
-- [ ] **OPS-2 final:** in der Directus-UI `restaurant_reviews.restaurant` → On Delete = `NO ACTION`
-      (Quellcode ist korrekt; die bestehende DB-Relation trägt noch das alte `SET NULL` – latent)
-- [ ] **Härtung:** öffentliches RDP (3389) schließen → nur Tailscale; Postgres `listen_addresses`
-      von `*` auf `localhost` (gefahrlos – nur `joes_journal` nutzt die Instanz)
-- [ ] Hero-Bild oben links fehlt (kosmetisch) – Asset-Pfad prüfen
+**Erledigt (2026-05-29):**
+
+- [x] Cloudflare-Tunnel-Token rotiert
+- [x] OPS-2: FK `restaurant_reviews.restaurant` → `ON DELETE NO ACTION` (DB verifiziert: `confdeltype = a`)
+- [x] Postgres `listen_addresses` von `*` → `localhost` (`ALTER SYSTEM` + Dienst-Neustart)
+- [x] Asset-MIME: `public/web.config` ergänzt → IIS liefert `.webp` als `image/webp` (Hero-Bild sichtbar)
+- [x] Frontend live & privat: `zumfettigenjoe.com` über Tunnel `Contabo-Wardrobe` + Cloudflare Access
+
+**Offen:**
+
+- [ ] **Härtung RDP:** öffentliches RDP (3389) auf Tailscale beschränken –
+      `Get-NetFirewallRule -DisplayGroup "Remote Desktop" | Set-NetFirewallRule -RemoteAddress 100.64.0.0/10`
+      (nur ausführen, wenn per Tailscale verbunden; Revert: `-RemoteAddress Any`)
 - [ ] Branch `harden/pre-vps-top5` via PR nach `main` mergen
-- [ ] optional: nächtlichen Rebuild-Task einrichten; `admin.zumfettigenjoe.com` (Directus) hinter Access
+- [ ] optional: nächtlichen Rebuild-Task (SYSTEM) einrichten; `admin.zumfettigenjoe.com` (Directus) hinter Access
 
 ## 10. Stolperfallen (gelernt bei der Inbetriebnahme)
 
