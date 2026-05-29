@@ -298,6 +298,32 @@ Das Directus Dashboard soll zeigen:
 - Slugs generieren, aber manuell überschreibbar.
 - Mobile nur für kleine Änderungen optimieren.
 
+## 12a. Umsetzungsstand (E1.4)
+
+Zwei idempotente Skripte ziehen die Admin-UX auf einer **bestehenden**
+Directus-Instanz nach (`schema:apply` ist bewusst additiv und ändert keine Meta
+bestehender Collections):
+
+```powershell
+cd C:\joes-journal\repo\directus
+corepack pnpm run presets:apply   # gespeicherte Filter / Bookmarks
+corepack pnpm run meta:refine     # Display-Templates der Collections
+```
+
+- **`presets:apply`** ([`bootstrap/apply-presets.ts`](../directus/bootstrap/apply-presets.ts)):
+  globale Bookmarks als schnelle Sichten — Kritiken/Artikel _Entwürfe_ &
+  _Veröffentlicht_, Restaurants _Hohe Priorität_ / _Ohne Bild_ / _Watchlist_ /
+  _Berlin_, Geräte _Wunschliste_. Idempotent (vorhandene Bookmarks werden
+  übersprungen).
+- **`meta:refine`** ([`bootstrap/refine-meta.ts`](../directus/bootstrap/refine-meta.ts)):
+  setzt aussagekräftige Display-Templates (z. B. Restaurant
+  `{{name}} - {{city}} ({{status}})`, Kritik `{{title}} - {{rating}}`).
+- **Bild-Upload** (Akzeptanz „Fotos einfach hochladen"): erfüllt über E1.3 –
+  `image_file`-Feld + Build-Zeit-Bake, siehe [MEDIA_BAKE.md](MEDIA_BAKE.md).
+
+Offen (braucht Update-Migration statt additivem Apply, bewusst später):
+Feld-**Tabs/Gruppen** je Collection und ein Insights-**Dashboard**.
+
 ## 13. Akzeptanzkriterien
 
 Directus Admin ist MVP-fähig, wenn:

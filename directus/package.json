@@ -10,6 +10,8 @@
     "start": "directus start",
     "schema:snapshot": "directus schema snapshot ./schema/snapshot.yaml --yes",
     "schema:apply": "tsx --env-file=.env bootstrap/apply-schema.ts",
+    "presets:apply": "tsx --env-file=.env bootstrap/apply-presets.ts",
+    "meta:refine": "tsx --env-file=.env bootstrap/refine-meta.ts",
     "seed": "tsx --env-file=.env bootstrap/seed.ts",
     "reset": "node scripts/reset.mjs"
   },
