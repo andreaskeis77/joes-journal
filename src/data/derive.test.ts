@@ -204,4 +204,34 @@ describe("derive", () => {
     expect(reviewEntry?.snippet).toContain("A");
     expect(reviewEntry?.snippet).toContain("Berlin");
   });
+
+  it("drops non-published reviews from every derived view (editorial gate)", () => {
+    const base = makeRaw();
+    const draft = {
+      slug: "rev-draft",
+      title: "Secret draft",
+      restaurantSlug: "a",
+      visitedOn: "2026-05-01",
+      rating: 5,
+      excerpt: "Should never be public.",
+      body: ["internal note"],
+      image: "/d.webp",
+      galleryImages: [],
+      status: "draft" as const,
+    };
+    const internal = { ...draft, slug: "rev-internal", status: "internal" as const };
+    const archived = { ...draft, slug: "rev-archived", status: "archived" as const };
+    const bundle = derive({ ...base, reviews: [...base.reviews, draft, internal, archived] });
+
+    // Exported array only carries the two published reviews.
+    expect(bundle.reviews.map((r) => r.slug).sort()).toEqual(["rev-a", "rev-older"]);
+    // Slug map, date-sorted list and search index never surface non-published.
+    expect(bundle.reviewBySlug.has("rev-draft")).toBe(false);
+    expect(bundle.reviewBySlug.has("rev-internal")).toBe(false);
+    expect(bundle.reviewBySlug.has("rev-archived")).toBe(false);
+    expect(bundle.reviewsByDateDesc.some((r) => r.slug === "rev-draft")).toBe(false);
+    expect(bundle.searchIndex.some((e) => e.kind === "review" && e.title === "Secret draft")).toBe(
+      false,
+    );
+  });
 });

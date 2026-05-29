@@ -11,7 +11,7 @@
  *   - .env contains ADMIN_EMAIL / ADMIN_PASSWORD
  */
 import { authenticatedClient } from "./client.js";
-import { ensureCollection, snapshot, type CollectionDef } from "./schema-helpers.js";
+import { ensureCollection, ensureField, snapshot, type CollectionDef } from "./schema-helpers.js";
 
 import { taxonomyCollections } from "./schema/taxonomies.js";
 import {
@@ -50,7 +50,23 @@ async function main() {
   ];
 
   for (const def of allCollections) {
-    await ensureCollection(client, def, existing.collections);
+    const created = await ensureCollection(client, def, existing.collections);
+    if (created) {
+      // Fields were created together with the collection; record them so the
+      // reconciliation below does not try to create them a second time.
+      for (const f of def.fields) {
+        existing.fields.add(`${def.collection}.${f.field}`);
+      }
+    } else {
+      // Collection already existed: additively reconcile any missing fields.
+      // This makes `schema:apply` an idempotent forward migration for new
+      // fields (NOT for type changes or renames — those still need a reset
+      // or a manual migration). Closes the gap where new fields added to a
+      // schema/*.ts file were silently ignored against an existing DB.
+      for (const f of def.fields) {
+        await ensureField(client, def.collection, f, existing.fields);
+      }
+    }
   }
 
   // Relations

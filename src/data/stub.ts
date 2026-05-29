@@ -20,6 +20,13 @@ export interface RestaurantStub {
   reviewSlug?: string;
 }
 
+/**
+ * Editorialer Lebenszyklus einer Kritik (entspricht CONTENT_STATUS_OPTIONS in
+ * directus/bootstrap/schema/status.ts). Nur `published` darf im statischen
+ * Output landen – siehe derive() und den Loader-Filter in client.ts.
+ */
+export type ReviewStatus = "draft" | "internal" | "published" | "archived";
+
 export interface ReviewStub {
   slug: string;
   title: string;
@@ -31,7 +38,7 @@ export interface ReviewStub {
   body: string[];
   image: string;
   galleryImages: string[];
-  status: "published";
+  status: ReviewStatus;
 }
 
 export interface CategoryStub {

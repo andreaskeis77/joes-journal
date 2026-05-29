@@ -87,6 +87,7 @@ export type {
   RestaurantStub,
   RestaurantStatus,
   ReviewStub,
+  ReviewStatus,
   RecipeStub,
   RecipeDifficulty,
   RecipeIngredient,

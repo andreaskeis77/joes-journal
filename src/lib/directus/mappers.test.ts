@@ -92,6 +92,27 @@ describe("mapReview", () => {
     expect(out.rating).toBe(4.5);
     expect(out.body).toHaveLength(2);
     expect(out.galleryImages).toEqual(["/g1.webp"]);
+    expect(out.status).toBe("published");
+  });
+
+  it("preserves the real editorial status instead of forcing published", () => {
+    const base: DirectusReview = {
+      id: "r3",
+      slug: "draft-one",
+      title: "Draft",
+      status: "draft",
+      restaurant: "uuid-only",
+      visited_on: null,
+      rating: 0,
+      excerpt: null,
+      body: null,
+      image: null,
+      gallery_images: null,
+    };
+    expect(mapReview(base).status).toBe("draft");
+    expect(mapReview({ ...base, status: "internal" }).status).toBe("internal");
+    // Unknown / missing status falls back to the safe non-public default.
+    expect(mapReview({ ...base, status: "bogus" }).status).toBe("draft");
   });
 
   it("accepts string rating from Directus decimal", () => {

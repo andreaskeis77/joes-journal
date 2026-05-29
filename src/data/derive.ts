@@ -170,38 +170,48 @@ function buildSearchIndex(
 }
 
 export function derive(raw: RawData): DerivedBundle {
-  const restaurantBySlug = new Map(raw.restaurants.map((r) => [r.slug, r]));
-  const reviewBySlug = new Map(raw.reviews.map((r) => [r.slug, r]));
-  const recipeBySlug = new Map(raw.recipes.map((r) => [r.slug, r]));
-  const cocktailBySlug = new Map(raw.cocktails.map((c) => [c.slug, c]));
-  const equipmentBySlug = new Map(raw.equipment.map((e) => [e.slug, e]));
-  const ingredientBySlug = new Map(raw.ingredients.map((i) => [i.slug, i]));
-  const supplierBySlug = new Map(raw.suppliers.map((s) => [s.slug, s]));
-  const collectionBySlug = new Map(raw.collections.map((c) => [c.slug, c]));
+  // Editorial gate: only published reviews may reach the static output.
+  // This is the source-agnostic second layer behind the Directus loader's
+  // server-side filter — it also protects the stub source and any future
+  // source. Drafts/internal/archived reviews are dropped here before they
+  // can populate maps, lists, the search index or the exported `reviews`.
+  const publishedReviews = raw.reviews.filter((r) => r.status === "published");
+  const data: RawData = { ...raw, reviews: publishedReviews };
 
-  const reviewsByDateDesc = [...raw.reviews].sort((a, b) => (a.visitedOn < b.visitedOn ? 1 : -1));
+  const restaurantBySlug = new Map(data.restaurants.map((r) => [r.slug, r]));
+  const reviewBySlug = new Map(publishedReviews.map((r) => [r.slug, r]));
+  const recipeBySlug = new Map(data.recipes.map((r) => [r.slug, r]));
+  const cocktailBySlug = new Map(data.cocktails.map((c) => [c.slug, c]));
+  const equipmentBySlug = new Map(data.equipment.map((e) => [e.slug, e]));
+  const ingredientBySlug = new Map(data.ingredients.map((i) => [i.slug, i]));
+  const supplierBySlug = new Map(data.suppliers.map((s) => [s.slug, s]));
+  const collectionBySlug = new Map(data.collections.map((c) => [c.slug, c]));
+
+  const reviewsByDateDesc = [...publishedReviews].sort((a, b) =>
+    a.visitedOn < b.visitedOn ? 1 : -1,
+  );
 
   const cityCounts = new Map<string, number>();
-  for (const r of raw.restaurants) {
+  for (const r of data.restaurants) {
     cityCounts.set(r.city, (cityCounts.get(r.city) ?? 0) + 1);
   }
   const topCities: CityStat[] = [...cityCounts.entries()]
     .map(([city, count]) => ({ city, count }))
     .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city));
 
-  const ownedEquipmentCount = raw.equipment.filter((e) => e.status === "owned").length;
-  const wishlistEquipmentCount = raw.equipment.filter((e) => e.status === "wishlist").length;
-  const alcoholFreeCocktailCount = raw.cocktails.filter((c) => c.type === "alkoholfrei").length;
+  const ownedEquipmentCount = data.equipment.filter((e) => e.status === "owned").length;
+  const wishlistEquipmentCount = data.equipment.filter((e) => e.status === "wishlist").length;
+  const alcoholFreeCocktailCount = data.cocktails.filter((c) => c.type === "alkoholfrei").length;
 
-  const reviewedCount = raw.restaurants.filter((r) => r.status === "reviewed").length;
-  const watchlistCount = raw.restaurants.filter(
+  const reviewedCount = data.restaurants.filter((r) => r.status === "reviewed").length;
+  const watchlistCount = data.restaurants.filter(
     (r) => r.status === "wishlist" || r.status === "planned",
   ).length;
 
   const stats: StatStub[] = [
     {
       label: "Restaurants insgesamt",
-      value: raw.restaurants.length,
+      value: data.restaurants.length,
       icon: "/assets/stats/stat-icon-restaurants-total.svg",
     },
     {
@@ -221,10 +231,10 @@ export function derive(raw: RawData): DerivedBundle {
     },
   ];
 
-  const searchIndex = buildSearchIndex(raw, restaurantBySlug);
+  const searchIndex = buildSearchIndex(data, restaurantBySlug);
 
   return {
-    ...raw,
+    ...data,
     restaurantBySlug,
     reviewBySlug,
     recipeBySlug,

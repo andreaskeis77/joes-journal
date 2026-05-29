@@ -145,8 +145,19 @@ pnpm seed
 Aktueller Workflow:
 
 1. Felder/Collections in `directus/bootstrap/schema/*.ts` ergänzen oder anpassen.
-2. `pnpm schema:apply` erneut ausführen (idempotent – legt nur Fehlendes neu an).
-3. Für tiefere Änderungen (Spaltentypen, Renames): `pnpm reset` + Re-Bootstrap.
+2. `pnpm schema:apply` erneut ausführen. **Additiv idempotent:**
+   - **fehlende Collections** werden neu angelegt (inkl. aller Felder),
+   - **fehlende Felder auf bestehenden Collections** werden additiv nachgezogen
+     (`ensureField`-Reconciliation in `bootstrap/apply-schema.ts`),
+   - **bereits existierende** Collections/Felder bleiben unangetastet.
+3. **Nicht** automatisch migriert werden: Spaltentyp-Änderungen, Renames,
+   geänderte `is_nullable`/`default_value`/`on_delete` an **bestehenden**
+   Feldern/Relationen, sowie Feld-Löschungen. `schema:apply` fasst Bestehendes
+   nicht an. Für solche Änderungen:
+   - lokal/Dev: `pnpm reset` + Re-Bootstrap + `schema:apply` + `seed`, **oder**
+   - mit echten Daten (VPS): Backup ziehen → manuelle Directus-Migration bzw.
+     `directus schema snapshot`/`apply` mit reviewtem Diff (siehe
+     [VPS_DEPLOYMENT_PLAN §13](VPS_DEPLOYMENT_PLAN.md) – „Vor Schemaänderungen Backup").
 
 Snapshot exportieren (zur Übersicht oder für die VPS-Migration):
 

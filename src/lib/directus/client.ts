@@ -97,10 +97,11 @@ export interface RawData {
 }
 
 /**
- * Pulls every domain collection in parallel.
- *
- * `restaurants` requests the inverse `reviews` relation so we can derive
- * `restaurant.reviewSlug` without a second round trip.
+ * Pulls every domain collection in parallel. Reviews are filtered to
+ * `published` server-side (the editorial gate — drafts/internal never leave
+ * Directus). `restaurant.reviewSlug` is NOT derived here: the loader backfills
+ * it from the flat (already published-only) reviews list (see
+ * loader-directus.ts), so we don't depend on an o2m alias on `restaurants`.
  */
 export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> {
   const [
@@ -122,6 +123,9 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
         limit: -1,
         fields: ["*", { restaurant: ["slug"] }] as never,
         sort: ["-visited_on"] as never,
+        // Primary defense: never pull drafts/internal/archived reviews into the
+        // build. derive() filters again as a source-agnostic second layer.
+        filter: { status: { _eq: "published" } } as never,
       } as never),
     ) as Promise<DirectusReview[]>,
     client.request(readItems("recipes", { limit: -1, fields: ["*"] as never } as never)) as Promise<

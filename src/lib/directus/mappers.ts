@@ -33,6 +33,7 @@ import {
   normalizeCollectionType,
   normalizeEquipmentStatus,
   normalizeRestaurantStatus,
+  normalizeReviewStatus,
   restaurantStatusLabel,
 } from "./labels";
 
@@ -95,7 +96,9 @@ export function mapReview(d: DirectusReview): ReviewStub {
     body: d.body ?? [],
     image: d.image ?? "",
     galleryImages: d.gallery_images ?? [],
-    status: "published",
+    // Pass the real editorial status through. derive() drops anything that is
+    // not "published" so drafts/internal notes never reach the static output.
+    status: normalizeReviewStatus(d.status),
   };
 }
 
