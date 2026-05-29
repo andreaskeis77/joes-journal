@@ -17,6 +17,7 @@
 | `design/DESIGN_TOKENS.md`    | Farben, Typografie, Spacing, Breakpoints, UI-Tokens                      |
 | `design/FRONTEND_UX_SPEC.md` | Frontend-Seiten, Navigation, Suche, Filter, mobile/desktop UX            |
 | `VPS_DEPLOYMENT_PLAN.md`     | Native Windows MVP, Pfade, Dienste, Domains, Backup, Deployment          |
+| `DEPLOY_STATE.md`            | Realer VPS-Betriebszustand + Runbook (Live-Inbetriebnahme P9/P10)        |
 | `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen        |
 | `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)    |
 | `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets |
