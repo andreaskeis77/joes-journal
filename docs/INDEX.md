@@ -18,6 +18,7 @@
 | `design/FRONTEND_UX_SPEC.md` | Frontend-Seiten, Navigation, Suche, Filter, mobile/desktop UX                   |
 | `VPS_DEPLOYMENT_PLAN.md`     | Native Windows MVP, Pfade, Dienste, Domains, Backup, Deployment                 |
 | `DEPLOY_STATE.md`            | Realer VPS-Betriebszustand + Runbook (Live-Inbetriebnahme P9/P10)               |
+| `ADMIN_ACCESS.md`            | Directus-Admin hinter Cloudflare Access + Dauerbetrieb (E1.1, VPS-Runbook)      |
 | `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen               |
 | `MEDIA_BAKE.md`              | Bild-Upload via Directus Files + Build-Zeit-Bake nach `public/_uploads/` (E1.3) |
 | `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)           |
