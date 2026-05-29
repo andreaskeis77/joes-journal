@@ -75,6 +75,36 @@ function makeRaw(overrides: Partial<RawData> = {}): RawData {
         status: "published",
       },
     ],
+    articles: [
+      {
+        slug: "art-new",
+        title: "Newer article",
+        status: "published",
+        summary: "A summary.",
+        body: ["Body paragraph"],
+        image: "/a.webp",
+        galleryImages: [],
+        publishedDate: "2026-05-10",
+        tags: ["essay"],
+        relatedRestaurantSlugs: [],
+        relatedRecipeSlugs: [],
+        relatedCocktailSlugs: [],
+      },
+      {
+        slug: "art-old",
+        title: "Older article",
+        status: "published",
+        summary: "Older summary.",
+        body: [],
+        image: "/a2.webp",
+        galleryImages: [],
+        publishedDate: "2026-02-01",
+        tags: [],
+        relatedRestaurantSlugs: [],
+        relatedRecipeSlugs: [],
+        relatedCocktailSlugs: [],
+      },
+    ],
     recipes: [
       {
         slug: "rec-1",
@@ -203,6 +233,45 @@ describe("derive", () => {
     const reviewEntry = bundle.searchIndex.find((e) => e.kind === "review");
     expect(reviewEntry?.snippet).toContain("A");
     expect(reviewEntry?.snippet).toContain("Berlin");
+  });
+
+  it("sorts articles by published_date descending and indexes them", () => {
+    const bundle = derive(makeRaw());
+    expect(bundle.articlesByDateDesc.map((a) => a.slug)).toEqual(["art-new", "art-old"]);
+    expect(bundle.articleBySlug.get("art-new")?.title).toBe("Newer article");
+    const articleEntry = bundle.searchIndex.find((e) => e.kind === "article");
+    expect(articleEntry?.href).toBe("/journal/art-new");
+    expect(articleEntry?.kindLabel).toBe("Journal");
+  });
+
+  it("drops non-published articles from every derived view (editorial gate)", () => {
+    const base = makeRaw();
+    const draft = {
+      slug: "art-draft",
+      title: "Secret article draft",
+      status: "draft" as const,
+      summary: "Should never be public.",
+      body: ["internal"],
+      image: "/d.webp",
+      galleryImages: [],
+      publishedDate: "2026-05-25",
+      tags: [],
+      relatedRestaurantSlugs: [],
+      relatedRecipeSlugs: [],
+      relatedCocktailSlugs: [],
+    };
+    const internal = { ...draft, slug: "art-internal", status: "internal" as const };
+    const archived = { ...draft, slug: "art-archived", status: "archived" as const };
+    const bundle = derive({ ...base, articles: [...base.articles, draft, internal, archived] });
+
+    expect(bundle.articles.map((a) => a.slug).sort()).toEqual(["art-new", "art-old"]);
+    expect(bundle.articleBySlug.has("art-draft")).toBe(false);
+    expect(bundle.articleBySlug.has("art-internal")).toBe(false);
+    expect(bundle.articleBySlug.has("art-archived")).toBe(false);
+    expect(bundle.articlesByDateDesc.some((a) => a.slug === "art-draft")).toBe(false);
+    expect(
+      bundle.searchIndex.some((e) => e.kind === "article" && e.title === "Secret article draft"),
+    ).toBe(false);
   });
 
   it("drops non-published reviews from every derived view (editorial gate)", () => {

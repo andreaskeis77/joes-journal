@@ -8,6 +8,7 @@
 import type {
   RestaurantStub,
   ReviewStub,
+  ArticleStub,
   RecipeStub,
   CocktailStub,
   EquipmentStub,
@@ -24,6 +25,7 @@ import type {
 export interface RawData {
   restaurants: RestaurantStub[];
   reviews: ReviewStub[];
+  articles: ArticleStub[];
   recipes: RecipeStub[];
   cocktails: CocktailStub[];
   equipment: EquipmentStub[];
@@ -36,6 +38,7 @@ export interface RawData {
 export interface DerivedBundle extends RawData {
   restaurantBySlug: Map<string, RestaurantStub>;
   reviewBySlug: Map<string, ReviewStub>;
+  articleBySlug: Map<string, ArticleStub>;
   recipeBySlug: Map<string, RecipeStub>;
   cocktailBySlug: Map<string, CocktailStub>;
   equipmentBySlug: Map<string, EquipmentStub>;
@@ -44,6 +47,7 @@ export interface DerivedBundle extends RawData {
   collectionBySlug: Map<string, CollectionStub>;
 
   reviewsByDateDesc: ReviewStub[];
+  articlesByDateDesc: ArticleStub[];
   topCities: CityStat[];
 
   ownedEquipmentCount: number;
@@ -91,6 +95,15 @@ function buildSearchIndex(
         searchText: joinLower(rv.title, rv.excerpt, rest?.name, rest?.city, ...rv.body),
       };
     }),
+    ...raw.articles.map<SearchEntry>((a) => ({
+      kind: "article",
+      kindLabel: "Journal",
+      title: a.title,
+      href: `/journal/${a.slug}`,
+      snippet: a.eyebrow ?? "Journal",
+      image: a.image,
+      searchText: joinLower(a.title, a.summary, a.eyebrow, ...a.tags, ...a.body),
+    })),
     ...raw.recipes.map<SearchEntry>((rc) => ({
       kind: "recipe",
       kindLabel: "Rezept",
@@ -176,10 +189,12 @@ export function derive(raw: RawData): DerivedBundle {
   // source. Drafts/internal/archived reviews are dropped here before they
   // can populate maps, lists, the search index or the exported `reviews`.
   const publishedReviews = raw.reviews.filter((r) => r.status === "published");
-  const data: RawData = { ...raw, reviews: publishedReviews };
+  const publishedArticles = raw.articles.filter((a) => a.status === "published");
+  const data: RawData = { ...raw, reviews: publishedReviews, articles: publishedArticles };
 
   const restaurantBySlug = new Map(data.restaurants.map((r) => [r.slug, r]));
   const reviewBySlug = new Map(publishedReviews.map((r) => [r.slug, r]));
+  const articleBySlug = new Map(publishedArticles.map((a) => [a.slug, a]));
   const recipeBySlug = new Map(data.recipes.map((r) => [r.slug, r]));
   const cocktailBySlug = new Map(data.cocktails.map((c) => [c.slug, c]));
   const equipmentBySlug = new Map(data.equipment.map((e) => [e.slug, e]));
@@ -189,6 +204,9 @@ export function derive(raw: RawData): DerivedBundle {
 
   const reviewsByDateDesc = [...publishedReviews].sort((a, b) =>
     a.visitedOn < b.visitedOn ? 1 : -1,
+  );
+  const articlesByDateDesc = [...publishedArticles].sort((a, b) =>
+    a.publishedDate < b.publishedDate ? 1 : -1,
   );
 
   const cityCounts = new Map<string, number>();
@@ -237,6 +255,7 @@ export function derive(raw: RawData): DerivedBundle {
     ...data,
     restaurantBySlug,
     reviewBySlug,
+    articleBySlug,
     recipeBySlug,
     cocktailBySlug,
     equipmentBySlug,
@@ -244,6 +263,7 @@ export function derive(raw: RawData): DerivedBundle {
     supplierBySlug,
     collectionBySlug,
     reviewsByDateDesc,
+    articlesByDateDesc,
     topCities,
     ownedEquipmentCount,
     wishlistEquipmentCount,

@@ -12,6 +12,7 @@
 import {
   restaurants as stubRestaurants,
   reviews as stubReviews,
+  articles as stubArticles,
   recipes as stubRecipes,
   cocktails as stubCocktails,
   equipment as stubEquipment,
@@ -30,6 +31,7 @@ function stubRaw(): RawData {
   return {
     restaurants: stubRestaurants,
     reviews: stubReviews,
+    articles: stubArticles,
     recipes: stubRecipes,
     cocktails: stubCocktails,
     equipment: stubEquipment,
@@ -55,6 +57,7 @@ const bundle = derive(raw);
 export const {
   restaurants,
   reviews,
+  articles,
   recipes,
   cocktails,
   equipment,
@@ -64,6 +67,7 @@ export const {
   links,
   restaurantBySlug,
   reviewBySlug,
+  articleBySlug,
   recipeBySlug,
   cocktailBySlug,
   equipmentBySlug,
@@ -71,6 +75,7 @@ export const {
   supplierBySlug,
   collectionBySlug,
   reviewsByDateDesc,
+  articlesByDateDesc,
   topCities,
   ownedEquipmentCount,
   wishlistEquipmentCount,
@@ -88,6 +93,7 @@ export type {
   RestaurantStatus,
   ReviewStub,
   ReviewStatus,
+  ArticleStub,
   RecipeStub,
   RecipeDifficulty,
   RecipeIngredient,

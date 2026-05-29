@@ -1,0 +1,123 @@
+---
+import type { ArticleStub } from "../data/source";
+
+interface Props {
+  article: ArticleStub;
+}
+
+const { article } = Astro.props;
+const publishedDate = new Date(article.publishedDate).toLocaleDateString("de-DE", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<article class="article-card">
+  <a class="article-link" href={`/journal/${article.slug}`}>
+    <div class="image-wrap">
+      <img src={article.image} alt="" width="1600" height="900" loading="lazy" decoding="async" />
+    </div>
+    <div class="body">
+      <div class="meta">
+        {article.eyebrow && <span class="eyebrow">{article.eyebrow}</span>}
+        {
+          article.eyebrow && (
+            <span class="dot" aria-hidden="true">
+              ·
+            </span>
+          )
+        }
+        <time datetime={article.publishedDate}>{publishedDate}</time>
+      </div>
+      <h3 class="title">{article.title}</h3>
+      <p class="summary">{article.summary}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .article-card {
+    background: var(--color-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .article-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .article-link:hover {
+    text-decoration: none;
+  }
+
+  .image-wrap {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-bg-warm);
+  }
+
+  .image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .article-card:hover .image-wrap img {
+    transform: scale(1.04);
+  }
+
+  .body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    align-items: baseline;
+  }
+
+  .eyebrow {
+    color: var(--color-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--font-size-xs);
+  }
+
+  .dot {
+    color: var(--color-border);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .summary {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+    line-height: var(--line-body);
+  }
+</style>

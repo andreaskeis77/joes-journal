@@ -7,6 +7,7 @@
  */
 import { createAuthenticatedClient, fetchAllRaw } from "../lib/directus/client";
 import {
+  mapArticle,
   mapCocktail,
   mapCollection,
   mapEquipment,
@@ -42,6 +43,7 @@ export async function loadFromDirectus(): Promise<RawData> {
   return {
     restaurants,
     reviews,
+    articles: raw.articles.map(mapArticle),
     recipes: raw.recipes.map(mapRecipe),
     cocktails: raw.cocktails.map(mapCocktail),
     equipment: raw.equipment.map(mapEquipment),

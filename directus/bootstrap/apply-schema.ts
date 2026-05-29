@@ -19,6 +19,7 @@ import {
   reviewCollection,
   restaurantRelations,
 } from "./schema/restaurants.js";
+import { articleCollection } from "./schema/articles.js";
 import { ingredientCollection, supplierCollection } from "./schema/ingredients.js";
 import { equipmentCollection } from "./schema/equipment.js";
 import { recipeCollection } from "./schema/recipes.js";
@@ -40,6 +41,7 @@ async function main() {
     ...taxonomyCollections,
     restaurantCollection,
     reviewCollection,
+    articleCollection,
     supplierCollection,
     ingredientCollection,
     equipmentCollection,

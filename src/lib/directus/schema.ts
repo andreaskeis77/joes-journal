@@ -38,6 +38,25 @@ export interface DirectusReview {
   gallery_images: string[] | null;
 }
 
+export interface DirectusArticle {
+  id: string;
+  slug: string;
+  title: string;
+  status: string;
+  eyebrow: string | null;
+  summary: string | null;
+  body: string[] | null;
+  image: string | null;
+  gallery_images: string[] | null;
+  published_date: string | null;
+  tags: string[] | null;
+  related_restaurant_slugs: string[] | null;
+  related_recipe_slugs: string[] | null;
+  related_cocktail_slugs: string[] | null;
+  seo_title: string | null;
+  seo_description: string | null;
+}
+
 export interface DirectusIngredient {
   id: string;
   slug: string;

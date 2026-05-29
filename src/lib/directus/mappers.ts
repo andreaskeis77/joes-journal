@@ -5,6 +5,7 @@
 import type {
   RestaurantStub,
   ReviewStub,
+  ArticleStub,
   RecipeStub,
   CocktailStub,
   EquipmentStub,
@@ -19,6 +20,7 @@ import type {
 import type {
   DirectusRestaurant,
   DirectusReview,
+  DirectusArticle,
   DirectusRecipe,
   DirectusCocktail,
   DirectusEquipment,
@@ -99,6 +101,28 @@ export function mapReview(d: DirectusReview): ReviewStub {
     // Pass the real editorial status through. derive() drops anything that is
     // not "published" so drafts/internal notes never reach the static output.
     status: normalizeReviewStatus(d.status),
+  };
+}
+
+export function mapArticle(d: DirectusArticle): ArticleStub {
+  return {
+    slug: d.slug,
+    title: d.title,
+    // Pass the real editorial status through; derive() drops anything that is
+    // not "published" so drafts/internal notes never reach the static output.
+    status: normalizeReviewStatus(d.status),
+    eyebrow: d.eyebrow ?? undefined,
+    summary: d.summary ?? "",
+    body: d.body ?? [],
+    image: d.image ?? "",
+    galleryImages: d.gallery_images ?? [],
+    publishedDate: d.published_date ?? "",
+    tags: d.tags ?? [],
+    relatedRestaurantSlugs: d.related_restaurant_slugs ?? [],
+    relatedRecipeSlugs: d.related_recipe_slugs ?? [],
+    relatedCocktailSlugs: d.related_cocktail_slugs ?? [],
+    seoTitle: d.seo_title ?? undefined,
+    seoDescription: d.seo_description ?? undefined,
   };
 }
 
