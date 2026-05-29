@@ -82,22 +82,57 @@ Register-ScheduledTask -TaskName "JoesJournal-Rebuild" -Action $action -Trigger 
 > `pnpm`-Shim). Alternativ einen dedizierten Service-User mit gespeicherten
 > Credentials und „run whether logged on or not" nutzen.
 
-## 5. Phase 2 – Webhook-getriebener Rebuild (später, P12)
+## 5. Auto-Rebuild: Webhook-getrieben (E1.2, umgesetzt)
 
-Sobald Near-Realtime gewünscht ist:
+Near-Realtime „Save → Live" ohne manuellen Eingriff. Zwei Bausteine:
 
-1. **Directus Flow** anlegen: Trigger `Event Hook`, Scope `items.create` /
-   `items.update` / `items.delete` auf den Content-Collections.
-2. Flow-Operation `Webhook / Request URL` → ruft einen kleinen lokalen
-   Rebuild-Endpunkt auf (z. B. ein winziger Node/PowerShell-Listener auf
-   `127.0.0.1`, der `rebuild.ps1` debounced startet).
-3. **Debounce** (z. B. 60 s Sammelfenster), damit eine Bearbeitungs-Session mit
-   10 Speichervorgängen nicht 10 Builds auslöst.
-4. Der Endpunkt bleibt **loopback-only** (kein Cloudflare-Ingress) — der Flow
-   ruft `localhost` auf, da Directus auf derselben Maschine läuft.
+### 5a. Rebuild-Listener (`deploy/rebuild-listener.mjs`)
 
-Bewusst **nicht** im MVP: zusätzlicher Dienst, Debounce-Logik, Fehlerpfade bei
-Build-Fehlern während einer Redaktion.
+Ein winziger Node-HTTP-Dienst, der `rebuild.ps1` **debounced** startet:
+
+- **Loopback-only:** bindet ausschließlich `127.0.0.1:8787` — nie aus dem Netz
+  erreichbar; der Directus-Flow läuft auf derselben Maschine und ruft
+  `127.0.0.1`.
+- **Shared-Secret:** akzeptiert nur `POST /rebuild` mit Header
+  `X-Joe-Rebuild-Token == JOES_REBUILD_TOKEN` (Konstantzeit-Vergleich), sonst
+  `401`. Das Token steht in der gitignored `.env`, nie im Repo.
+- **Debounce:** sammelt Speichervorgänge in einem Fenster
+  (`JOES_REBUILD_DEBOUNCE_MS`, Default 60 s) → genau **ein** Build. Während ein
+  Build läuft, wird höchstens **ein** Folge-Build eingereiht (kein Stau, keine
+  Überlappung).
+- **Health:** `GET /health` → JSON (`running`, `scheduled`).
+
+Als Dauerdienst installieren (Administrator-PowerShell auf dem VPS):
+
+```powershell
+# 1) Token in C:\joes-journal\repo\.env eintragen (langer Zufallswert):
+#    JOES_REBUILD_TOKEN=<32+ zufaellige Zeichen>
+# 2) Task registrieren (Start beim Boot, Neustart bei Absturz):
+C:\joes-journal\repo\deploy\install-rebuild-listener.ps1 -User srv-ops-admin
+Start-ScheduledTask -TaskName JoesJournal-Rebuild-Listener
+Invoke-RestMethod http://127.0.0.1:8787/health   # -> status ok
+```
+
+### 5b. Directus Flow
+
+1. **Settings → Flows → Create Flow.** Trigger: **Event Hook**, Typ
+   **Action (non-blocking)**, Scope `items.create` / `items.update` /
+   `items.delete` auf den Content-Collections (`restaurants`,
+   `restaurant_reviews`, `articles`, `recipes`, `cocktails`, `equipment`,
+   `content_collections`, `links`).
+2. Operation **Webhook / Request URL**: Method `POST`, URL
+   `http://127.0.0.1:8787/rebuild`, Header `X-Joe-Rebuild-Token: <Token aus .env>`.
+3. Speichern. Test: eine Kritik auf `published` setzen → in ≤ ~1–2 Min
+   (Debounce + Build) live, ohne manuellen Eingriff.
+
+> Der Listener startet `rebuild.ps1`, das wiederum den Bild-Bake (E1.3) und den
+> atomaren Build ausführt. Schlägt ein Build fehl, bleibt das alte `dist/`
+> stehen (siehe §3) — eine Redaktion kann die Live-Site nie „leer" machen.
+
+### 5c. Nächtlicher Backstop
+
+Der Task aus §4 (`JoesJournal-Rebuild`, SYSTEM, 4 Uhr) bleibt als Sicherheitsnetz
+bestehen, falls der Listener mal nicht lief oder ein Hook verloren ging.
 
 ## 6. Verwandte Dokumente
 
