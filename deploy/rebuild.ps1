@@ -44,6 +44,7 @@ param(
   [string]$RepoRoot = "C:\joes-journal\repo",
   [string]$DirectusUrl = "http://127.0.0.1:8055",
   [switch]$WithCodeUpdate,
+  [switch]$SkipBake,
   [string]$RestartService = ""
 )
 
@@ -79,12 +80,29 @@ try {
 
   # 2. Optionales Code-Update.
   if ($WithCodeUpdate) {
+    # Das Bake-Manifest (src/data/uploads-manifest.json) ist ein generiertes
+    # Artefakt, das committet als {} vorliegt und vom Bake lokal ueberschrieben
+    # wird. Vor 'git pull --ff-only' zuruecksetzen, sonst scheitert der Pull an
+    # lokalen Aenderungen. Der Bake unten regeneriert es danach.
+    Write-Log "Setze generiertes Bake-Manifest zurueck"
+    git checkout -- src/data/uploads-manifest.json 2>$null
     Write-Log "git pull --ff-only"
     git pull --ff-only
     if ($LASTEXITCODE -ne 0) { throw "git pull fehlgeschlagen (exit $LASTEXITCODE)" }
     Write-Log "corepack pnpm install --frozen-lockfile"
     corepack pnpm install --frozen-lockfile
     if ($LASTEXITCODE -ne 0) { throw "pnpm install fehlgeschlagen (exit $LASTEXITCODE)" }
+  }
+
+  # 2.5 Bild-Bake (E1.3): laedt in Directus hochgeladene Fotos nach
+  #     public/_uploads/ und schreibt das Manifest, bevor gebaut wird. Self-
+  #     guarding: ohne Directus-Credentials in der .env macht das Skript nichts.
+  if (-not $SkipBake) {
+    Write-Log "node deploy/bake-files.mjs (Directus Files -> public/_uploads/)"
+    node deploy/bake-files.mjs
+    if ($LASTEXITCODE -ne 0) { throw "bake-files.mjs fehlgeschlagen (exit $LASTEXITCODE)" }
+  } else {
+    Write-Log "Bake uebersprungen (-SkipBake)"
   }
 
   # 3. Build im Directus-Modus, ATOMAR. JOES_DATA_SOURCE wird hier explizit

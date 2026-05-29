@@ -11,7 +11,13 @@
  *   - .env contains ADMIN_EMAIL / ADMIN_PASSWORD
  */
 import { authenticatedClient } from "./client.js";
-import { ensureCollection, ensureField, snapshot, type CollectionDef } from "./schema-helpers.js";
+import {
+  ensureCollection,
+  ensureField,
+  ensureRelation,
+  snapshot,
+  type CollectionDef,
+} from "./schema-helpers.js";
 
 import { taxonomyCollections } from "./schema/taxonomies.js";
 import {
@@ -20,6 +26,7 @@ import {
   restaurantRelations,
 } from "./schema/restaurants.js";
 import { articleCollection } from "./schema/articles.js";
+import { imageFileField, mediaCollections, fileRelations } from "./schema/media.js";
 import { ingredientCollection, supplierCollection } from "./schema/ingredients.js";
 import { equipmentCollection } from "./schema/equipment.js";
 import { recipeCollection } from "./schema/recipes.js";
@@ -69,6 +76,15 @@ async function main() {
         await ensureField(client, def.collection, f, existing.fields);
       }
     }
+  }
+
+  // E1.3: additive image_file field + relation to directus_files on the
+  // visual collections. Idempotent — ensureField/ensureRelation skip existing.
+  for (const collection of mediaCollections) {
+    await ensureField(client, collection, imageFileField, existing.fields);
+  }
+  for (const relation of fileRelations) {
+    await ensureRelation(client, relation);
   }
 
   // Relations

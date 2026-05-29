@@ -50,6 +50,25 @@ export default [
     },
   },
   {
+    // Node CLI scripts under deploy/ (bake, rebuild listener) use Node runtime
+    // globals; declare them so no-undef does not flag them.
+    files: ["deploy/**/*.mjs"],
+    languageOptions: {
+      globals: {
+        process: "readonly",
+        console: "readonly",
+        fetch: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        Buffer: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+      },
+    },
+  },
+  {
     // Inline <script> blocks in .astro files target the browser, not Node.
     files: ["src/**/*.astro"],
     languageOptions: {
