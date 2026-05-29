@@ -22,6 +22,7 @@
 | `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen               |
 | `MEDIA_BAKE.md`              | Bild-Upload via Directus Files + Build-Zeit-Bake nach `public/_uploads/` (E1.3) |
 | `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)           |
+| `MIGRATION_E2.md`            | Relationale Migration (Taxonomien/Tags/Ort): Backup, Drill, idempotent (E2)     |
 | `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets        |
 | `MVP_SCOPE.md`               | MVP 0.1: Was wird gebaut, was nicht                                             |
 | `ROADMAP.md`                 | Agentenfähige Umsetzungsroadmap mit Tests und Quality Gates                     |
