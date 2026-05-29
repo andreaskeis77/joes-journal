@@ -8,26 +8,27 @@
 
 ## Dokumentenübersicht
 
-| Dokument                     | Zweck                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------------- |
-| `PROJECT_CHARTER.md`         | Projektauftrag, Ziele, Leitentscheidungen, Scope-Rahmen                         |
-| `ARCHITECTURE.md`            | Zielarchitektur Directus + PostgreSQL + Astro + Windows-VPS                     |
-| `DATA_MODEL.md`              | Directus Collections, Relationen, Taxonomie/Ontologie, Bewertungsmodell         |
-| `DIRECTUS_ADMIN_UX.md`       | Redaktionsmodus, Collection-Layouts, Workflows, Admin-Dashboards                |
-| `design/DESIGN_TOKENS.md`    | Farben, Typografie, Spacing, Breakpoints, UI-Tokens                             |
-| `design/FRONTEND_UX_SPEC.md` | Frontend-Seiten, Navigation, Suche, Filter, mobile/desktop UX                   |
-| `VPS_DEPLOYMENT_PLAN.md`     | Native Windows MVP, Pfade, Dienste, Domains, Backup, Deployment                 |
-| `DEPLOY_STATE.md`            | Realer VPS-Betriebszustand + Runbook (Live-Inbetriebnahme P9/P10)               |
-| `ADMIN_ACCESS.md`            | Directus-Admin hinter Cloudflare Access + Dauerbetrieb (E1.1, VPS-Runbook)      |
-| `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen               |
-| `MEDIA_BAKE.md`              | Bild-Upload via Directus Files + Build-Zeit-Bake nach `public/_uploads/` (E1.3) |
-| `SEARCH.md`                  | Suche: Pagefind (Prod) + clientseitiger Fallback, Indexierung (E3.2)            |
-| `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)           |
-| `MIGRATION_E2.md`            | Relationale Migration (Taxonomien/Tags/Ort): Backup, Drill, idempotent (E2)     |
-| `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets        |
-| `MVP_SCOPE.md`               | MVP 0.1: Was wird gebaut, was nicht                                             |
-| `ROADMAP.md`                 | Agentenfähige Umsetzungsroadmap mit Tests und Quality Gates                     |
-| `ROADMAP_EXPANSION.md`       | Post-MVP-Ausbau E1–E4 (Editorial, Schema, Inhalte, Öffentlich)                  |
+| Dokument                     | Zweck                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| `PROJECT_CHARTER.md`         | Projektauftrag, Ziele, Leitentscheidungen, Scope-Rahmen                          |
+| `ARCHITECTURE.md`            | Zielarchitektur Directus + PostgreSQL + Astro + Windows-VPS                      |
+| `DATA_MODEL.md`              | Directus Collections, Relationen, Taxonomie/Ontologie, Bewertungsmodell          |
+| `DIRECTUS_ADMIN_UX.md`       | Redaktionsmodus, Collection-Layouts, Workflows, Admin-Dashboards                 |
+| `design/DESIGN_TOKENS.md`    | Farben, Typografie, Spacing, Breakpoints, UI-Tokens                              |
+| `design/FRONTEND_UX_SPEC.md` | Frontend-Seiten, Navigation, Suche, Filter, mobile/desktop UX                    |
+| `VPS_DEPLOYMENT_PLAN.md`     | Native Windows MVP, Pfade, Dienste, Domains, Backup, Deployment                  |
+| `DEPLOY_STATE.md`            | Realer VPS-Betriebszustand + Runbook (Live-Inbetriebnahme P9/P10)                |
+| `ADMIN_ACCESS.md`            | Directus-Admin hinter Cloudflare Access + Dauerbetrieb (E1.1, VPS-Runbook)       |
+| `CONTENT_REBUILD.md`         | SSG-Staleness: wie Directus-Inhalte ins statische Frontend kommen                |
+| `MEDIA_BAKE.md`              | Bild-Upload via Directus Files + Build-Zeit-Bake nach `public/_uploads/` (E1.3)  |
+| `SEARCH.md`                  | Suche: Pagefind (Prod) + clientseitiger Fallback, Indexierung (E3.2)             |
+| `POLISH_PUBLIC.md`           | Öffentlich/Feinschliff: robots/noindex, externe Backups (P11), Logo, Docker (E4) |
+| `POSTGRES_DRYRUN.md`         | Lokaler Postgres-Trockenlauf vor dem VPS (Schema/Seed/Build gegen PG)            |
+| `MIGRATION_E2.md`            | Relationale Migration (Taxonomien/Tags/Ort): Backup, Drill, idempotent (E2)      |
+| `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets         |
+| `MVP_SCOPE.md`               | MVP 0.1: Was wird gebaut, was nicht                                              |
+| `ROADMAP.md`                 | Agentenfähige Umsetzungsroadmap mit Tests und Quality Gates                      |
+| `ROADMAP_EXPANSION.md`       | Post-MVP-Ausbau E1–E4 (Editorial, Schema, Inhalte, Öffentlich)                   |
 
 ## Verbindliche Leitentscheidungen
 

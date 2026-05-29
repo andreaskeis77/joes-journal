@@ -91,6 +91,9 @@ $ts = Get-Date -Format yyyyMMdd-HHmmss
 Restore-Drill: in eine Test-DB einspielen, Directus dagegen starten, Daten prüfen – siehe
 [POSTGRES_DRYRUN.md](POSTGRES_DRYRUN.md) und [VPS_DEPLOYMENT_PLAN.md §12](VPS_DEPLOYMENT_PLAN.md).
 
+**Externe Kopie (E4.2, schließt P11):** `deploy/backup-external.ps1` dumpt + kopiert offsite
+(UNC/rclone) + Aufbewahrung. Als täglichen Task einrichten – siehe [POLISH_PUBLIC.md](POLISH_PUBLIC.md).
+
 ## 8. Smoke-Test
 
 ```powershell
