@@ -23,6 +23,7 @@
 | `SECURITY_PRIVACY.md`        | Private-first Betrieb, Cloudflare Access, Tailscale, Bildrechte, Secrets |
 | `MVP_SCOPE.md`               | MVP 0.1: Was wird gebaut, was nicht                                      |
 | `ROADMAP.md`                 | Agentenfähige Umsetzungsroadmap mit Tests und Quality Gates              |
+| `ROADMAP_EXPANSION.md`       | Post-MVP-Ausbau E1–E4 (Editorial, Schema, Inhalte, Öffentlich)           |
 
 ## Verbindliche Leitentscheidungen
 
