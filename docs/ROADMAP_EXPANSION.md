@@ -187,3 +187,43 @@ corepack pnpm lint ; corepack pnpm typecheck ; corepack pnpm test ; corepack pnp
 ```
 
 Doku-Pflicht: jede Tranche aktualisiert DEPLOY_STATE.md (Stand) und ggf. DATA_MODEL.md (Schema).
+
+---
+
+## 8. Umsetzungsstand (2026-05-29)
+
+Alle Phasen durchgearbeitet. Quality Gates am Laptop grün: **lint 0**, **typecheck
+0/0/0**, **50 Tests** (war 26), **38 Seiten** Build (war 35), Prettier sauber.
+Legende: ✅ gebaut & verifiziert (Repo) · 🔶 gebaut, Live-Ausführung ist Handoff
+(VPS/Cloudflare/DB) · 📝 bewusst dokumentiert/zurückgestellt.
+
+| Tranche                                            | Status | Artefakt                                                                                                                                                                                                            |
+| -------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **E1.1** Admin hinter Access                       | 🔶     | `deploy/ensure-directus-service.ps1` (Dauerbetrieb) + [ADMIN_ACCESS.md](ADMIN_ACCESS.md) Runbook. Access-App/Public-Hostname = Cloudflare-Dashboard.                                                                |
+| **E1.2** Auto-Rebuild                              | 🔶     | `deploy/rebuild-listener.mjs` (loopback, Shared-Secret, Debounce) + `install-rebuild-listener.ps1`; [CONTENT_REBUILD.md §5](CONTENT_REBUILD.md). Flow + Task = VPS.                                                 |
+| **E1.3** Files + Bake                              | ✅🔶   | `src/lib/bake/manifest.ts` (+Test), `deploy/bake-files.mjs`, Loader-Integration, additive `image_file` (`schema/media.ts`), in `rebuild.ps1`; [MEDIA_BAKE.md](MEDIA_BAKE.md). `schema:apply` + realer Upload = VPS. |
+| **E1.4** Admin-UX                                  | 🔶     | `presets:apply` (gespeicherte Filter) + `meta:refine` (Display-Templates), idempotent; [DIRECTUS_ADMIN_UX §12a](DIRECTUS_ADMIN_UX.md). Ausführung = VPS. Feldgruppen/Dashboard 📝 offen.                            |
+| **E3.1** Journal-Artikel-Typ                       | ✅     | Voller Stack: Typ, Stub, derive/SEC-1, Mapper, Directus-Collection, Seed, `/journal` + `/journal/[slug]`, Card, Nav, Home-Feed, Suche. +Tests.                                                                      |
+| **E2.1/2.2** Taxonomien/Tags relational            | 🔶     | `slug.ts` (+Test), additive M2M/M2O (`taxonomy-relations.ts`), `relations:apply` + `migrate:taxonomies` (idempotent); [MIGRATION_E2.md](MIGRATION_E2.md). Live-Migration nach Backup+Drill = Handoff.               |
+| **E2.3–2.5** Links-M2A / reiche Felder / FE-Filter | 📝     | In MIGRATION_E2 spezifiziert; Frontend-Cutover bewusst nach erfolgreicher Live-Migration.                                                                                                                           |
+| **E3.2** Pagefind                                  | ✅🔶   | `data-pagefind-body`, progressive `/suche` (Fallback bleibt), `search:index`, in `rebuild.ps1`; [SEARCH.md](SEARCH.md). UI live in Prod.                                                                            |
+| **E3.3** Strukturierte Zutaten                     | ✅     | `src/lib/recipe/amount.ts` (Parser/Scaler, +Test). Relationale Zutaten-Rows 📝 (eigene Migration).                                                                                                                  |
+| **E3.4** Geo/Karte                                 | 📝     | Zurückgestellt: externe Kartenkacheln verraten besuchte Orte → widerspricht private-first; Neubewertung in E4.1-Kontext.                                                                                            |
+| **E4.1** Selektiv öffentlich                       | ✅🔶   | `robots.txt` (Disallow), `BaseLayout`-Prop `index` (Default noindex); Public-Checkliste [POLISH_PUBLIC.md](POLISH_PUBLIC.md). Access-Bypass = Dashboard.                                                            |
+| **E4.2** Externe Backups (P11)                     | 🔶     | `deploy/backup-external.ps1` (Dump + offsite + Retention). Task + Restore-Drill = VPS.                                                                                                                              |
+| **E4.3** Logo                                      | 📝     | Wortmarke-Assets existieren; Header-Wechsel = Owner-Design-Entscheidung.                                                                                                                                            |
+| **E4.4** Docker                                    | 📝     | Empfehlung: nativ bleiben; Trigger für Neubewertung benannt.                                                                                                                                                        |
+
+**Verbleibende Handoffs (VPS/Cloudflare/DB – nicht aus dem Repo automatisierbar):**
+
+1. `schema:apply` für `image_file` (E1.3) + `presets:apply`/`meta:refine` (E1.4).
+2. Cloudflare: Access-App + Public Hostname `admin.zumfettigenjoe.com` → `127.0.0.1:8055` (E1.1).
+3. `JOES_REBUILD_TOKEN` in `.env`, `install-rebuild-listener.ps1`, Directus-Flow (E1.2).
+4. E2: `pg_dump`-Backup → Restore-Drill → `relations:apply` + `migrate:taxonomies` → Verifikation; danach Frontend-Cutover (E2.5).
+5. E4.2: `backup-external.ps1` als täglicher Task + erster Restore-Drill.
+
+**Nicht im Laptop-Gate prüfbar (ehrlich):** Build im `JOES_DATA_SOURCE=directus`-Modus,
+der reale Bild-Bake, die M2M-Erstellung und die Pagefind-UI zur Laufzeit – alle
+brauchen eine laufende Directus-Instanz bzw. das ausgelieferte `dist/`. Sie sind
+typecheck-/lint-/syntaxgeprüft und gegen die dokumentierten Runbooks abgesichert,
+aber **gegen Live noch zu verifizieren** (Reihenfolge oben).
