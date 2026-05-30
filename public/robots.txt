@@ -1,0 +1,7 @@
+# Zum Fettigen Joe – private-first (E4.1).
+# Das Journal liegt hinter Cloudflare Access; Crawler erreichen es ohnehin nicht.
+# Defense-in-depth: standardmäßig alles sperren. Wird ein Pfad bewusst öffentlich
+# (Access-Bypass), hier eine gezielte Allow-Regel ergänzen UND auf der Seite
+# `index={true}` setzen (BaseLayout entfernt dann das noindex-Meta).
+User-agent: *
+Disallow: /

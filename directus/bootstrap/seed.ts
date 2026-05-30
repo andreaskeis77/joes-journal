@@ -15,6 +15,7 @@ import { authenticatedClient, type Client } from "./client.js";
 import {
   restaurants as stubRestaurants,
   reviews as stubReviews,
+  articles as stubArticles,
   recipes as stubRecipes,
   cocktails as stubCocktails,
   equipment as stubEquipment,
@@ -171,6 +172,33 @@ async function seedReviews(client: Client, restaurantIds: Map<string, string>) {
     if (result.created) created++;
   }
   console.log(`[seed] restaurant_reviews: +${created}`);
+}
+
+async function seedArticles(client: Client) {
+  const existing = await existingSlugs(client, "articles");
+  let created = 0;
+  for (const a of stubArticles) {
+    const payload = {
+      slug: a.slug,
+      title: a.title,
+      status: a.status,
+      published_date: a.publishedDate,
+      eyebrow: a.eyebrow ?? null,
+      summary: a.summary,
+      body: a.body,
+      image: a.image,
+      gallery_images: a.galleryImages,
+      tags: a.tags,
+      related_restaurant_slugs: a.relatedRestaurantSlugs,
+      related_recipe_slugs: a.relatedRecipeSlugs,
+      related_cocktail_slugs: a.relatedCocktailSlugs,
+      seo_title: a.seoTitle ?? null,
+      seo_description: a.seoDescription ?? null,
+    };
+    const result = await insertIfNew(client, "articles", payload, existing);
+    if (result.created) created++;
+  }
+  console.log(`[seed] articles: +${created}`);
 }
 
 async function seedSuppliers(client: Client) {
@@ -339,6 +367,7 @@ async function main() {
   await seedTaxonomies(client);
   const restaurantIds = await seedRestaurants(client);
   await seedReviews(client, restaurantIds);
+  await seedArticles(client);
   await seedSuppliers(client);
   await seedIngredients(client);
   await seedEquipment(client);

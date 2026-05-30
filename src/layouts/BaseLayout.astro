@@ -6,11 +6,19 @@ import SiteFooter from "../components/SiteFooter.astro";
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * Ob diese Seite öffentlich indexierbar ist. Default false (private-first,
+   * E4.1): solange das Journal hinter Cloudflare Access liegt, trägt jede Seite
+   * `noindex`. Wird ein Pfad bewusst öffentlich (Access-Bypass), kann die Seite
+   * `index={true}` setzen – zusammen mit einer Allow-Regel in robots.txt.
+   */
+  index?: boolean;
 }
 
 const {
   title = "Zum Fettigen Joe",
   description = "Ein persönliches Journal über Restaurants, Küche, Cocktails und guten Geschmack.",
+  index = false,
 } = Astro.props;
 
 const fullTitle = title === "Zum Fettigen Joe" ? title : `${title} – Zum Fettigen Joe`;
@@ -24,6 +32,7 @@ const fullTitle = title === "Zum Fettigen Joe" ? title : `${title} – Zum Fetti
     <meta name="color-scheme" content="light" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {!index && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -44,7 +53,7 @@ const fullTitle = title === "Zum Fettigen Joe" ? title : `${title} – Zum Fetti
   <body>
     <a class="skip-link" href="#main">Zum Inhalt springen</a>
     <SiteHeader />
-    <main id="main">
+    <main id="main" data-pagefind-body>
       <slot />
     </main>
     <SiteFooter />

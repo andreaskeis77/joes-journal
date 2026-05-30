@@ -19,6 +19,8 @@ export interface DirectusRestaurant {
   tags: string[] | null;
   note: string | null;
   image: string | null;
+  /** Additive Directus-File-Referenz (E1.3); per Bake gewinnt sie über `image`. */
+  image_file?: string | null;
   website: string | null;
   reservation_url: string | null;
   maps_url: string | null;
@@ -35,7 +37,28 @@ export interface DirectusReview {
   excerpt: string | null;
   body: string[] | null;
   image: string | null;
+  image_file?: string | null;
   gallery_images: string[] | null;
+}
+
+export interface DirectusArticle {
+  id: string;
+  slug: string;
+  title: string;
+  status: string;
+  eyebrow: string | null;
+  summary: string | null;
+  body: string[] | null;
+  image: string | null;
+  image_file?: string | null;
+  gallery_images: string[] | null;
+  published_date: string | null;
+  tags: string[] | null;
+  related_restaurant_slugs: string[] | null;
+  related_recipe_slugs: string[] | null;
+  related_cocktail_slugs: string[] | null;
+  seo_title: string | null;
+  seo_description: string | null;
 }
 
 export interface DirectusIngredient {
@@ -68,6 +91,7 @@ export interface DirectusEquipment {
   model: string | null;
   product_url: string | null;
   image: string | null;
+  image_file?: string | null;
   note: string | null;
   linked_recipe_slugs: string[] | null;
   linked_cocktail_slugs: string[] | null;
@@ -84,6 +108,7 @@ export interface DirectusRecipe {
   slug: string;
   title: string;
   image: string | null;
+  image_file?: string | null;
   summary: string | null;
   servings: number | null;
   prep_min: number | null;
@@ -112,6 +137,7 @@ export interface DirectusCocktail {
   technique: string | null;
   flavor_profile: string | null;
   image: string | null;
+  image_file?: string | null;
   pours: DirectusCocktailPour[] | null;
   garnish: string | null;
   preparation: string[] | null;

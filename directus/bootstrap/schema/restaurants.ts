@@ -262,6 +262,12 @@ export const restaurantRelations: RelationDef[] = [
       junction_field: null,
       sort_field: null,
     },
-    schema: { on_delete: "SET NULL" },
+    // The `restaurant` FK is NOT NULL (a review without a restaurant is
+    // meaningless), so "SET NULL" would be inconsistent and fails on
+    // PostgreSQL when a restaurant is deleted. "NO ACTION" keeps the data
+    // consistent: a restaurant with reviews cannot be deleted until its
+    // reviews are removed/reassigned first — protecting written content
+    // from accidental loss. (SQLite tolerated the old mismatch; PG does not.)
+    schema: { on_delete: "NO ACTION" },
   },
 ];

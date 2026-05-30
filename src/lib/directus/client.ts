@@ -6,6 +6,7 @@
  */
 import { authentication, createDirectus, readItems, rest } from "@directus/sdk";
 import type {
+  DirectusArticle,
   DirectusCocktail,
   DirectusContentCollection,
   DirectusEquipment,
@@ -20,6 +21,7 @@ import type {
 interface JoesSchema {
   restaurants: DirectusRestaurant[];
   restaurant_reviews: DirectusReview[];
+  articles: DirectusArticle[];
   recipes: DirectusRecipe[];
   cocktails: DirectusCocktail[];
   equipment: DirectusEquipment[];
@@ -87,6 +89,7 @@ export type JoesDirectusClient = Awaited<ReturnType<typeof createAuthenticatedCl
 export interface RawData {
   restaurants: DirectusRestaurant[];
   reviews: DirectusReview[];
+  articles: DirectusArticle[];
   recipes: DirectusRecipe[];
   cocktails: DirectusCocktail[];
   equipment: DirectusEquipment[];
@@ -97,15 +100,17 @@ export interface RawData {
 }
 
 /**
- * Pulls every domain collection in parallel.
- *
- * `restaurants` requests the inverse `reviews` relation so we can derive
- * `restaurant.reviewSlug` without a second round trip.
+ * Pulls every domain collection in parallel. Reviews are filtered to
+ * `published` server-side (the editorial gate — drafts/internal never leave
+ * Directus). `restaurant.reviewSlug` is NOT derived here: the loader backfills
+ * it from the flat (already published-only) reviews list (see
+ * loader-directus.ts), so we don't depend on an o2m alias on `restaurants`.
  */
 export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> {
   const [
     restaurants,
     reviews,
+    articles,
     recipes,
     cocktails,
     equipmentItems,
@@ -122,8 +127,21 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
         limit: -1,
         fields: ["*", { restaurant: ["slug"] }] as never,
         sort: ["-visited_on"] as never,
+        // Primary defense: never pull drafts/internal/archived reviews into the
+        // build. derive() filters again as a source-agnostic second layer.
+        filter: { status: { _eq: "published" } } as never,
       } as never),
     ) as Promise<DirectusReview[]>,
+    client.request(
+      readItems("articles", {
+        limit: -1,
+        fields: ["*"] as never,
+        sort: ["-published_date"] as never,
+        // Same editorial gate as reviews: only published journal articles
+        // leave Directus. derive() filters again as a second layer.
+        filter: { status: { _eq: "published" } } as never,
+      } as never),
+    ) as Promise<DirectusArticle[]>,
     client.request(readItems("recipes", { limit: -1, fields: ["*"] as never } as never)) as Promise<
       DirectusRecipe[]
     >,
@@ -150,6 +168,7 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
   return {
     restaurants,
     reviews,
+    articles,
     recipes,
     cocktails,
     equipment: equipmentItems,

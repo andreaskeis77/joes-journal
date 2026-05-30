@@ -4,9 +4,15 @@
  *
  * Throws on connection or auth errors so the build fails loudly — that is
  * usually safer than producing a static site with partial data.
+ *
+ * Image bake (E1.3): after mapping, image fields are resolved against the
+ * uploads manifest. A Directus file reference that was downloaded by the
+ * pre-build bake step (deploy/bake-files.mjs) wins over the legacy string path;
+ * otherwise the string path is used unchanged. See src/lib/bake/manifest.ts.
  */
 import { createAuthenticatedClient, fetchAllRaw } from "../lib/directus/client";
 import {
+  mapArticle,
   mapCocktail,
   mapCollection,
   mapEquipment,
@@ -17,14 +23,37 @@ import {
   mapReview,
   mapSupplier,
 } from "../lib/directus/mappers";
+import { resolveImage, type UploadsManifest } from "../lib/bake/manifest";
+import uploadsManifest from "./uploads-manifest.json";
 import type { RawData } from "./derive";
+
+const manifest = uploadsManifest as UploadsManifest;
+
+/**
+ * Resolves baked Directus files for a list of mapped items in place. `items`
+ * and `raws` are index-aligned (map preserves order), so `raws[i].image_file`
+ * is the file reference for `items[i]`.
+ */
+function bakeImages<T extends { image: string }>(
+  items: T[],
+  raws: Array<{ image_file?: string | null }>,
+): T[] {
+  items.forEach((item, i) => {
+    item.image = resolveImage(item.image, raws[i]?.image_file ?? null, manifest);
+  });
+  return items;
+}
 
 export async function loadFromDirectus(): Promise<RawData> {
   const client = await createAuthenticatedClient();
   const raw = await fetchAllRaw(client);
 
-  const restaurants = raw.restaurants.map(mapRestaurant);
-  const reviews = raw.reviews.map(mapReview);
+  const restaurants = bakeImages(raw.restaurants.map(mapRestaurant), raw.restaurants);
+  const reviews = bakeImages(raw.reviews.map(mapReview), raw.reviews);
+  const articles = bakeImages(raw.articles.map(mapArticle), raw.articles);
+  const recipes = bakeImages(raw.recipes.map(mapRecipe), raw.recipes);
+  const cocktails = bakeImages(raw.cocktails.map(mapCocktail), raw.cocktails);
+  const equipment = bakeImages(raw.equipment.map(mapEquipment), raw.equipment);
 
   // Backfill the inverse relation: each restaurant's reviewSlug is derived
   // from the reviews list rather than from a nested SDK query, so we don't
@@ -42,9 +71,10 @@ export async function loadFromDirectus(): Promise<RawData> {
   return {
     restaurants,
     reviews,
-    recipes: raw.recipes.map(mapRecipe),
-    cocktails: raw.cocktails.map(mapCocktail),
-    equipment: raw.equipment.map(mapEquipment),
+    articles,
+    recipes,
+    cocktails,
+    equipment,
     ingredients: raw.ingredients.map(mapIngredient),
     suppliers: raw.suppliers.map(mapSupplier),
     collections: raw.collections.map(mapCollection),

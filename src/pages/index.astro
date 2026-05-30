@@ -3,12 +3,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeHero from "../components/HomeHero.astro";
 import QuickChips from "../components/QuickChips.astro";
 import ReviewCard from "../components/ReviewCard.astro";
+import ArticleCard from "../components/ArticleCard.astro";
 import RestaurantCard from "../components/RestaurantCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 import StatCard from "../components/StatCard.astro";
-import { reviewsByDateDesc, restaurants, categories, stats } from "../data/source";
+import {
+  reviewsByDateDesc,
+  articlesByDateDesc,
+  restaurants,
+  categories,
+  stats,
+} from "../data/source";
 
 const latestReviews = reviewsByDateDesc.slice(0, 3);
+const latestArticles = articlesByDateDesc.slice(0, 3);
 const homeRestaurants = restaurants
   .filter((r) => r.status === "wishlist" || r.status === "planned" || r.status === "reviewed")
   .slice(0, 3);
@@ -36,7 +44,30 @@ const homeRestaurants = restaurants
     </div>
   </section>
 
-  <section class="home-section alt-bg">
+  {
+    latestArticles.length > 0 && (
+      <section class="home-section alt-bg">
+        <div class="container">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Aus dem Journal</p>
+              <h2>Notizen, Essays, Reportagen</h2>
+            </div>
+            <a class="section-more" href="/journal">
+              Alle Beiträge →
+            </a>
+          </header>
+          <div class="grid grid-3">
+            {latestArticles.map((article) => (
+              <ArticleCard article={article} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="home-section">
     <div class="container">
       <header class="section-header">
         <div>
@@ -51,7 +82,7 @@ const homeRestaurants = restaurants
     </div>
   </section>
 
-  <section class="home-section">
+  <section class="home-section alt-bg">
     <div class="container">
       <header class="section-header">
         <div>
@@ -65,7 +96,7 @@ const homeRestaurants = restaurants
     </div>
   </section>
 
-  <section class="home-section alt-bg">
+  <section class="home-section">
     <div class="container">
       <header class="section-header">
         <div>

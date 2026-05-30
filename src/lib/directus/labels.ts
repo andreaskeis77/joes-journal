@@ -3,7 +3,12 @@
  * The Astro components consume the German label; Directus stores the
  * machine-readable value.
  */
-import type { RestaurantStatus, EquipmentStatus, CollectionType } from "../../data/stub";
+import type {
+  RestaurantStatus,
+  EquipmentStatus,
+  CollectionType,
+  ReviewStatus,
+} from "../../data/stub";
 
 export const RESTAURANT_STATUS_LABELS: Record<RestaurantStatus | string, string> = {
   wishlist: "Merkliste",
@@ -61,4 +66,16 @@ export function normalizeEquipmentStatus(raw: string): EquipmentStatus {
 export function normalizeCollectionType(raw: string): CollectionType {
   if (raw === "saved_view") return "saved_view";
   return "manual";
+}
+
+/**
+ * Narrows the free-form editorial status string from Directus into the known
+ * review lifecycle. Anything unknown or missing falls back to "draft" — the
+ * safest default, because only "published" reaches the public static output.
+ */
+export function normalizeReviewStatus(raw: string | null | undefined): ReviewStatus {
+  if (raw === "published" || raw === "internal" || raw === "archived" || raw === "draft") {
+    return raw;
+  }
+  return "draft";
 }

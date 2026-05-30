@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  mapArticle,
   mapCocktail,
   mapCollection,
   mapEquipment,
@@ -11,6 +12,7 @@ import {
   mapSupplier,
 } from "./mappers";
 import type {
+  DirectusArticle,
   DirectusCocktail,
   DirectusContentCollection,
   DirectusEquipment,
@@ -92,6 +94,27 @@ describe("mapReview", () => {
     expect(out.rating).toBe(4.5);
     expect(out.body).toHaveLength(2);
     expect(out.galleryImages).toEqual(["/g1.webp"]);
+    expect(out.status).toBe("published");
+  });
+
+  it("preserves the real editorial status instead of forcing published", () => {
+    const base: DirectusReview = {
+      id: "r3",
+      slug: "draft-one",
+      title: "Draft",
+      status: "draft",
+      restaurant: "uuid-only",
+      visited_on: null,
+      rating: 0,
+      excerpt: null,
+      body: null,
+      image: null,
+      gallery_images: null,
+    };
+    expect(mapReview(base).status).toBe("draft");
+    expect(mapReview({ ...base, status: "internal" }).status).toBe("internal");
+    // Unknown / missing status falls back to the safe non-public default.
+    expect(mapReview({ ...base, status: "bogus" }).status).toBe("draft");
   });
 
   it("accepts string rating from Directus decimal", () => {
@@ -113,6 +136,66 @@ describe("mapReview", () => {
     expect(out.body).toEqual([]);
     expect(out.galleryImages).toEqual([]);
     expect(out.restaurantSlug).toBe("uuid-only");
+  });
+});
+
+describe("mapArticle", () => {
+  const base: DirectusArticle = {
+    id: "a1",
+    slug: "kurze-karte",
+    title: "Warum eine kurze Karte das beste Versprechen ist",
+    status: "published",
+    eyebrow: "Notiz",
+    summary: "Zwölf Zeilen statt vier Seiten.",
+    body: ["Absatz eins", "Absatz zwei"],
+    image: "/assets/heroes/foo.webp",
+    gallery_images: ["/g1.webp"],
+    published_date: "2026-05-12",
+    tags: ["essay", "haltung"],
+    related_restaurant_slugs: ["le-bistro-discret"],
+    related_recipe_slugs: [],
+    related_cocktail_slugs: [],
+    seo_title: null,
+    seo_description: null,
+  };
+
+  it("maps snake_case to camelCase and passes the real status through", () => {
+    const out = mapArticle(base);
+    expect(out.slug).toBe("kurze-karte");
+    expect(out.status).toBe("published");
+    expect(out.eyebrow).toBe("Notiz");
+    expect(out.body).toHaveLength(2);
+    expect(out.publishedDate).toBe("2026-05-12");
+    expect(out.relatedRestaurantSlugs).toEqual(["le-bistro-discret"]);
+    expect(out.seoTitle).toBeUndefined();
+  });
+
+  it("preserves draft/internal status and falls back to draft for unknown", () => {
+    expect(mapArticle({ ...base, status: "draft" }).status).toBe("draft");
+    expect(mapArticle({ ...base, status: "internal" }).status).toBe("internal");
+    expect(mapArticle({ ...base, status: "bogus" }).status).toBe("draft");
+  });
+
+  it("defaults nullable fields to safe empties", () => {
+    const out = mapArticle({
+      ...base,
+      eyebrow: null,
+      summary: null,
+      body: null,
+      image: null,
+      gallery_images: null,
+      published_date: null,
+      tags: null,
+      related_restaurant_slugs: null,
+      related_recipe_slugs: null,
+      related_cocktail_slugs: null,
+    });
+    expect(out.eyebrow).toBeUndefined();
+    expect(out.summary).toBe("");
+    expect(out.body).toEqual([]);
+    expect(out.image).toBe("");
+    expect(out.tags).toEqual([]);
+    expect(out.relatedRecipeSlugs).toEqual([]);
   });
 });
 

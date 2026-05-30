@@ -20,6 +20,13 @@ export interface RestaurantStub {
   reviewSlug?: string;
 }
 
+/**
+ * Editorialer Lebenszyklus einer Kritik (entspricht CONTENT_STATUS_OPTIONS in
+ * directus/bootstrap/schema/status.ts). Nur `published` darf im statischen
+ * Output landen – siehe derive() und den Loader-Filter in client.ts.
+ */
+export type ReviewStatus = "draft" | "internal" | "published" | "archived";
+
 export interface ReviewStub {
   slug: string;
   title: string;
@@ -31,7 +38,36 @@ export interface ReviewStub {
   body: string[];
   image: string;
   galleryImages: string[];
-  status: "published";
+  status: ReviewStatus;
+}
+
+/**
+ * Freier Journal-Beitrag (Essay, Notiz, Reportage) – zusätzlich zu den
+ * strukturierten Typen (Kritik, Rezept, Cocktail). Teilt den editorialen
+ * Lebenszyklus mit Kritiken: nur `published` erreicht den statischen Output
+ * (SEC-1, siehe derive()). Body ist eine Absatzliste – bewusst einfach und
+ * portabel (Decision Log #4); Rich-Text/Blocks kommen später.
+ */
+export interface ArticleStub {
+  slug: string;
+  title: string;
+  status: ReviewStatus;
+  /** Kicker / Eyebrow über der Überschrift. */
+  eyebrow?: string;
+  summary: string;
+  body: string[];
+  image: string;
+  galleryImages: string[];
+  /** ISO-Datum der Veröffentlichung; sortiert die Liste. */
+  publishedDate: string;
+  tags: string[];
+  /** Dünne Verknüpfungen über Slug (relational erst ab E2). */
+  relatedRestaurantSlugs: string[];
+  relatedRecipeSlugs: string[];
+  relatedCocktailSlugs: string[];
+  /** Optionale SEO-Overrides; fallen sonst auf title/summary zurück. */
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface CategoryStub {
@@ -236,6 +272,66 @@ export const reviews: ReviewStub[] = [
       "/assets/reviews/review-wine-glass-table-4x3-v01.webp",
     ],
     status: "published",
+  },
+];
+
+export const articles: ArticleStub[] = [
+  {
+    slug: "kurze-karte-bestes-versprechen",
+    title: "Warum eine kurze Karte das beste Versprechen ist",
+    status: "published",
+    eyebrow: "Notiz",
+    summary:
+      "Zwölf Zeilen statt vier Seiten: Eine kurze Karte ist kein Mangel an Auswahl, sondern eine Haltung. Über das Vertrauen, das in einer reduzierten Speisekarte steckt.",
+    body: [
+      "Es gibt einen Moment in jedem guten Restaurant, in dem man die Karte aufschlägt und sofort weiß, woran man ist. Bei den besten Adressen ist dieser Moment kurz: zwölf Zeilen, vielleicht zwei davon für Desserts. Keine Fotos, keine Sterne neben den Empfehlungen, kein „Hausspezialität“ in Versalien.",
+      "Eine kurze Karte ist ein Versprechen. Sie sagt: Wir kaufen das, was heute gut ist, und wir kochen das, was wir können. Sie nimmt einem die Qual der Wahl ab und gibt einem die Erlaubnis, einfach das Naheliegende zu bestellen – und darauf zu vertrauen, dass es gut wird.",
+      "Die lange Karte dagegen ist oft ein Misstrauensvotum gegen die eigene Küche. Vierzig Gerichte bedeuten Tiefkühltruhe, Convenience, Standzeiten. Wer alles anbietet, kann selten etwas richtig gut. Das ist keine Regel, aber eine erstaunlich verlässliche Faustregel.",
+      "Am Ende ist die kurze Karte auch eine Frage des Respekts – vor dem Produkt, vor der eigenen Arbeit und vor dem Gast, dem man zutraut, dass er eine Entscheidung aushält.",
+    ],
+    image: "/assets/heroes/hero-reviews-table-after-service-16x9-v01.webp",
+    galleryImages: ["/assets/reviews/review-service-table-detail-4x3-v01.webp"],
+    publishedDate: "2026-05-12",
+    tags: ["essay", "haltung", "restaurant"],
+    relatedRestaurantSlugs: ["le-bistro-discret"],
+    relatedRecipeSlugs: [],
+    relatedCocktailSlugs: [],
+  },
+  {
+    slug: "mise-en-place-ruhige-kunst",
+    title: "Mise en Place: die ruhige Kunst der Vorbereitung",
+    status: "published",
+    eyebrow: "Aus der Küche",
+    summary:
+      "Bevor die Pfanne heiß wird, ist die halbe Arbeit getan. Über das Ritual, das gute Küche von hektischer Küche trennt.",
+    body: [
+      "Mise en Place – „alles an seinem Platz“ – ist der unspektakulärste und zugleich wichtigste Teil des Kochens. Es ist der Moment, in dem alles geschnitten, abgewogen und bereitgestellt wird, bevor die erste Zutat in die Pfanne kommt.",
+      "Wer schon einmal mitten im Kochen festgestellt hat, dass die Schalotte noch ungeschält ist, während die Butter in der Pfanne längst braun wird, kennt den Unterschied. Gute Küche ist selten eine Frage von Talent im Moment – sie ist eine Frage der Vorbereitung davor.",
+      "Das Schöne daran: Mise en Place ist eine ruhige Tätigkeit. Schneiden, sortieren, in kleine Schälchen füllen. Es ist der meditative Teil, der dem lauten Teil vorausgeht. Und wenn dann die Hitze kommt, ist alles nur noch eine Frage des Timings.",
+    ],
+    image: "/assets/heroes/hero-recipes-kitchen-counter-mise-en-place-16x9-v01.webp",
+    galleryImages: ["/assets/recipes/recipe-card-mise-en-place-vegetables-4x3-v01.webp"],
+    publishedDate: "2026-04-28",
+    tags: ["technik", "küche", "grundlagen"],
+    relatedRestaurantSlugs: [],
+    relatedRecipeSlugs: ["fruehlingsgemuese-pfanne", "saiblings-filet-beurre-blanc"],
+    relatedCocktailSlugs: [],
+  },
+  {
+    slug: "natural-wine-erste-notizen",
+    title: "Natural Wine: erste Notizen, noch unsortiert",
+    status: "draft",
+    eyebrow: "Entwurf",
+    summary:
+      "Ein Entwurf, der bewusst nicht veröffentlicht ist – er demonstriert das Status-Gate (SEC-1): Entwürfe erreichen den öffentlichen Output nie.",
+    body: ["Dieser Beitrag ist ein Entwurf und darf nicht öffentlich erscheinen."],
+    image: "/assets/heroes/hero-cocktails-moody-bar-glassware-16x9-v01.webp",
+    galleryImages: [],
+    publishedDate: "2026-05-20",
+    tags: ["wein", "entwurf"],
+    relatedRestaurantSlugs: ["vinothek-nord"],
+    relatedRecipeSlugs: [],
+    relatedCocktailSlugs: [],
   },
 ];
 
@@ -841,6 +937,7 @@ export const links: LinkStub[] = [
 /** Convenience accessors für Detailseiten. */
 export const restaurantBySlug = new Map(restaurants.map((r) => [r.slug, r]));
 export const reviewBySlug = new Map(reviews.map((r) => [r.slug, r]));
+export const articleBySlug = new Map(articles.map((a) => [a.slug, a]));
 export const recipeBySlug = new Map(recipes.map((r) => [r.slug, r]));
 export const cocktailBySlug = new Map(cocktails.map((c) => [c.slug, c]));
 export const equipmentBySlug = new Map(equipment.map((e) => [e.slug, e]));
@@ -850,6 +947,9 @@ export const collectionBySlug = new Map(collections.map((c) => [c.slug, c]));
 
 /** Sortierte Listen für Listenseiten. */
 export const reviewsByDateDesc = [...reviews].sort((a, b) => (a.visitedOn < b.visitedOn ? 1 : -1));
+export const articlesByDateDesc = [...articles].sort((a, b) =>
+  a.publishedDate < b.publishedDate ? 1 : -1,
+);
 
 /** Status-Reihenfolge für Listenanzeige. */
 export const statusOrder: Record<RestaurantStatus, number> = {
@@ -889,6 +989,7 @@ export const alcoholFreeCocktailCount = cocktails.filter((c) => c.type === "alko
 export type SearchKind =
   | "restaurant"
   | "review"
+  | "article"
   | "recipe"
   | "cocktail"
   | "equipment"
@@ -933,6 +1034,15 @@ export const searchIndex: SearchEntry[] = [
       searchText: s(rv.title, rv.excerpt, rest?.name, rest?.city, ...rv.body),
     };
   }),
+  ...articles.map<SearchEntry>((a) => ({
+    kind: "article",
+    kindLabel: "Journal",
+    title: a.title,
+    href: `/journal/${a.slug}`,
+    snippet: a.eyebrow ?? "Journal",
+    image: a.image,
+    searchText: s(a.title, a.summary, a.eyebrow, ...a.tags, ...a.body),
+  })),
   ...recipes.map<SearchEntry>((rc) => ({
     kind: "recipe",
     kindLabel: "Rezept",

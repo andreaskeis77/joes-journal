@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { articlesByDateDesc } from "../../data/source";
+---
+
+<BaseLayout
+  title="Journal"
+  description="Freie Beiträge aus dem Journal: Essays, Notizen und Reportagen über Restaurants, Küche und guten Geschmack."
+>
+  <PageHeader
+    eyebrow="Journal"
+    title="Notizen, Essays, Reportagen"
+    lede="Freie Beiträge jenseits der strukturierten Kritiken und Rezepte. Neuestes oben."
+  />
+
+  <section class="article-list">
+    <div class="container">
+      {
+        articlesByDateDesc.length === 0 ? (
+          <EmptyState
+            title="Noch kein Beitrag veröffentlicht."
+            description="Sobald der erste Journal-Beitrag fertig ist, erscheint er hier."
+          />
+        ) : (
+          <div class="grid">
+            {articlesByDateDesc.map((article) => (
+              <ArticleCard article={article} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .article-list {
+    padding-block: var(--space-6) var(--space-9);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

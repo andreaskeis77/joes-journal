@@ -56,13 +56,20 @@ export interface RelationDef {
   };
 }
 
+/**
+ * Creates the collection (with all its fields) if it does not yet exist.
+ * Returns `true` if it created the collection, `false` if it already existed.
+ * When it returns `false`, the caller is responsible for reconciling
+ * individual fields via {@link ensureField} — this function only creates
+ * fields at initial collection creation time.
+ */
 export async function ensureCollection(
   client: Client,
   definition: CollectionDef,
   existing: Set<string>,
-): Promise<void> {
+): Promise<boolean> {
   if (existing.has(definition.collection)) {
-    return;
+    return false;
   }
   const idField: FieldDef = {
     field: "id",
@@ -98,6 +105,7 @@ export async function ensureCollection(
   );
   existing.add(definition.collection);
   console.log(`[schema] created collection: ${definition.collection}`);
+  return true;
 }
 
 export async function ensureField(

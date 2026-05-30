@@ -11,7 +11,13 @@
  *   - .env contains ADMIN_EMAIL / ADMIN_PASSWORD
  */
 import { authenticatedClient } from "./client.js";
-import { ensureCollection, snapshot, type CollectionDef } from "./schema-helpers.js";
+import {
+  ensureCollection,
+  ensureField,
+  ensureRelation,
+  snapshot,
+  type CollectionDef,
+} from "./schema-helpers.js";
 
 import { taxonomyCollections } from "./schema/taxonomies.js";
 import {
@@ -19,6 +25,8 @@ import {
   reviewCollection,
   restaurantRelations,
 } from "./schema/restaurants.js";
+import { articleCollection } from "./schema/articles.js";
+import { imageFileField, mediaCollections, fileRelations } from "./schema/media.js";
 import { ingredientCollection, supplierCollection } from "./schema/ingredients.js";
 import { equipmentCollection } from "./schema/equipment.js";
 import { recipeCollection } from "./schema/recipes.js";
@@ -40,6 +48,7 @@ async function main() {
     ...taxonomyCollections,
     restaurantCollection,
     reviewCollection,
+    articleCollection,
     supplierCollection,
     ingredientCollection,
     equipmentCollection,
@@ -50,7 +59,32 @@ async function main() {
   ];
 
   for (const def of allCollections) {
-    await ensureCollection(client, def, existing.collections);
+    const created = await ensureCollection(client, def, existing.collections);
+    if (created) {
+      // Fields were created together with the collection; record them so the
+      // reconciliation below does not try to create them a second time.
+      for (const f of def.fields) {
+        existing.fields.add(`${def.collection}.${f.field}`);
+      }
+    } else {
+      // Collection already existed: additively reconcile any missing fields.
+      // This makes `schema:apply` an idempotent forward migration for new
+      // fields (NOT for type changes or renames — those still need a reset
+      // or a manual migration). Closes the gap where new fields added to a
+      // schema/*.ts file were silently ignored against an existing DB.
+      for (const f of def.fields) {
+        await ensureField(client, def.collection, f, existing.fields);
+      }
+    }
+  }
+
+  // E1.3: additive image_file field + relation to directus_files on the
+  // visual collections. Idempotent — ensureField/ensureRelation skip existing.
+  for (const collection of mediaCollections) {
+    await ensureField(client, collection, imageFileField, existing.fields);
+  }
+  for (const relation of fileRelations) {
+    await ensureRelation(client, relation);
   }
 
   // Relations
