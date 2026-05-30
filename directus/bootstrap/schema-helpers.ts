@@ -130,6 +130,31 @@ export async function ensureField(
   console.log(`[schema] created field: ${key}`);
 }
 
+/**
+ * Extrahiert die aussagekräftige Fehlermeldung aus einem Directus-Fehler.
+ * Directus verpackt sie verschachtelt unter `errors[].message` – ein einfaches
+ * `error.message` ist dort undefined.
+ */
+function extractMessage(error: unknown): string {
+  const e = error as { message?: string; errors?: Array<{ message?: string }> };
+  if (e?.errors?.length) {
+    return e.errors.map((x) => x?.message ?? "").join("; ");
+  }
+  return e?.message ?? String(error);
+}
+
+/** True, wenn der Fehler nur „Relation existiert bereits" bedeutet (idempotent). */
+function isRelationExistsError(error: unknown): boolean {
+  const m = extractMessage(error).toLowerCase();
+  return (
+    m.includes("already exists") ||
+    m.includes("duplicate") ||
+    // Directus, wenn das Feld schon eine Relation hat:
+    m.includes("already has an associated relationship") ||
+    m.includes("already has a relationship")
+  );
+}
+
 export async function ensureRelation(client: Client, relation: RelationDef): Promise<void> {
   try {
     await client.request(
@@ -145,8 +170,8 @@ export async function ensureRelation(client: Client, relation: RelationDef): Pro
       `[schema] created relation: ${relation.collection}.${relation.field} → ${relation.related_collection}`,
     );
   } catch (error) {
-    const message = (error as { message?: string }).message ?? String(error);
-    if (message.includes("already exists") || message.includes("duplicate")) {
+    if (isRelationExistsError(error)) {
+      console.log(`[schema] relation already exists: ${relation.collection}.${relation.field}`);
       return;
     }
     throw error;

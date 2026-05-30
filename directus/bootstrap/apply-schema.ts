@@ -34,8 +34,6 @@ import { cocktailCollection } from "./schema/cocktails.js";
 import { collectionCollection } from "./schema/collections.js";
 import { linkCollection } from "./schema/links.js";
 
-import { createRelation } from "@directus/sdk";
-
 async function main() {
   console.log("[schema] connecting to Directus…");
   const client = await authenticatedClient();
@@ -87,29 +85,10 @@ async function main() {
     await ensureRelation(client, relation);
   }
 
-  // Relations
+  // Relations — idempotent via ensureRelation (erkennt auch Directus'
+  // „already has an associated relationship" für bereits bestehende Relationen).
   for (const relation of restaurantRelations) {
-    try {
-      await client.request(
-        createRelation({
-          collection: relation.collection,
-          field: relation.field,
-          related_collection: relation.related_collection,
-          meta: relation.meta,
-          schema: relation.schema,
-        } as never),
-      );
-      console.log(
-        `[schema] relation created: ${relation.collection}.${relation.field} → ${relation.related_collection}`,
-      );
-    } catch (error) {
-      const message = (error as { message?: string }).message ?? String(error);
-      if (message.includes("already exists") || message.includes("duplicate")) {
-        console.log(`[schema] relation already exists: ${relation.collection}.${relation.field}`);
-        continue;
-      }
-      throw error;
-    }
+    await ensureRelation(client, relation);
   }
 
   console.log("[schema] done.");
