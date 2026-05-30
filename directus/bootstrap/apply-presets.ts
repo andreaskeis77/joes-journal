@@ -126,7 +126,9 @@ async function main() {
   console.log(`[presets] done. +${created} Bookmark(s).`);
 }
 
-main().catch((error) => {
-  console.error("[presets] failed:", error);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[presets] failed:", error);
+    process.exit(1);
+  });

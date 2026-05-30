@@ -133,7 +133,9 @@ async function main() {
   console.log("[migrate] Verifikation: Counts in Directus prüfen (MIGRATION_E2.md §4).");
 }
 
-main().catch((error) => {
-  console.error("[migrate] failed:", error);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[migrate] failed:", error);
+    process.exit(1);
+  });

@@ -51,7 +51,9 @@ async function main() {
   console.log("[meta] done.");
 }
 
-main().catch((error) => {
-  console.error("[meta] failed:", error);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[meta] failed:", error);
+    process.exit(1);
+  });

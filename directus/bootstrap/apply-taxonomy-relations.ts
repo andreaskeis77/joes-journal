@@ -51,7 +51,9 @@ async function main() {
   console.log("[relations] done. Strukturen angelegt - jetzt migrieren (pnpm migrate:taxonomies).");
 }
 
-main().catch((error) => {
-  console.error("[relations] failed:", error);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[relations] failed:", error);
+    process.exit(1);
+  });
