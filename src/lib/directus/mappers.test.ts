@@ -147,7 +147,7 @@ describe("mapArticle", () => {
     status: "published",
     eyebrow: "Notiz",
     summary: "Zwölf Zeilen statt vier Seiten.",
-    body: ["Absatz eins", "Absatz zwei"],
+    body: "<p>Absatz eins</p><p>Absatz zwei</p>",
     image: "/assets/heroes/foo.webp",
     gallery_images: ["/g1.webp"],
     published_date: "2026-05-12",
@@ -164,7 +164,7 @@ describe("mapArticle", () => {
     expect(out.slug).toBe("kurze-karte");
     expect(out.status).toBe("published");
     expect(out.eyebrow).toBe("Notiz");
-    expect(out.body).toHaveLength(2);
+    expect(out.body).toContain("Absatz eins");
     expect(out.publishedDate).toBe("2026-05-12");
     expect(out.relatedRestaurantSlugs).toEqual(["le-bistro-discret"]);
     expect(out.seoTitle).toBeUndefined();
@@ -192,7 +192,7 @@ describe("mapArticle", () => {
     });
     expect(out.eyebrow).toBeUndefined();
     expect(out.summary).toBe("");
-    expect(out.body).toEqual([]);
+    expect(out.body).toBe("");
     expect(out.image).toBe("");
     expect(out.tags).toEqual([]);
     expect(out.relatedRecipeSlugs).toEqual([]);

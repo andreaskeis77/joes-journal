@@ -55,7 +55,8 @@ export interface ArticleStub {
   /** Kicker / Eyebrow über der Überschrift. */
   eyebrow?: string;
   summary: string;
-  body: string[];
+  /** WYSIWYG-HTML (Directus input-rich-text-html); via set:html gerendert. */
+  body: string;
   image: string;
   galleryImages: string[];
   /** ISO-Datum der Veröffentlichung; sortiert die Liste. */
@@ -288,7 +289,7 @@ export const articles: ArticleStub[] = [
       "Eine kurze Karte ist ein Versprechen. Sie sagt: Wir kaufen das, was heute gut ist, und wir kochen das, was wir können. Sie nimmt einem die Qual der Wahl ab und gibt einem die Erlaubnis, einfach das Naheliegende zu bestellen – und darauf zu vertrauen, dass es gut wird.",
       "Die lange Karte dagegen ist oft ein Misstrauensvotum gegen die eigene Küche. Vierzig Gerichte bedeuten Tiefkühltruhe, Convenience, Standzeiten. Wer alles anbietet, kann selten etwas richtig gut. Das ist keine Regel, aber eine erstaunlich verlässliche Faustregel.",
       "Am Ende ist die kurze Karte auch eine Frage des Respekts – vor dem Produkt, vor der eigenen Arbeit und vor dem Gast, dem man zutraut, dass er eine Entscheidung aushält.",
-    ],
+    ].map((p) => `<p>${p}</p>`).join("\n"),
     image: "/assets/heroes/hero-reviews-table-after-service-16x9-v01.webp",
     galleryImages: ["/assets/reviews/review-service-table-detail-4x3-v01.webp"],
     publishedDate: "2026-05-12",
@@ -308,7 +309,7 @@ export const articles: ArticleStub[] = [
       "Mise en Place – „alles an seinem Platz“ – ist der unspektakulärste und zugleich wichtigste Teil des Kochens. Es ist der Moment, in dem alles geschnitten, abgewogen und bereitgestellt wird, bevor die erste Zutat in die Pfanne kommt.",
       "Wer schon einmal mitten im Kochen festgestellt hat, dass die Schalotte noch ungeschält ist, während die Butter in der Pfanne längst braun wird, kennt den Unterschied. Gute Küche ist selten eine Frage von Talent im Moment – sie ist eine Frage der Vorbereitung davor.",
       "Das Schöne daran: Mise en Place ist eine ruhige Tätigkeit. Schneiden, sortieren, in kleine Schälchen füllen. Es ist der meditative Teil, der dem lauten Teil vorausgeht. Und wenn dann die Hitze kommt, ist alles nur noch eine Frage des Timings.",
-    ],
+    ].map((p) => `<p>${p}</p>`).join("\n"),
     image: "/assets/heroes/hero-recipes-kitchen-counter-mise-en-place-16x9-v01.webp",
     galleryImages: ["/assets/recipes/recipe-card-mise-en-place-vegetables-4x3-v01.webp"],
     publishedDate: "2026-04-28",
@@ -324,7 +325,7 @@ export const articles: ArticleStub[] = [
     eyebrow: "Entwurf",
     summary:
       "Ein Entwurf, der bewusst nicht veröffentlicht ist – er demonstriert das Status-Gate (SEC-1): Entwürfe erreichen den öffentlichen Output nie.",
-    body: ["Dieser Beitrag ist ein Entwurf und darf nicht öffentlich erscheinen."],
+    body: "<p>Dieser Beitrag ist ein Entwurf und darf nicht öffentlich erscheinen.</p>",
     image: "/assets/heroes/hero-cocktails-moody-bar-glassware-16x9-v01.webp",
     galleryImages: [],
     publishedDate: "2026-05-20",
@@ -1041,7 +1042,7 @@ export const searchIndex: SearchEntry[] = [
     href: `/journal/${a.slug}`,
     snippet: a.eyebrow ?? "Journal",
     image: a.image,
-    searchText: s(a.title, a.summary, a.eyebrow, ...a.tags, ...a.body),
+    searchText: s(a.title, a.summary, a.eyebrow, ...a.tags, a.body.replace(/<[^>]+>/g, " ")),
   })),
   ...recipes.map<SearchEntry>((rc) => ({
     kind: "recipe",

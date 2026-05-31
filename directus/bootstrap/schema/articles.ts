@@ -63,12 +63,11 @@ export const articleCollection: CollectionDef = {
     },
     {
       field: "body",
-      type: "json",
+      type: "text",
       meta: {
-        interface: "list",
+        interface: "input-rich-text-html",
         width: "full",
-        special: ["cast-json"],
-        note: "Absätze als Array von Strings.",
+        note: "Beitragstext. Formatierung über die Werkzeugleiste (fett, Überschrift, Liste); Bilder über den Bild-Button direkt im Text.",
       },
       schema: { is_nullable: true },
     },

@@ -102,7 +102,7 @@ function buildSearchIndex(
       href: `/journal/${a.slug}`,
       snippet: a.eyebrow ?? "Journal",
       image: a.image,
-      searchText: joinLower(a.title, a.summary, a.eyebrow, ...a.tags, ...a.body),
+      searchText: joinLower(a.title, a.summary, a.eyebrow, ...a.tags, a.body.replace(/<[^>]+>/g, " ")),
     })),
     ...raw.recipes.map<SearchEntry>((rc) => ({
       kind: "recipe",

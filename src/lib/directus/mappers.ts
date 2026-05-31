@@ -113,7 +113,9 @@ export function mapArticle(d: DirectusArticle): ArticleStub {
     status: normalizeReviewStatus(d.status),
     eyebrow: d.eyebrow ?? undefined,
     summary: d.summary ?? "",
-    body: d.body ?? [],
+    // WYSIWYG-HTML-String. Alte Daten (string[] aus dem Repeater) werden hier
+    // sicher auf "" verworfen, bis das Feld im Editor neu geschrieben wird.
+    body: typeof d.body === "string" ? d.body : "",
     image: d.image ?? "",
     galleryImages: d.gallery_images ?? [],
     publishedDate: d.published_date ?? "",

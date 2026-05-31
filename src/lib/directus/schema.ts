@@ -48,7 +48,8 @@ export interface DirectusArticle {
   status: string;
   eyebrow: string | null;
   summary: string | null;
-  body: string[] | null;
+  /** WYSIWYG-HTML (input-rich-text-html). Älterer string[]-Wert wird im Mapper auf "" verworfen. */
+  body: string | null;
   image: string | null;
   image_file?: string | null;
   gallery_images: string[] | null;
