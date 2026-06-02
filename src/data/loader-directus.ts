@@ -23,7 +23,12 @@ import {
   mapReview,
   mapSupplier,
 } from "../lib/directus/mappers";
-import { resolveImage, rewriteBodyAssets, type UploadsManifest } from "../lib/bake/manifest";
+import {
+  resolveImage,
+  rewriteBodyAssets,
+  resolveGallery,
+  type UploadsManifest,
+} from "../lib/bake/manifest";
 import uploadsManifest from "./uploads-manifest.json";
 import type { RawData } from "./derive";
 
@@ -53,8 +58,12 @@ export async function loadFromDirectus(): Promise<RawData> {
   const articles = bakeImages(raw.articles.map(mapArticle), raw.articles);
   // Phase 2: Inline-Bilder im WYSIWYG-Body auf lokale /_uploads/-Pfade umschreiben
   // (der Bake hat sie zuvor heruntergeladen und ins Manifest aufgenommen).
-  articles.forEach((a) => {
+  articles.forEach((a, i) => {
     a.body = rewriteBodyAssets(a.body, manifest);
+    // Phase 4: m2m-Galerie auf lokale /_uploads/-Pfade aufloesen; sonst Fallback
+    // auf die bestehenden gallery_images-String-Pfade (in a.galleryImages).
+    const fileIds = (raw.articles[i].gallery_files ?? []).map((j) => j?.directus_files_id);
+    a.galleryImages = resolveGallery(fileIds, a.galleryImages, manifest);
   });
   const recipes = bakeImages(raw.recipes.map(mapRecipe), raw.recipes);
   const cocktails = bakeImages(raw.cocktails.map(mapCocktail), raw.cocktails);

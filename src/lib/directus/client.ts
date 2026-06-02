@@ -165,6 +165,25 @@ export async function fetchAllRaw(client: JoesDirectusClient): Promise<RawData> 
     >,
   ]);
 
+  // Phase 4: reichere Artikel um die m2m-Galerie an. Eigene Abfrage in try/catch,
+  // damit ein noch nicht migriertes `gallery_files`-Feld (vor schema:apply) den
+  // Build NICHT bricht – dann bleibt die Galerie leer (Fallback gallery_images).
+  try {
+    const galleryRows = (await client.request(
+      readItems("articles", {
+        limit: -1,
+        fields: ["id", { gallery_files: ["directus_files_id"] }] as never,
+        filter: { status: { _eq: "published" } } as never,
+      } as never),
+    )) as Array<{ id: string; gallery_files?: Array<{ directus_files_id: string | null }> | null }>;
+    const galleryById = new Map(galleryRows.map((r) => [r.id, r.gallery_files ?? null]));
+    for (const a of articles) {
+      a.gallery_files = galleryById.get(a.id) ?? null;
+    }
+  } catch {
+    console.warn("[joes-journal] gallery_files noch nicht vorhanden – Galerie via Fallback.");
+  }
+
   return {
     restaurants,
     reviews,

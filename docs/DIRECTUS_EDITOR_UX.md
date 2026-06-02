@@ -1,7 +1,10 @@
 # DIRECTUS_EDITOR_UX – Konzept: intuitiver Artikel-Editor & Bildmodell
 
-**Stand:** 2026-06-02 · **Status:** Phase 0–2 umgesetzt & live (WYSIWYG-Body + Sanitizer
-+ Inline-Bild-Bake). Offen: Phase 3 (deutsche Feldgruppen/Labels), Phase 4 (Galerie m2m).
+**Stand:** 2026-06-02 · **Status:** Phase 0–4 im Code umgesetzt. Live: P0–P2 (WYSIWYG-Body
++ Sanitizer + Inline-Bild-Bake). P3 (deutsche Feldgruppen/Labels via `pnpm fields:refine`)
+und P4 (Galerie-m2m via `pnpm schema:apply`) deployen über die Schema-/Meta-Skripte.
+Adversarisch gegen Directus 11.17.4 verifiziert (m2m `special:['files']`, Feldgruppen,
+read-merge der Feld-Meta, Frontend-Index-Ausrichtung & Fallback).
 
 ## 1. Anlass
 

@@ -53,6 +53,8 @@ export interface DirectusArticle {
   image: string | null;
   image_file?: string | null;
   gallery_images: string[] | null;
+  /** Phase 4: m2m-Galerie (Junction-Refs auf directus_files); optional/robust. */
+  gallery_files?: Array<{ directus_files_id: string | null }> | null;
   published_date: string | null;
   tags: string[] | null;
   related_restaurant_slugs: string[] | null;

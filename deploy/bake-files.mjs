@@ -123,6 +123,26 @@ async function main() {
     console.warn("[bake] articles.body inline-Scan uebersprungen (Feld evtl. noch nicht da).");
   }
 
+  // 1c) Phase 4: m2m-Galerie (gallery_files) veroeffentlichter Artikel. Eigene
+  //     Abfrage in try/catch, damit ein noch nicht migriertes Feld den Bake nicht
+  //     bricht. Die Datei-UUIDs landen in derselben fileIds-Menge.
+  try {
+    const gal = await client.request(
+      readItems("articles", {
+        limit: -1,
+        fields: ["gallery_files.directus_files_id"],
+        filter: { status: { _eq: "published" } },
+      }),
+    );
+    for (const a of gal) {
+      for (const j of a?.gallery_files ?? []) {
+        if (j?.directus_files_id) fileIds.add(j.directus_files_id);
+      }
+    }
+  } catch {
+    console.warn("[bake] articles.gallery_files uebersprungen (Feld evtl. noch nicht da).");
+  }
+
   // 2) download each into public/_uploads/ and build the manifest
   mkdirSync(outDir, { recursive: true });
   const manifest = {};

@@ -53,3 +53,20 @@ export function rewriteBodyAssets(body: string, manifest: UploadsManifest): stri
   if (!body) return body;
   return body.replace(ASSET_URL_RE, (whole, id: string) => manifest[id] ?? whole);
 }
+
+/**
+ * Phase 4 – löst die Datei-UUIDs einer m2m-Galerie (`gallery_files`) gegen das
+ * Manifest zu lokalen `/_uploads/`-Pfaden auf. Sind keine gebackenen Dateien
+ * vorhanden (Feld leer oder noch nicht migriert), bleibt der bestehende
+ * String-Pfad-Fallback (`gallery_images`) erhalten.
+ */
+export function resolveGallery(
+  fileIds: Array<string | null | undefined> | null | undefined,
+  fallbackPaths: string[],
+  manifest: UploadsManifest,
+): string[] {
+  const baked = (fileIds ?? [])
+    .map((id) => (id ? manifest[id] : undefined))
+    .filter((url): url is string => Boolean(url));
+  return baked.length > 0 ? baked : fallbackPaths;
+}

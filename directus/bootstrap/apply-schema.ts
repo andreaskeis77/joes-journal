@@ -27,6 +27,7 @@ import {
 } from "./schema/restaurants.js";
 import { articleCollection } from "./schema/articles.js";
 import { imageFileField, mediaCollections, fileRelations } from "./schema/media.js";
+import { galleryJunctionCollection, galleryField, galleryRelations } from "./schema/gallery.js";
 import { ingredientCollection, supplierCollection } from "./schema/ingredients.js";
 import { equipmentCollection } from "./schema/equipment.js";
 import { recipeCollection } from "./schema/recipes.js";
@@ -54,6 +55,9 @@ async function main() {
     cocktailCollection,
     collectionCollection,
     linkCollection,
+    // Phase 4: m2m-Junction für die Artikel-Galerie (Ziel-Collections articles +
+    // directus_files existieren bereits; Relationen werden unten ergänzt).
+    galleryJunctionCollection,
   ];
 
   for (const def of allCollections) {
@@ -82,6 +86,12 @@ async function main() {
     await ensureField(client, collection, imageFileField, existing.fields);
   }
   for (const relation of fileRelations) {
+    await ensureRelation(client, relation);
+  }
+
+  // Phase 4: Galerie-m2m – Alias-Feld auf articles + die zwei Junction-Relationen.
+  await ensureField(client, "articles", galleryField, existing.fields);
+  for (const relation of galleryRelations) {
     await ensureRelation(client, relation);
   }
 

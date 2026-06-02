@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveImage, rewriteBodyAssets, type UploadsManifest } from "./manifest";
+import { resolveImage, rewriteBodyAssets, resolveGallery, type UploadsManifest } from "./manifest";
 
 const UUID = "11111111-1111-1111-1111-111111111111";
 const manifest: UploadsManifest = {
@@ -54,5 +54,25 @@ describe("rewriteBodyAssets", () => {
     expect(rewriteBodyAssets("<p>Nur Text, kein Bild.</p>", manifest)).toBe(
       "<p>Nur Text, kein Bild.</p>",
     );
+  });
+});
+
+describe("resolveGallery", () => {
+  const fallback = ["/assets/old-gallery.webp"];
+
+  it("maps baked file UUIDs to their local _uploads paths", () => {
+    expect(resolveGallery([UUID], fallback, manifest)).toEqual([`/_uploads/${UUID}.webp`]);
+  });
+
+  it("drops unbaked/null ids and keeps only resolved files", () => {
+    expect(resolveGallery([UUID, "unbaked", null], fallback, manifest)).toEqual([
+      `/_uploads/${UUID}.webp`,
+    ]);
+  });
+
+  it("falls back to the legacy string paths when no file is baked", () => {
+    expect(resolveGallery([], fallback, manifest)).toEqual(fallback);
+    expect(resolveGallery(null, fallback, manifest)).toEqual(fallback);
+    expect(resolveGallery(["unbaked"], fallback, manifest)).toEqual(fallback);
   });
 });

@@ -12,6 +12,7 @@
     "schema:apply": "tsx --env-file=.env bootstrap/apply-schema.ts",
     "presets:apply": "tsx --env-file=.env bootstrap/apply-presets.ts",
     "meta:refine": "tsx --env-file=.env bootstrap/refine-meta.ts",
+    "fields:refine": "tsx --env-file=.env bootstrap/refine-fields.ts",
     "relations:apply": "tsx --env-file=.env bootstrap/apply-taxonomy-relations.ts",
     "migrate:taxonomies": "tsx --env-file=.env bootstrap/migrate-taxonomies.ts",
     "seed": "tsx --env-file=.env bootstrap/seed.ts",
