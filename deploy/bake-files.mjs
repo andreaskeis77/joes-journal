@@ -102,6 +102,27 @@ async function main() {
     }
   }
 
+  // 1b) Phase 2: inline body images of PUBLISHED articles (SEC-1: nur published
+  //     Bodies werden gescannt). Findet jede /assets/<uuid>-Referenz im
+  //     WYSIWYG-HTML und reiht sie in dieselbe fileIds-Menge ein; die
+  //     Download-Schleife unten laedt sie unveraendert mit.
+  const ASSET_RE = /\/assets\/([0-9a-f-]{36})/gi;
+  try {
+    const arts = await client.request(
+      readItems("articles", {
+        limit: -1,
+        fields: ["body"],
+        filter: { status: { _eq: "published" } },
+      }),
+    );
+    for (const a of arts) {
+      if (typeof a?.body !== "string") continue;
+      for (const m of a.body.matchAll(ASSET_RE)) fileIds.add(m[1]);
+    }
+  } catch {
+    console.warn("[bake] articles.body inline-Scan uebersprungen (Feld evtl. noch nicht da).");
+  }
+
   // 2) download each into public/_uploads/ and build the manifest
   mkdirSync(outDir, { recursive: true });
   const manifest = {};

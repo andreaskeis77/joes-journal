@@ -23,7 +23,7 @@ import {
   mapReview,
   mapSupplier,
 } from "../lib/directus/mappers";
-import { resolveImage, type UploadsManifest } from "../lib/bake/manifest";
+import { resolveImage, rewriteBodyAssets, type UploadsManifest } from "../lib/bake/manifest";
 import uploadsManifest from "./uploads-manifest.json";
 import type { RawData } from "./derive";
 
@@ -51,6 +51,11 @@ export async function loadFromDirectus(): Promise<RawData> {
   const restaurants = bakeImages(raw.restaurants.map(mapRestaurant), raw.restaurants);
   const reviews = bakeImages(raw.reviews.map(mapReview), raw.reviews);
   const articles = bakeImages(raw.articles.map(mapArticle), raw.articles);
+  // Phase 2: Inline-Bilder im WYSIWYG-Body auf lokale /_uploads/-Pfade umschreiben
+  // (der Bake hat sie zuvor heruntergeladen und ins Manifest aufgenommen).
+  articles.forEach((a) => {
+    a.body = rewriteBodyAssets(a.body, manifest);
+  });
   const recipes = bakeImages(raw.recipes.map(mapRecipe), raw.recipes);
   const cocktails = bakeImages(raw.cocktails.map(mapCocktail), raw.cocktails);
   const equipment = bakeImages(raw.equipment.map(mapEquipment), raw.equipment);

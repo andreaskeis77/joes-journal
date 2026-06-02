@@ -1,6 +1,7 @@
 # DIRECTUS_EDITOR_UX – Konzept: intuitiver Artikel-Editor & Bildmodell
 
-**Stand:** 2026-05-31 · **Status:** Konzept (zur Umsetzung freigegeben werden P0+P1 zuerst)
+**Stand:** 2026-06-02 · **Status:** Phase 0–2 umgesetzt & live (WYSIWYG-Body + Sanitizer
++ Inline-Bild-Bake). Offen: Phase 3 (deutsche Feldgruppen/Labels), Phase 4 (Galerie m2m).
 
 ## 1. Anlass
 

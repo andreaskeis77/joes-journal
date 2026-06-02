@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { resolveImage, type UploadsManifest } from "./manifest";
+import { resolveImage, rewriteBodyAssets, type UploadsManifest } from "./manifest";
 
+const UUID = "11111111-1111-1111-1111-111111111111";
 const manifest: UploadsManifest = {
-  "11111111-1111-1111-1111-111111111111": "/_uploads/11111111-1111-1111-1111-111111111111.webp",
+  [UUID]: `/_uploads/${UUID}.webp`,
 };
 
 describe("resolveImage", () => {
@@ -24,5 +25,34 @@ describe("resolveImage", () => {
   it("returns empty string when neither a baked file nor a path is available", () => {
     expect(resolveImage(null, null, manifest)).toBe("");
     expect(resolveImage(undefined, "unknown-uuid", manifest)).toBe("");
+  });
+});
+
+describe("rewriteBodyAssets", () => {
+  it("rewrites an absolute /assets/<uuid> URL (with host + query) to the local path", () => {
+    const body = `<p>Foto:</p><img src="http://127.0.0.1:8055/assets/${UUID}.webp?width=800" alt="x">`;
+    const out = rewriteBodyAssets(body, manifest);
+    expect(out).toContain(`src="/_uploads/${UUID}.webp"`);
+    expect(out).not.toContain("/assets/");
+    expect(out).not.toContain("127.0.0.1");
+  });
+
+  it("rewrites a relative /assets/<uuid> URL without an extension", () => {
+    expect(rewriteBodyAssets(`<img src="/assets/${UUID}">`, manifest)).toBe(
+      `<img src="/_uploads/${UUID}.webp">`,
+    );
+  });
+
+  it("leaves an unbaked asset URL untouched", () => {
+    const other = "22222222-2222-2222-2222-222222222222";
+    const body = `<img src="/assets/${other}.webp">`;
+    expect(rewriteBodyAssets(body, manifest)).toBe(body);
+  });
+
+  it("handles empty/plain bodies without changes", () => {
+    expect(rewriteBodyAssets("", manifest)).toBe("");
+    expect(rewriteBodyAssets("<p>Nur Text, kein Bild.</p>", manifest)).toBe(
+      "<p>Nur Text, kein Bild.</p>",
+    );
   });
 });
