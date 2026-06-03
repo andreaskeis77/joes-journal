@@ -30,6 +30,17 @@ In `C:\joes-journal\repo\directus\.env`:
 
 ```ini
 PUBLIC_URL=https://admin.zumfettigenjoe.com
+
+# WICHTIG (häufigste „Login klappt nicht"-Ursache): Cloudflare terminiert TLS am
+# Rand und spricht Directus per HTTP an. Directus setzt Login-Cookies dann
+# standardmäßig OHNE „Secure" -> der Browser verwirft sie auf der HTTPS-Domain
+# -> Endlos-Login/„ausgeloggt". Beide Secure-Flags erzwingen die Secure-Cookies;
+# SameSite=lax überlebt den Cloudflare-Access-OTP-Redirect.
+SESSION_COOKIE_SECURE=true
+SESSION_COOKIE_SAME_SITE=lax
+REFRESH_TOKEN_COOKIE_SECURE=true
+REFRESH_TOKEN_COOKIE_SAME_SITE=lax
+
 # CORS nur falls nötig (das Frontend ruft Directus NICHT zur Laufzeit -> i.d.R. aus):
 # CORS_ENABLED=true
 # CORS_ORIGIN=https://zumfettigenjoe.com
@@ -39,7 +50,9 @@ Danach Directus neu starten:
 `Restart-ScheduledTask -TaskName JoesJournal-Directus` (oder Stop/Start).
 
 > `PUBLIC_URL` muss auf die Access-Domain zeigen, sonst brechen Login-Redirects
-> und Asset-URLs im Admin.
+> und Asset-URLs im Admin. Die vier `*_COOKIE_*`-Zeilen sind der eigentliche Fix
+> gegen den Login-Loop hinter dem HTTPS-Edge (adversarisch gegen Directus 11
+> verifiziert).
 
 ## 3. Cloudflare Access-App (Dashboard)
 

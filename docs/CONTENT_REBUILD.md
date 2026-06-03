@@ -82,7 +82,49 @@ Register-ScheduledTask -TaskName "JoesJournal-Rebuild" -Action $action -Trigger 
 > `pnpm`-Shim). Alternativ einen dedizierten Service-User mit gespeicherten
 > Credentials und „run whether logged on or not" nutzen.
 
-## 5. Auto-Rebuild: Webhook-getrieben (E1.2, umgesetzt)
+## 5. Auto-Rebuild: Poll-basiert (robust, EMPFOHLEN, 2026-06)
+
+Der ursprüngliche Webhook-Weg (§6) hängt an **drei fragilen Teilen** – einem
+Directus-**Flow** (verschwindet, wenn nicht mit ✓ gespeichert), einem **Webhook**
+und einem **Shared-Secret-Token** (`JOES_REBUILD_TOKEN`, neigt zum „Verkleben" in
+der `.env`). Das war in der Praxis unzuverlässig.
+
+**Ersatz ([`deploy/auto-rebuild.mjs`](../deploy/auto-rebuild.mjs)):** ein
+VPS-seitiger **Poll-Task**, der alle paar Minuten Directus nach der jüngsten
+Inhaltsänderung (`directus_activity`) fragt und `rebuild.ps1` **nur bei einer
+echten Änderung** startet. Eigenschaften:
+
+- **Nichts, das „verschwinden" kann:** kein Flow, kein Webhook, kein offener
+  Port, **kein Token**. Nutzt dieselben `JOES_DIRECTUS_*`-Zugangsdaten wie der
+  Build (nachweislich korrekt, weil der Build damit Inhalte zieht).
+- **Selbstheilend:** Zeitstempel wird nur bei Build-Erfolg fortgeschrieben; bei
+  Fehler versucht es der nächste Lauf erneut. Zustand in
+  `C:\joes-journal\state\auto-rebuild.json` (außerhalb des Repos → `git pull`
+  fasst ihn nie an).
+- **Keine Überlappung:** der Task läuft mit `MultipleInstances IgnoreNew`.
+- **Atomar:** `rebuild.ps1` behält bei Fehler das alte `dist/` (siehe §3).
+
+Installieren (Administrator-PowerShell auf dem VPS):
+
+```powershell
+# JOES_DIRECTUS_URL/EMAIL/PASSWORD stehen bereits in C:\joes-journal\repo\.env
+C:\joes-journal\repo\deploy\install-auto-rebuild.ps1 -User srv-ops-admin
+Start-ScheduledTask -TaskName JoesJournal-Auto-Rebuild
+node C:\joes-journal\repo\deploy\auto-rebuild.mjs   # einmal manuell testen
+```
+
+Test: in Directus etwas auf `published` setzen → in ≤ ~Intervall+Build (Default
+3 Min + ~30 s) live, ohne manuellen Eingriff. Der nächtliche Backstop (§4)
+bleibt als zweites Sicherheitsnetz.
+
+> Wechsel vom Webhook auf Poll: den **Directus-Flow löschen** (sonst doppelte
+> Trigger) und den alten Listener-Task deaktivieren
+> (`Disable-ScheduledTask -TaskName JoesJournal-Rebuild-Listener`).
+
+## 6. Auto-Rebuild: Webhook-getrieben (VERALTET, ersetzt durch §5)
+
+> ⚠️ **Veraltet.** Funktional, aber fragil (Flow/Webhook/Token). Durch den
+> Poll-Task in §5 ersetzt. Nur noch als Referenz dokumentiert.
 
 Near-Realtime „Save → Live" ohne manuellen Eingriff. Zwei Bausteine:
 
