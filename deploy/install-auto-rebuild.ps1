@@ -64,12 +64,13 @@ if (-not (Test-Path $envFile)) {
 $action = New-ScheduledTaskAction -Execute $NodeExe `
   -Argument "deploy\auto-rebuild.mjs" -WorkingDirectory $RepoRoot
 
-# Alle N Minuten, UNBEGRENZT. -RepetitionDuration MaxValue macht "unendlich
-# wiederholen" ueber alle Windows-Builds eindeutig (sonst stoppt der Poll evtl.
-# nach einem Lauf). StartWhenAvailable holt verpasste Laeufe nach Boot nach.
+# Alle N Minuten, unbegrenzt wiederholen. Auf Windows Server 2016+ erzeugt ein
+# -RepetitionInterval OHNE -RepetitionDuration die Wiederholung "Indefinitely".
+# (Ein expliziter MaxValue-Duration-Wert wird vom Task Scheduler als
+# "out of range" abgelehnt -> daher bewusst weggelassen.)
+# StartWhenAvailable holt verpasste Laeufe nach Boot nach.
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
-  -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes) `
-  -RepetitionDuration ([TimeSpan]::MaxValue)
+  -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes)
 
 # Keine Ueberlappung; bei Absturz neu; ein Lauf darf max. 1h dauern (Backstop).
 $settings = New-ScheduledTaskSettingsSet `
@@ -88,11 +89,19 @@ if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
   -Settings $settings -Principal $principal `
-  -Description "joes-journal robuster Auto-Rebuild-Poll (alle $IntervalMinutes Min, kein Flow/Webhook/Token)." | Out-Null
+  -Description "joes-journal robuster Auto-Rebuild-Poll (alle $IntervalMinutes Min, kein Flow/Webhook/Token)." `
+  -ErrorAction Stop | Out-Null
 
-# Cutover erzwingen: den alten Webhook-Listener (Port 8787 / JOES_REBUILD_TOKEN)
-# deaktivieren, damit nie ZWEI Mechanismen gleichzeitig rebuild.ps1 starten
-# (Build-Korruption) und das "kein Port / kein Token"-Ziel real wird.
+# Erfolg HART pruefen, bevor irgendetwas anderes passiert (sonst nie faelschlich
+# "registriert" melden oder den alten Listener abschalten).
+if (-not (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue)) {
+  throw "Task '$TaskName' wurde NICHT registriert - Abbruch (alter Mechanismus bleibt unangetastet)."
+}
+
+# Cutover erst NACH erfolgreicher Registrierung: den alten Webhook-Listener
+# (Port 8787 / JOES_REBUILD_TOKEN) deaktivieren, damit nie ZWEI Mechanismen
+# gleichzeitig rebuild.ps1 starten (Build-Korruption) und das "kein Port / kein
+# Token"-Ziel real wird.
 $oldListener = "JoesJournal-Rebuild-Listener"
 if (Get-ScheduledTask -TaskName $oldListener -ErrorAction SilentlyContinue) {
   Stop-ScheduledTask -TaskName $oldListener -ErrorAction SilentlyContinue
@@ -101,7 +110,9 @@ if (Get-ScheduledTask -TaskName $oldListener -ErrorAction SilentlyContinue) {
   Write-Warning "WICHTIG: Den Directus-Flow (Settings -> Flows -> Auto-Rebuild) im Admin LOESCHEN, sonst feuert er ins Leere."
 }
 
-Write-Host "Task '$TaskName' registriert (alle $IntervalMinutes Min)."
+$rep = (Get-ScheduledTask -TaskName $TaskName).Triggers.Repetition
+$dur = if ($rep.Duration) { $rep.Duration } else { "Indefinitely" }
+Write-Host "OK: Task '$TaskName' registriert. Wiederholung: Interval=$($rep.Interval) Duration=$dur"
 Write-Host "Starten:        Start-ScheduledTask -TaskName $TaskName"
 Write-Host "Manueller Test: node deploy\auto-rebuild.mjs"
 Write-Host "Status/Log:     Get-ScheduledTaskInfo -TaskName $TaskName"
