@@ -46,8 +46,15 @@ REFRESH_TOKEN_COOKIE_SAME_SITE=lax
 # CORS_ORIGIN=https://zumfettigenjoe.com
 ```
 
-Danach Directus neu starten:
-`Restart-ScheduledTask -TaskName JoesJournal-Directus` (oder Stop/Start).
+Danach Directus neu starten (es gibt KEIN `Restart-ScheduledTask`-Cmdlet –
+Stop/Start verwenden, damit die neue `.env` geladen wird):
+
+```powershell
+Stop-ScheduledTask -TaskName JoesJournal-Directus
+Start-Sleep -Seconds 5
+Start-ScheduledTask -TaskName JoesJournal-Directus
+Invoke-RestMethod http://127.0.0.1:8055/server/health   # -> status ok
+```
 
 > `PUBLIC_URL` muss auf die Access-Domain zeigen, sonst brechen Login-Redirects
 > und Asset-URLs im Admin. Die vier `*_COOKIE_*`-Zeilen sind der eigentliche Fix
