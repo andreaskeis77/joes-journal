@@ -1,6 +1,6 @@
 # DEPLOY_STATE – joes-journal
 
-**Stand:** 2026-05-29 · **Branch:** `harden/pre-vps-top5`
+**Stand:** 2026-06-04 · **Branch:** `main` (`harden/pre-vps-top5` via PR #1 gemerged)
 
 Tatsächlicher Betriebszustand auf dem VPS (Ergebnis der ersten Live-Inbetriebnahme,
 Roadmap P9/P10). Ergänzt den konzeptionellen [VPS_DEPLOYMENT_PLAN.md](VPS_DEPLOYMENT_PLAN.md)
@@ -25,6 +25,8 @@ um die real vorgefundenen Werte und ein Betriebs-Runbook.
 | Frontend       | Astro `static` → `C:\joes-journal\repo\dist`, ausgeliefert von **IIS-Site `JoesJournal-Frontend`** auf `127.0.0.1:4321`                                                      |
 | Tunnel         | Cloudflare `Contabo-Wardrobe` (token-/dashboard-gesteuert, Windows-Dienst `Cloudflared` als LocalSystem). Bedient zusätzlich CapsuleWardrobe (`capsule-studio.de`)           |
 | Zugriffsschutz | Cloudflare Access-App `zumfettigenjoe.com` (Self-hosted, Allow `andreas.keis@gmail.com`). Team: `wardrobe.cloudflareaccess.com`                                              |
+| Admin-Zugang   | `admin.zumfettigenjoe.com` über denselben Tunnel → `HTTP 127.0.0.1:8055`, eigene Access-App „Joe Admin" (Owner-Mail). Directus-Login mit Secure-Cookies (E1.1)                  |
+| Auto-Rebuild   | Scheduled Task **`JoesJournal-Auto-Rebuild`** (alle 3 Min, `srv-ops-admin`) → `deploy/auto-rebuild.mjs`: pollt `directus_activity`, startet bei Änderung `rebuild.ps1`. Ersetzt Flow/Webhook/Listener (E1.2) |
 
 ## 3. Pfade & Umgebungsdateien
 
@@ -48,8 +50,18 @@ Secrets stehen ausschließlich in den `.env`-Dateien und im Cloudflare-Dashboard
   > ⚠️ Muss `127.0.0.1` sein, **nicht** `localhost` – `localhost` löst zu IPv6 `::1` auf, wo die
   > IIS-Site nicht gebunden ist → IIS antwortet mit `400 Bad Request – Invalid Hostname`.
 - **Cloudflare Access** davor: privat, nur eigene E-Mail (One-Time-PIN).
+- **Admin (E1.1):** zweiter Public Hostname `admin.zumfettigenjoe.com` → `HTTP` → **`127.0.0.1:8055`**
+  (gleicher `127.0.0.1`-Caveat) + eigene Access-App „Joe Admin" (Allow Owner-Mail). Damit ist die
+  Redaktion vom Laptop möglich; Port 8055 bleibt loopback. `directus/.env` setzt dafür `PUBLIC_URL`
+  **und** `SESSION_COOKIE_SECURE/SAME_SITE` + `REFRESH_TOKEN_COOKIE_SECURE/SAME_SITE` (Secure-Cookies,
+  sonst Login-Loop hinter dem HTTPS-Edge).
 
 ## 5. Routine: Inhalt geändert → Seite aktualisieren
+
+> **Seit 2026-06 automatisch:** Der Task `JoesJournal-Auto-Rebuild` pollt alle 3 Min und baut bei
+> einer Inhaltsänderung selbst (siehe [CONTENT_REBUILD.md §5](CONTENT_REBUILD.md)). „Speichern → Live"
+> braucht also **keinen** manuellen Eingriff mehr. Die folgenden Befehle sind nur noch für manuelle
+> Sofort-Builds bzw. Code-Updates nötig.
 
 Inhalte werden zur **Build-Zeit** aus Directus gezogen (statische Seite). Nach jeder Redaktion
 in Directus muss neu gebaut werden:
@@ -113,13 +125,38 @@ Public: `https://zumfettigenjoe.com` → Access-Login → Joe-Startseite.
 - [x] Asset-MIME: `public/web.config` ergänzt → IIS liefert `.webp` als `image/webp` (Hero-Bild sichtbar)
 - [x] Frontend live & privat: `zumfettigenjoe.com` über Tunnel `Contabo-Wardrobe` + Cloudflare Access
 
+**Erledigt (2026-06-03/04) – Editor-Ausbau, robuster Auto-Rebuild, Admin-Zugang:**
+
+- [x] **Branch gemerged:** `harden/pre-vps-top5` → `main` (PR #1); seitdem läuft alles auf `main`.
+- [x] **Sauberer Inhalt:** Seed-Dummydaten entfernt (`pnpm purge:seed`), nur noch echte Artikel.
+- [x] **Journal-Editor (E3.1+, [DIRECTUS_EDITOR_UX.md](DIRECTUS_EDITOR_UX.md)):** `body` vom kaputten
+      `list`-Repeater (`[object Object]`) auf **WYSIWYG-HTML** (`input-rich-text-html`) – Frontend
+      saniert (`sanitize-html`) + `set:html`. Typwechsel war manuell (Feld löschen → `pnpm schema:apply`).
+- [x] **Absatz-Bilder:** im Body eingefügte Directus-Bilder werden beim Build nach `public/_uploads/`
+      gebacken + URL umgeschrieben (`bake-files.mjs` 1b, `rewriteBodyAssets`).
+- [x] **Galerie:** echte **m2m** auf `directus_files` (`articles_files`-Junction + Feld `gallery_files`,
+      via `pnpm schema:apply`); UUIDs werden gebacken (`bake-files.mjs` 1c, `resolveGallery`).
+- [x] **Deutsche Feld-UX (E1.4):** `pnpm fields:refine` – Übersetzungen, Feldgruppen
+      (Inhalt/Bilder/SEO/Verknüpfungen), Hero-Relabel „Titelbild", Legacy-Felder versteckt.
+- [x] **Cache-Fix:** `public/web.config` setzt HTML auf `no-cache` (frische Inhalte ohne Strg+F5),
+      nur `/_astro` immutable.
+- [x] **Robuster Auto-Rebuild (E1.2 neu):** Poll-Task **`JoesJournal-Auto-Rebuild`**
+      (`deploy/auto-rebuild.mjs` + `install-auto-rebuild.ps1`, alle 3 Min) ersetzt Flow+Webhook+Token.
+      Alter `JoesJournal-Rebuild-Listener` automatisch deaktiviert, Directus-Flow gelöscht. Verifiziert:
+      `LastTaskResult 0`, Erstlauf-Baseline-Build ok.
+- [x] **Admin von überall (E1.1):** `admin.zumfettigenjoe.com` (Tunnel → `127.0.0.1:8055` + Access-App).
+      `directus/.env` um `PUBLIC_URL` + die vier `*_COOKIE_*`-Zeilen ergänzt; Directus via Stop/Start
+      neu gestartet, Health `ok`.
+
 **Offen:**
 
+- [ ] **Letzte E1.1-Verifikation:** Laptop-Login `https://admin.zumfettigenjoe.com` ohne Loop (Inkognito).
 - [ ] **Härtung RDP:** öffentliches RDP (3389) auf Tailscale beschränken –
       `Get-NetFirewallRule -DisplayGroup "Remote Desktop" | Set-NetFirewallRule -RemoteAddress 100.64.0.0/10`
       (nur ausführen, wenn per Tailscale verbunden; Revert: `-RemoteAddress Any`)
-- [ ] Branch `harden/pre-vps-top5` via PR nach `main` mergen
-- [ ] optional: nächtlichen Rebuild-Task (SYSTEM) einrichten; `admin.zumfettigenjoe.com` (Directus) hinter Access
+- [ ] **E4.2 externe Backups** als täglicher Task + erster Restore-Drill.
+- [ ] **E2 relationale Migration** (Taxonomien/Tags/Links) – backup-gesichert, noch nicht ausgeführt.
+- [ ] optional: nächtlichen `JoesJournal-Rebuild`-Backstop (SYSTEM, 4 Uhr) zusätzlich einrichten.
 
 ## 10. Stolperfallen (gelernt bei der Inbetriebnahme)
 
@@ -130,6 +167,11 @@ Public: `https://zumfettigenjoe.com` → Access-Login → Joe-Startseite.
 | Public Hostname anlegen: „A/AAAA/CNAME record already exists"               | verwaister Apex-CNAME → in DNS löschen, dann Public Hostname neu anlegen                  |
 | `rebuild.ps1` bricht ab / leere Seite                                       | Directus lief nicht – erst `Start-ScheduledTask JoesJournal-Directus`, Health abwarten    |
 | `node-gyp`/`isolated-vm`-Fehler beim Install                                | Node ≥ 23 → Node **22 LTS** verwenden                                                     |
+| `[object Object]` im Artikel-Body                                           | Body-Feld war `list`-Repeater (leere Objekte) → auf `input-rich-text-html` (Feld löschen + `schema:apply`) |
+| Veröffentlicht, aber Seite sieht unverändert aus                            | Browser-Cache von HTML → `public/web.config` `no-cache` (gefixt); einmalig Strg+F5 für alte Caches |
+| `Restart-ScheduledTask` „not recognized"                                    | Cmdlet existiert nicht → `Stop-ScheduledTask` + `Start-ScheduledTask` (mit kurzem Sleep)  |
+| Task-Registrierung „value out of range" (`P99999999D…`)                     | `-RepetitionDuration ([TimeSpan]::MaxValue)` wird abgelehnt → ganz weglassen (= „Indefinitely") |
+| Admin-Login hinter Access dreht endlos / loggt sofort aus                   | Directus-Cookies nicht `Secure` über den HTTPS-Edge → `*_COOKIE_SECURE=true` + `SAME_SITE=lax` in `directus/.env`, Directus neu starten |
 
 Quality Gates (Laptop, vor jedem Push): `corepack pnpm lint` / `typecheck` (0/0/0) /
 `test` (26 grün) / `build` (35 Seiten) – alle grün.

@@ -166,10 +166,10 @@ parallel/danach E3.1 (Artikel-Typ). E2 (relationale Migration) als bewusst eigen
 
 | #   | Entscheidung          | Optionen                                               | Default-Vorschlag                                      |
 | --- | --------------------- | ------------------------------------------------------ | ------------------------------------------------------ |
-| 1   | Directus-Dauerbetrieb | NSSM-Dienst vs. Task „run at startup"                  | NSSM (sauberes Restart-on-crash)                       |
-| 2   | Auto-Rebuild-Trigger  | Webhook-Listener vs. nur nächtlich                     | Webhook + nächtlicher Backstop                         |
+| 1   | Directus-Dauerbetrieb | NSSM-Dienst vs. Task „run at startup"                  | ✓ Scheduled Task `JoesJournal-Directus` (Highest, restart-on-crash) |
+| 2   | Auto-Rebuild-Trigger  | Webhook-Listener vs. nur nächtlich                     | ✓ **Poll-Task** (`directus_activity`) statt Webhook/Token – robuster |
 | 3   | Bild-Quelle           | nur Files vs. nur public/assets vs. Hybrid             | Hybrid (Design-Assets statisch, Fotos via Files+Bake)  |
-| 4   | Artikel-Body          | Markdown vs. Directus-Blocks/Rich-Text                 | Markdown/Rich-Text (einfach, portabel) — final in E3.1 |
+| 4   | Artikel-Body          | Markdown vs. Directus-Blocks/Rich-Text                 | ✓ **WYSIWYG-HTML** (`input-rich-text-html` + `sanitize-html`), Bilder via Bake |
 | 5   | „Journal"-Nav         | Home behalten + neuer Punkt vs. „Journal"=Artikelliste | „Journal" = Artikelliste, Home bleibt `/`              |
 | 6   | Links-Relation        | Many-to-Any vs. Junctions                              | M2A testen, sonst Junctions (DATA_MODEL §10)           |
 | 7   | Halbe Sterne          | jetzt vs. später                                       | später (DATA_MODEL §10)                                |
@@ -190,7 +190,14 @@ Doku-Pflicht: jede Tranche aktualisiert DEPLOY_STATE.md (Stand) und ggf. DATA_MO
 
 ---
 
-## 8. Umsetzungsstand (2026-05-29)
+## 8. Umsetzungsstand (zuletzt 2026-06-04)
+
+> **Update 2026-06-04:** E1.1, E1.2, E1.4 und der E3.1-Editor sind inzwischen **live
+> auf dem VPS** umgesetzt (Details in [DEPLOY_STATE.md §9](DEPLOY_STATE.md) und
+> [DIRECTUS_EDITOR_UX.md](DIRECTUS_EDITOR_UX.md)). Wesentliche Abweichung von der
+> ursprünglichen Planung: **E1.2 ist jetzt poll-basiert** statt Flow/Webhook/Token
+> (robuster). Editor-Ausbau (WYSIWYG-Body, Absatz-Bilder, Galerie-m2m, deutsche
+> Feldgruppen) kam als eigene Tranche dazu. Tests am Laptop: **57** (war 50).
 
 Alle Phasen durchgearbeitet. Quality Gates am Laptop grün: **lint 0**, **typecheck
 0/0/0**, **50 Tests** (war 26), **38 Seiten** Build (war 35), Prettier sauber.
@@ -199,11 +206,11 @@ Legende: ✅ gebaut & verifiziert (Repo) · 🔶 gebaut, Live-Ausführung ist Ha
 
 | Tranche                                            | Status | Artefakt                                                                                                                                                                                                            |
 | -------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **E1.1** Admin hinter Access                       | 🔶     | `deploy/ensure-directus-service.ps1` (Dauerbetrieb) + [ADMIN_ACCESS.md](ADMIN_ACCESS.md) Runbook. Access-App/Public-Hostname = Cloudflare-Dashboard.                                                                |
-| **E1.2** Auto-Rebuild                              | 🔶     | `deploy/rebuild-listener.mjs` (loopback, Shared-Secret, Debounce) + `install-rebuild-listener.ps1`; [CONTENT_REBUILD.md §5](CONTENT_REBUILD.md). Flow + Task = VPS.                                                 |
-| **E1.3** Files + Bake                              | ✅🔶   | `src/lib/bake/manifest.ts` (+Test), `deploy/bake-files.mjs`, Loader-Integration, additive `image_file` (`schema/media.ts`), in `rebuild.ps1`; [MEDIA_BAKE.md](MEDIA_BAKE.md). `schema:apply` + realer Upload = VPS. |
-| **E1.4** Admin-UX                                  | 🔶     | `presets:apply` (gespeicherte Filter) + `meta:refine` (Display-Templates), idempotent; [DIRECTUS_ADMIN_UX §12a](DIRECTUS_ADMIN_UX.md). Ausführung = VPS. Feldgruppen/Dashboard 📝 offen.                            |
-| **E3.1** Journal-Artikel-Typ                       | ✅     | Voller Stack: Typ, Stub, derive/SEC-1, Mapper, Directus-Collection, Seed, `/journal` + `/journal/[slug]`, Card, Nav, Home-Feed, Suche. +Tests.                                                                      |
+| **E1.1** Admin hinter Access                       | ✅🔶   | **Live:** Tunnel-Hostname `admin.zumfettigenjoe.com`→`127.0.0.1:8055` + Access-App „Joe Admin" + `directus/.env` Secure-Cookies (Login-Loop-Fix); [ADMIN_ACCESS.md](ADMIN_ACCESS.md). Letzter Laptop-Login-Check offen. |
+| **E1.2** Auto-Rebuild                              | ✅     | **Neu poll-basiert (robust):** `deploy/auto-rebuild.mjs` + `install-auto-rebuild.ps1` (Task `JoesJournal-Auto-Rebuild`, alle 3 Min) ersetzt Flow+Webhook+Token; live verifiziert. Webhook-Variante deprecated ([CONTENT_REBUILD.md §5/§6](CONTENT_REBUILD.md)). |
+| **E1.3** Files + Bake                              | ✅     | `src/lib/bake/manifest.ts` (+Test), `deploy/bake-files.mjs`, Loader, additive `image_file`; **live** (Bake bäckt real, zuletzt 5 Dateien). +Absatz-/Galerie-Bake (siehe E3.1).                                       |
+| **E1.4** Admin-UX                                  | ✅🔶   | `presets:apply` + `meta:refine` + **neu `fields:refine`** (deutsche Labels, Feldgruppen Inhalt/Bilder/SEO/Verknüpfungen, Titelbild-Relabel) – live. Insights-Dashboard 📝 offen.                                     |
+| **E3.1** Journal-Artikel-Typ                       | ✅     | Voller Stack + **2026-06-Editor-Ausbau:** WYSIWYG-Body (`input-rich-text-html` + `sanitize-html`), Absatz-Bild-Bake (`rewriteBodyAssets`), **Galerie-m2m** (`articles_files`/`gallery_files`), deutsche Feld-UX. [DIRECTUS_EDITOR_UX.md](DIRECTUS_EDITOR_UX.md). |
 | **E2.1/2.2** Taxonomien/Tags relational            | 🔶     | `slug.ts` (+Test), additive M2M/M2O (`taxonomy-relations.ts`), `relations:apply` + `migrate:taxonomies` (idempotent); [MIGRATION_E2.md](MIGRATION_E2.md). Live-Migration nach Backup+Drill = Handoff.               |
 | **E2.3–2.5** Links-M2A / reiche Felder / FE-Filter | 📝     | In MIGRATION_E2 spezifiziert; Frontend-Cutover bewusst nach erfolgreicher Live-Migration.                                                                                                                           |
 | **E3.2** Pagefind                                  | ✅🔶   | `data-pagefind-body`, progressive `/suche` (Fallback bleibt), `search:index`, in `rebuild.ps1`; [SEARCH.md](SEARCH.md). UI live in Prod.                                                                            |
@@ -214,13 +221,17 @@ Legende: ✅ gebaut & verifiziert (Repo) · 🔶 gebaut, Live-Ausführung ist Ha
 | **E4.3** Logo                                      | 📝     | Wortmarke-Assets existieren; Header-Wechsel = Owner-Design-Entscheidung.                                                                                                                                            |
 | **E4.4** Docker                                    | 📝     | Empfehlung: nativ bleiben; Trigger für Neubewertung benannt.                                                                                                                                                        |
 
+**Erledigt seit 2026-05-29 (live auf dem VPS):** `schema:apply` (image_file + articles + Galerie-m2m),
+`presets:apply`/`meta:refine`/`fields:refine` (E1.4), Cloudflare Admin-Hostname + Access-App + Secure-Cookies
+(E1.1), Auto-Rebuild als Poll-Task statt Webhook/Token (E1.2). Details: [DEPLOY_STATE.md §9](DEPLOY_STATE.md).
+
 **Verbleibende Handoffs (VPS/Cloudflare/DB – nicht aus dem Repo automatisierbar):**
 
-1. `schema:apply` für `image_file` (E1.3) + `presets:apply`/`meta:refine` (E1.4).
-2. Cloudflare: Access-App + Public Hostname `admin.zumfettigenjoe.com` → `127.0.0.1:8055` (E1.1).
-3. `JOES_REBUILD_TOKEN` in `.env`, `install-rebuild-listener.ps1`, Directus-Flow (E1.2).
-4. E2: `pg_dump`-Backup → Restore-Drill → `relations:apply` + `migrate:taxonomies` → Verifikation; danach Frontend-Cutover (E2.5).
-5. E4.2: `backup-external.ps1` als täglicher Task + erster Restore-Drill.
+1. **E1.1-Verifikation:** Laptop-Login `https://admin.zumfettigenjoe.com` ohne Loop (Inkognito).
+2. **E2** (relationale Migration): `pg_dump`-Backup → Restore-Drill → `relations:apply` + `migrate:taxonomies`
+   → Verifikation; danach Frontend-Cutover (E2.5). **Größter offener Block.**
+3. **E4.2:** `backup-external.ps1` als täglicher Task + erster Restore-Drill (schließt P11).
+4. **Härtung RDP** auf Tailscale (DEPLOY_STATE §9), optional nächtlicher Rebuild-Backstop.
 
 **Nicht im Laptop-Gate prüfbar (ehrlich):** Build im `JOES_DATA_SOURCE=directus`-Modus,
 der reale Bild-Bake, die M2M-Erstellung und die Pagefind-UI zur Laufzeit – alle
