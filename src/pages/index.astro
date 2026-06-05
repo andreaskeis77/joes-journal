@@ -7,6 +7,7 @@ import ArticleCard from "../components/ArticleCard.astro";
 import RestaurantCard from "../components/RestaurantCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 import StatCard from "../components/StatCard.astro";
+import EmptyState from "../components/EmptyState.astro";
 import {
   reviewsByDateDesc,
   articlesByDateDesc,
@@ -18,7 +19,13 @@ import {
 const latestReviews = reviewsByDateDesc.slice(0, 3);
 const latestArticles = articlesByDateDesc.slice(0, 3);
 const homeRestaurants = restaurants
-  .filter((r) => r.status === "wishlist" || r.status === "planned" || r.status === "reviewed")
+  .filter(
+    (r) =>
+      r.status === "wishlist" ||
+      r.status === "planned" ||
+      r.status === "visited" ||
+      r.status === "reviewed",
+  )
   .slice(0, 3);
 ---
 
@@ -38,9 +45,20 @@ const homeRestaurants = restaurants
         </div>
         <a class="section-more" href="/kritiken">Alle Kritiken →</a>
       </header>
-      <div class="grid grid-3">
-        {latestReviews.map((review) => <ReviewCard review={review} />)}
-      </div>
+      {
+        latestReviews.length > 0 ? (
+          <div class="grid grid-3">
+            {latestReviews.map((review) => (
+              <ReviewCard review={review} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Noch keine Kritiken veröffentlicht."
+            description="Die erste Restaurantkritik erscheint hier, sobald sie veröffentlicht ist."
+          />
+        )
+      }
     </div>
   </section>
 
@@ -76,9 +94,20 @@ const homeRestaurants = restaurants
         </div>
         <a class="section-more" href="/restaurants">Alle Restaurants →</a>
       </header>
-      <div class="grid grid-3">
-        {homeRestaurants.map((restaurant) => <RestaurantCard restaurant={restaurant} />)}
-      </div>
+      {
+        homeRestaurants.length > 0 ? (
+          <div class="grid grid-3">
+            {homeRestaurants.map((restaurant) => (
+              <RestaurantCard restaurant={restaurant} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Noch keine Restaurants erfasst."
+            description="Watchlist und besuchte Adressen erscheinen hier, sobald sie angelegt sind."
+          />
+        )
+      }
     </div>
   </section>
 

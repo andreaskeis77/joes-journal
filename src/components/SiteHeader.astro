@@ -135,6 +135,19 @@ const isActive = (href: string) =>
   </div>
 </header>
 
+<script is:inline>
+  // Body-Scroll sperren, solange der mobile Drawer offen ist (die CSS-only-Lösung
+  // allein lässt den Hintergrund weiterscrollen). matches(":checked") vermeidet
+  // input-spezifische Typannahmen und bleibt mit der Checkbox-Mechanik kompatibel.
+  (function () {
+    const toggle = document.getElementById("mobile-drawer-toggle");
+    if (!toggle) return;
+    toggle.addEventListener("change", function () {
+      document.body.style.overflow = toggle.matches(":checked") ? "hidden" : "";
+    });
+  })();
+</script>
+
 <style>
   .site-header {
     background: var(--color-surface);

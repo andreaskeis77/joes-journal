@@ -34,7 +34,14 @@ const statusColor = eq.status === "owned" ? "var(--color-success)" : "var(--colo
     </nav>
 
     <div class="hero">
-      <img src={eq.image} alt="" width="1600" height="1200" loading="eager" decoding="async" />
+      <img
+        src={eq.image}
+        alt={eq.name}
+        width="1600"
+        height="1200"
+        loading="eager"
+        decoding="async"
+      />
     </div>
 
     <header class="container head">

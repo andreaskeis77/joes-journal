@@ -102,25 +102,30 @@ async function main() {
     }
   }
 
-  // 1b) Phase 2: inline body images of PUBLISHED articles (SEC-1: nur published
-  //     Bodies werden gescannt). Findet jede /assets/<uuid>-Referenz im
-  //     WYSIWYG-HTML und reiht sie in dieselbe fileIds-Menge ein; die
-  //     Download-Schleife unten laedt sie unveraendert mit.
+  // 1b) Phase 2: inline body images of PUBLISHED articles UND reviews (SEC-1: nur
+  //     published Bodies werden gescannt). Beide nutzen WYSIWYG-HTML; eine Regex
+  //     findet jede /assets/<uuid>-Referenz und reiht sie in dieselbe fileIds-Menge
+  //     ein (die Download-Schleife unten laedt sie unveraendert mit). Ein noch nicht
+  //     migrierter (string[]) review-Body wird durch den typeof-Guard uebersprungen.
   const ASSET_RE = /\/assets\/([0-9a-f-]{36})/gi;
-  try {
-    const arts = await client.request(
-      readItems("articles", {
-        limit: -1,
-        fields: ["body"],
-        filter: { status: { _eq: "published" } },
-      }),
-    );
-    for (const a of arts) {
-      if (typeof a?.body !== "string") continue;
-      for (const m of a.body.matchAll(ASSET_RE)) fileIds.add(m[1]);
+  for (const collection of ["articles", "restaurant_reviews"]) {
+    try {
+      const rows = await client.request(
+        readItems(collection, {
+          limit: -1,
+          fields: ["body"],
+          filter: { status: { _eq: "published" } },
+        }),
+      );
+      for (const row of rows) {
+        if (typeof row?.body !== "string") continue;
+        for (const m of row.body.matchAll(ASSET_RE)) fileIds.add(m[1]);
+      }
+    } catch {
+      console.warn(
+        `[bake] ${collection}.body inline-Scan uebersprungen (Feld evtl. noch nicht da).`,
+      );
     }
-  } catch {
-    console.warn("[bake] articles.body inline-Scan uebersprungen (Feld evtl. noch nicht da).");
   }
 
   // 1c) Phase 4: m2m-Galerie (gallery_files) veroeffentlichter Artikel. Eigene

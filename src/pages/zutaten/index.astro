@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
+import EmptyState from "../../components/EmptyState.astro";
 import { ingredients, suppliers, supplierBySlug } from "../../data/source";
 import type { SupplierStub } from "../../data/source";
 
@@ -22,57 +23,71 @@ const ingredientsWithSuppliers = ingredients.map((ing) => ({
   <section class="zutaten-section">
     <div class="container">
       <h2>Zutaten</h2>
-      <ul class="ingredient-list">
-        {
-          ingredientsWithSuppliers.map(({ ingredient: ing, resolvedSuppliers }) => (
-            <li id={ing.slug} class="ingredient">
-              <div class="image">
-                <img src={ing.image} alt="" width="120" height="90" loading="lazy" />
-              </div>
-              <div class="body">
-                <p class="category">{ing.category}</p>
-                <h3>{ing.name}</h3>
-                <p class="note">{ing.note}</p>
-                {resolvedSuppliers.length > 0 && (
-                  <p class="meta">
-                    Bezug:{" "}
-                    {resolvedSuppliers.map((s, i) => (
-                      <>
-                        <a href={`#${s.slug}`}>{s.name}</a>
-                        {i < resolvedSuppliers.length - 1 ? ", " : ""}
-                      </>
-                    ))}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        ingredientsWithSuppliers.length > 0 ? (
+          <ul class="ingredient-list">
+            {ingredientsWithSuppliers.map(({ ingredient: ing, resolvedSuppliers }) => (
+              <li id={ing.slug} class="ingredient">
+                <div class="image">
+                  <img src={ing.image} alt={ing.name} width="120" height="90" loading="lazy" />
+                </div>
+                <div class="body">
+                  <p class="category">{ing.category}</p>
+                  <h3>{ing.name}</h3>
+                  <p class="note">{ing.note}</p>
+                  {resolvedSuppliers.length > 0 && (
+                    <p class="meta">
+                      Bezug:{" "}
+                      {resolvedSuppliers.map((s, i) => (
+                        <>
+                          <a href={`#${s.slug}`}>{s.name}</a>
+                          {i < resolvedSuppliers.length - 1 ? ", " : ""}
+                        </>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState
+            title="Noch keine Zutaten dokumentiert."
+            description="Sobald Zutaten erfasst sind, erscheinen sie hier mit ihren Bezugsquellen."
+          />
+        )
+      }
     </div>
   </section>
 
   <section class="supplier-section">
     <div class="container">
       <h2>Lieferanten</h2>
-      <ul class="supplier-list">
-        {
-          suppliers.map((s) => (
-            <li id={s.slug} class="supplier">
-              <p class="type">
-                {s.type} · {s.city}
-              </p>
-              <h3>{s.name}</h3>
-              <p class="note">{s.note}</p>
-              {s.website && (
-                <a href={s.website} target="_blank" rel="noopener noreferrer">
-                  {s.website}
-                </a>
-              )}
-            </li>
-          ))
-        }
-      </ul>
+      {
+        suppliers.length > 0 ? (
+          <ul class="supplier-list">
+            {suppliers.map((s) => (
+              <li id={s.slug} class="supplier">
+                <p class="type">
+                  {s.type} · {s.city}
+                </p>
+                <h3>{s.name}</h3>
+                <p class="note">{s.note}</p>
+                {s.website && (
+                  <a href={s.website} target="_blank" rel="noopener noreferrer">
+                    {s.website}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState
+            title="Noch keine Bezugsquellen hinterlegt."
+            description="Lieferanten und Bezugsquellen erscheinen hier, sobald sie erfasst sind."
+          />
+        )
+      }
     </div>
   </section>
 </BaseLayout>

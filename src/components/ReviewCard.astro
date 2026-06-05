@@ -1,6 +1,7 @@
 ---
 import type { ReviewStub } from "../data/source";
 import { restaurantBySlug } from "../data/source";
+import { formatGermanDate } from "../lib/date";
 import RatingStars from "./RatingStars.astro";
 
 interface Props {
@@ -11,16 +12,20 @@ const { review } = Astro.props;
 const restaurant = restaurantBySlug.get(review.restaurantSlug);
 const restaurantName = restaurant?.name ?? "Unbekanntes Restaurant";
 const city = restaurant?.city ?? "";
-const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
-  year: "numeric",
-  month: "long",
-});
+const visitedDate = formatGermanDate(review.visitedOn, { year: "numeric", month: "long" });
 ---
 
 <article class="review-card">
   <a class="review-link" href={`/kritiken/${review.slug}`}>
     <div class="image-wrap">
-      <img src={review.image} alt="" width="1600" height="1200" loading="lazy" decoding="async" />
+      <img
+        src={review.image}
+        alt={review.title}
+        width="1600"
+        height="1200"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="body">
       <div class="meta">
@@ -35,8 +40,16 @@ const visitedDate = new Date(review.visitedOn).toLocaleDateString("de-DE", {
             </>
           )
         }
-        <span class="dot" aria-hidden="true">·</span>
-        <time datetime={review.visitedOn}>{visitedDate}</time>
+        {
+          visitedDate && (
+            <>
+              <span class="dot" aria-hidden="true">
+                ·
+              </span>
+              <time datetime={review.visitedOn}>{visitedDate}</time>
+            </>
+          )
+        }
       </div>
       <h3 class="title">{review.title}</h3>
       <p class="excerpt">{review.excerpt}</p>

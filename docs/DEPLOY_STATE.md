@@ -1,6 +1,6 @@
 # DEPLOY_STATE – joes-journal
 
-**Stand:** 2026-06-04 · **Branch:** `main` (`harden/pre-vps-top5` via PR #1 gemerged)
+**Stand:** 2026-06-05 · **Branch:** `main` (VPS-Live); Review-Fixes auf `review-fixes-2026-06` (siehe §9)
 
 Tatsächlicher Betriebszustand auf dem VPS (Ergebnis der ersten Live-Inbetriebnahme,
 Roadmap P9/P10). Ergänzt den konzeptionellen [VPS_DEPLOYMENT_PLAN.md](VPS_DEPLOYMENT_PLAN.md)
@@ -103,8 +103,23 @@ $ts = Get-Date -Format yyyyMMdd-HHmmss
 Restore-Drill: in eine Test-DB einspielen, Directus dagegen starten, Daten prüfen – siehe
 [POSTGRES_DRYRUN.md](POSTGRES_DRYRUN.md) und [VPS_DEPLOYMENT_PLAN.md §12](VPS_DEPLOYMENT_PLAN.md).
 
-**Externe Kopie (E4.2, schließt P11):** `deploy/backup-external.ps1` dumpt + kopiert offsite
-(UNC/rclone) + Aufbewahrung. Als täglichen Task einrichten – siehe [POLISH_PUBLIC.md](POLISH_PUBLIC.md).
+**Externe Kopie (E4.2, schließt P11):** `deploy/backup-external.ps1` dumpt die DB **und
+verifiziert sie** (`pg_restore --list`), **spiegelt zusätzlich `directus/uploads/`** (pg_dump
+sichert nur DB-Zeilen, NICHT die Original-Fotos!), kopiert beides offsite (UNC/rclone) und räumt
+Dumps **lokal UND extern** nach Aufbewahrungsfrist auf. Als täglichen Task registrieren:
+
+```powershell
+# Voraussetzung: DB-Passwort in der .pgpass des Dienstkontos (kein Secret im Task).
+.\deploy\install-backup.ps1 -ExternalDest "\\nas\backups\joes"      # oder: -ExternalDest "b2:…" -UseRclone
+Start-ScheduledTask -TaskName JoesJournal-Backup
+# DANACH PFLICHT: einen Restore-Drill nach POSTGRES_DRYRUN.md fahren und hier festhalten.
+```
+
+**Monitoring (`deploy/check-health.ps1`):** prüft Directus-Health, Frontend/IIS,
+`LastTaskResult` der Tasks und die Frische von `state/auto-rebuild.json`; bei Problemen optional
+Alarm via `-NotifyUrl` (ntfy/Webhook). Als eigenen Task (z. B. alle 30 Min) registrieren und
+zusätzlich eine **Cloudflare-Health-Notification** auf `zumfettigenjoe.com` aktivieren (erkennt
+Tunnel-/Edge-Ausfälle, die ein VPS-lokaler Check nicht sieht).
 
 ## 8. Smoke-Test
 
@@ -148,13 +163,35 @@ Public: `https://zumfettigenjoe.com` → Access-Login → Joe-Startseite.
       `directus/.env` um `PUBLIC_URL` + die vier `*_COOKIE_*`-Zeilen ergänzt; Directus via Stop/Start
       neu gestartet, Health `ok`.
 
+**Erledigt (2026-06-05) – Review-Fixes (Branch `review-fixes-2026-06`, aus [REVIEW_2026-06.md](REVIEW_2026-06.md)):**
+
+- [x] **Resilienz:** `rebuild.ps1` crash-fester `dist.prev`-Recovery (keine leere Live-Site mehr nach
+      Mid-Build-Abbruch); `auto-rebuild.mjs` erkennt `directus_activity`-Rotation/Reset (kein stiller
+      Dauer-Stillstand nach DB-Restore) + Netzwerk-Timeouts.
+- [x] **Backup/Monitoring (Code):** `backup-external.ps1` sichert jetzt auch `directus/uploads/`,
+      verifiziert den Dump und räumt extern auf; neu `install-backup.ps1` (Task-Registrierung) und
+      `check-health.ps1` (Monitoring). **Live-Ausführung = Handoff** (siehe Offen).
+- [x] **Kritik-Editor:** `restaurant_reviews.body` auf WYSIWYG umgestellt (Code/Schema/Mapper/Renderer/
+      Bake), behebt den `[object Object]`-Bug im Kern-Inhaltstyp. **Live-Typänderung = Handoff** (json→text
+      nicht additiv, [DIRECTUS_EDITOR_UX.md](DIRECTUS_EDITOR_UX.md)).
+- [x] **Admin-UX:** `fields:refine` deckt jetzt zusätzlich `restaurants` + `restaurant_reviews` ab
+      (deutsche Labels/Feldgruppen/Titelbild). Re-Run `pnpm fields:refine` auf dem VPS nötig.
+- [x] **Besucher-UX:** Alt-Texte für Inhaltsbilder, Leere-Zustände (Start-/Zutaten-Seite), `404.astro`
+      (+ IIS-`httpErrors`), Invalid-Date-Guard, toter Watchlist-Chip + „frisch besucht"-Filter gefixt.
+- [x] **SEC-1-Konsistenz:** `seed.ts` übernimmt den echten Review-Status (kein hartes „published") und
+      nutzt die kanonische Slug-Quelle (E2-Konsistenz).
+
 **Offen:**
 
 - [ ] **Letzte E1.1-Verifikation:** Laptop-Login `https://admin.zumfettigenjoe.com` ohne Loop (Inkognito).
 - [ ] **Härtung RDP:** öffentliches RDP (3389) auf Tailscale beschränken –
       `Get-NetFirewallRule -DisplayGroup "Remote Desktop" | Set-NetFirewallRule -RemoteAddress 100.64.0.0/10`
       (nur ausführen, wenn per Tailscale verbunden; Revert: `-RemoteAddress Any`)
-- [ ] **E4.2 externe Backups** als täglicher Task + erster Restore-Drill.
+- [ ] **E4.2 externe Backups LIVE:** `install-backup.ps1` ausführen (.pgpass einrichten) + erster Restore-Drill.
+- [ ] **Monitoring LIVE:** `check-health.ps1` als Task (alle 30 Min) + Cloudflare-Health-Notification.
+- [ ] **Kritik-Body LIVE:** Feldtyp `restaurant_reviews.body` json→text manuell im Data-Model umstellen
+      (nicht additiv), dann `pnpm fields:refine` + `rebuild.ps1`. Live-Kritiktexte vorher sichern.
+- [ ] **Admin-UX LIVE:** `pnpm fields:refine` auf dem VPS (deutsche Feldgruppen für Restaurants/Kritiken).
 - [ ] **E2 relationale Migration** (Taxonomien/Tags/Links) – backup-gesichert, noch nicht ausgeführt.
 - [ ] optional: nächtlichen `JoesJournal-Rebuild`-Backstop (SYSTEM, 4 Uhr) zusätzlich einrichten.
 
@@ -174,4 +211,5 @@ Public: `https://zumfettigenjoe.com` → Access-Login → Joe-Startseite.
 | Admin-Login hinter Access dreht endlos / loggt sofort aus                   | Directus-Cookies nicht `Secure` über den HTTPS-Edge → `*_COOKIE_SECURE=true` + `SAME_SITE=lax` in `directus/.env`, Directus neu starten |
 
 Quality Gates (Laptop, vor jedem Push): `corepack pnpm lint` / `typecheck` (0/0/0) /
-`test` (26 grün) / `build` (35 Seiten) – alle grün.
+`test` (62 grün) / `build` (39 Seiten) / Prettier sauber – alle grün. (e2e: 28/30, ein
+vorbestehender `chromium-mobile`-Klick-Flake auf der Kritikenliste, nicht Teil des Laptop-Gates.)

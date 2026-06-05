@@ -92,7 +92,13 @@ function buildSearchIndex(
         href: `/kritiken/${rv.slug}`,
         snippet: rest ? `${rest.name} · ${rest.city}` : "",
         image: rv.image,
-        searchText: joinLower(rv.title, rv.excerpt, rest?.name, rest?.city, ...rv.body),
+        searchText: joinLower(
+          rv.title,
+          rv.excerpt,
+          rest?.name,
+          rest?.city,
+          rv.body.replace(/<[^>]+>/g, " "),
+        ),
       };
     }),
     ...raw.articles.map<SearchEntry>((a) => ({
@@ -102,7 +108,13 @@ function buildSearchIndex(
       href: `/journal/${a.slug}`,
       snippet: a.eyebrow ?? "Journal",
       image: a.image,
-      searchText: joinLower(a.title, a.summary, a.eyebrow, ...a.tags, a.body.replace(/<[^>]+>/g, " ")),
+      searchText: joinLower(
+        a.title,
+        a.summary,
+        a.eyebrow,
+        ...a.tags,
+        a.body.replace(/<[^>]+>/g, " "),
+      ),
     })),
     ...raw.recipes.map<SearchEntry>((rc) => ({
       kind: "recipe",

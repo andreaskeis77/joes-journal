@@ -95,7 +95,10 @@ export function mapReview(d: DirectusReview): ReviewStub {
     visitedOn: d.visited_on ?? "",
     rating: toNumber(d.rating, 0),
     excerpt: d.excerpt ?? "",
-    body: d.body ?? [],
+    // WYSIWYG-HTML-String. Alte Daten (string[] aus dem Repeater) werden hier
+    // sicher auf "" verworfen, bis das Feld im Editor neu geschrieben wird –
+    // identisch zur Artikel-Reparatur, schützt vor "[object Object]".
+    body: typeof d.body === "string" ? d.body : "",
     image: d.image ?? "",
     galleryImages: d.gallery_images ?? [],
     // Pass the real editorial status through. derive() drops anything that is

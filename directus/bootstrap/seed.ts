@@ -11,6 +11,7 @@
  */
 import { createItem, readItems } from "@directus/sdk";
 import { authenticatedClient, type Client } from "./client.js";
+import { toTermSlug } from "../../src/lib/taxonomy/slug.ts";
 
 import {
   restaurants as stubRestaurants,
@@ -90,21 +91,15 @@ async function seedTaxonomies(client: Client) {
   const eqCategories = new Set(stubEquipment.map((e) => e.category));
   const supplierTypes = new Set(stubSuppliers.map((s) => s.type));
 
-  const toSlug = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/ä/g, "ae")
-      .replace(/ö/g, "oe")
-      .replace(/ü/g, "ue")
-      .replace(/ß/g, "ss")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
-
+  // Eine einzige Slug-Quelle (toTermSlug) für Seed UND E2-Migration, sonst können
+  // Seed und migrate-taxonomies für denselben Namen verschiedene Slugs erzeugen
+  // (die lokale Variante hier ließ den NFKD-Diakritika-Schritt aus: "Café" -> "caf-"
+  // statt "cafe"). Siehe src/lib/taxonomy/slug.ts.
   async function seedTerms(collection: string, terms: Iterable<string>) {
     const existing = await existingSlugs(client, collection);
     let created = 0;
     for (const name of terms) {
-      const slug = toSlug(name);
+      const slug = toTermSlug(name);
       if (!slug || existing.has(slug)) continue;
       await insertIfNew(client, collection, { slug, name }, existing);
       created++;
@@ -159,7 +154,9 @@ async function seedReviews(client: Client, restaurantIds: Map<string, string>) {
     const payload = {
       slug: rv.slug,
       title: rv.title,
-      status: "published",
+      // Echten Stub-Status übernehmen (wie seedArticles), statt hart "published":
+      // sonst würde ein Entwurfs-Review beim Seed stillschweigend veröffentlicht (SEC-1).
+      status: rv.status,
       restaurant: restaurantId,
       visited_on: rv.visitedOn,
       rating: rv.rating,

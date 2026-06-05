@@ -190,8 +190,18 @@ Doku-Pflicht: jede Tranche aktualisiert DEPLOY_STATE.md (Stand) und ggf. DATA_MO
 
 ---
 
-## 8. Umsetzungsstand (zuletzt 2026-06-04)
+## 8. Umsetzungsstand (zuletzt 2026-06-05)
 
+> **Update 2026-06-05 (Branch `review-fixes-2026-06`, aus [REVIEW_2026-06.md](REVIEW_2026-06.md)):**
+> Aus dem Standort-Review abgearbeitet (Code, Laptop-Gates grün – **62 Tests**, **39 Seiten**):
+> Resilienz-Sofortpaket (crash-fester `dist.prev`-Rollback, Activity-Rotations-Selbstheilung,
+> `backup-external.ps1` inkl. Uploads + Verify + externe Retention, neu `install-backup.ps1` /
+> `check-health.ps1`); **`restaurant_reviews.body` auf WYSIWYG** (behebt `[object Object]` im Kerntyp,
+> Inline-Bake auf Kritiken erweitert); **Admin-UX `fields:refine`** zusätzlich für `restaurants` +
+> `restaurant_reviews`; Besucher-UX (Alt-Texte, Leere-Zustände, `404`, Datum-Guard, tote Links);
+> SEC-1-Konsistenz im Seed. **Live-Ausführung** (Backup-/Monitoring-Tasks, json→text-Typänderung der
+> Kritik, `fields:refine` am VPS, E2-Migration) bleibt Handoff – siehe [DEPLOY_STATE.md §9](DEPLOY_STATE.md).
+>
 > **Update 2026-06-04:** E1.1, E1.2, E1.4 und der E3.1-Editor sind inzwischen **live
 > auf dem VPS** umgesetzt (Details in [DEPLOY_STATE.md §9](DEPLOY_STATE.md) und
 > [DIRECTUS_EDITOR_UX.md](DIRECTUS_EDITOR_UX.md)). Wesentliche Abweichung von der

@@ -1,34 +1,38 @@
 ---
 import type { ArticleStub } from "../data/source";
+import { formatGermanDate } from "../lib/date";
 
 interface Props {
   article: ArticleStub;
 }
 
 const { article } = Astro.props;
-const publishedDate = new Date(article.publishedDate).toLocaleDateString("de-DE", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const publishedDate = formatGermanDate(article.publishedDate);
 ---
 
 <article class="article-card">
   <a class="article-link" href={`/journal/${article.slug}`}>
     <div class="image-wrap">
-      <img src={article.image} alt="" width="1600" height="900" loading="lazy" decoding="async" />
+      <img
+        src={article.image}
+        alt={article.title}
+        width="1600"
+        height="900"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="body">
       <div class="meta">
         {article.eyebrow && <span class="eyebrow">{article.eyebrow}</span>}
         {
-          article.eyebrow && (
+          article.eyebrow && publishedDate && (
             <span class="dot" aria-hidden="true">
               ·
             </span>
           )
         }
-        <time datetime={article.publishedDate}>{publishedDate}</time>
+        {publishedDate && <time datetime={article.publishedDate}>{publishedDate}</time>}
       </div>
       <h3 class="title">{article.title}</h3>
       <p class="summary">{article.summary}</p>

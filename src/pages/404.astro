@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EmptyState from "../components/EmptyState.astro";
+---
+
+<BaseLayout title="Seite nicht gefunden" description="Diese Seite existiert nicht.">
+  <section class="notfound container">
+    <p class="code">404</p>
+    <EmptyState
+      title="Diese Seite gibt es nicht (mehr)."
+      description="Der Link ist vielleicht veraltet oder vertippt. Zurück zur Startseite oder direkt in die Suche."
+    />
+    <div class="actions">
+      <a class="btn btn-primary" href="/">Zur Startseite</a>
+      <a class="btn btn-secondary" href="/suche">Zur Suche</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: var(--space-9);
+    text-align: center;
+    max-width: var(--max-content);
+  }
+
+  .code {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-muted);
+    letter-spacing: 0.12em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-6);
+  }
+</style>
