@@ -262,3 +262,28 @@ Galerie-m2m kommt zuletzt.
 - `deploy/bake-files.mjs` (Inline-Scan; Download-Schleife unverändert)
 - `directus/bootstrap/refine-meta.ts` / `apply-presets.ts` (Muster; neu `refine-fields.ts`)
 - `directus/bootstrap/schema/media.ts` (`image_file`, `fileRelations`-Muster für Galerie-m2m)
+
+## 12. Kritik-Body (`restaurant_reviews`) – jetzt gleich wie der Artikel (2026-06-05)
+
+Das Standort-Review fand, dass der Kern-Inhaltstyp **Restaurantkritik** noch den kaputten
+`list`-Repeater-Body trug (`type: json`, `interface: list`) und damit dasselbe **`[object Object]`**
+reproduzierte, das für Artikel längst behoben war. Im Branch `review-fixes-2026-06` ist die Kritik
+auf denselben Pfad wie der Artikel gehoben:
+
+- **Schema** [restaurants.ts](../directus/bootstrap/schema/restaurants.ts) (`reviewCollection.body`):
+  `type: "text"`, `interface: "input-rich-text-html"`.
+- **Frontend** [kritiken/[slug].astro](../src/pages/kritiken/[slug].astro): `sanitizeArticleHtml(review.body)`
+  + `set:html` (statt `review.body.map(...)`), gleiche `.body :global(...)`-Stile wie der Artikel.
+- **Datenfluss** [schema.ts](../src/lib/directus/schema.ts) `DirectusReview.body: string`,
+  [mappers.ts](../src/lib/directus/mappers.ts) `typeof d.body === "string" ? d.body : ""`
+  (alte Array-Daten fallen sicher auf `""`), [stub.ts](../src/data/stub.ts) `ReviewStub.body: string`,
+  [derive.ts](../src/data/derive.ts) Suchindex `rv.body.replace(/<[^>]+>/g," ")` statt `...rv.body`.
+- **Bake** [bake-files.mjs](../deploy/bake-files.mjs) scannt jetzt auch veröffentlichte
+  `restaurant_reviews.body` nach Inline-`/assets/`-Bildern; [loader-directus.ts](../src/data/loader-directus.ts)
+  schreibt sie via `rewriteBodyAssets` um.
+
+> **Live-Schritt (Handoff, derselbe „eine riskante Typänderung" wie beim Artikel, §10.1):** json→text ist
+> **nicht additiv** – `pnpm schema:apply` ändert keine Typen. Im 🖥️ Directus-Admin den Feldtyp von
+> `restaurant_reviews.body` manuell auf **text / WYSIWYG** umstellen (Feld löschen + `schema:apply`,
+> **oder** Typ direkt im Data-Model ändern). **Vorher die Live-Kritiktexte sichern.** Danach
+> `pnpm fields:refine` (deutsche Feldgruppen für Kritiken) + `rebuild.ps1`.

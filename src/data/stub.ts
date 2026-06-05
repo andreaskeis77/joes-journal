@@ -35,7 +35,8 @@ export interface ReviewStub {
   visitedOn: string;
   rating: number;
   excerpt: string;
-  body: string[];
+  /** WYSIWYG-HTML (Directus input-rich-text-html); via set:html (saniert) gerendert. */
+  body: string;
   image: string;
   galleryImages: string[];
   status: ReviewStatus;
@@ -225,7 +226,9 @@ export const reviews: ReviewStub[] = [
       "Schon der Auftakt – ein klarer Sud mit jungem Lauch – sagte alles: Hier wird Geschmack ernst genommen, ohne Geräusch zu machen. Sechs Gänge folgten, jeder mit einer ruhigen Idee, kein Gang als Pose.",
       "Höhepunkt war ein Stück Saibling, gerade so durch, mit einer Sauce, die nach gerösteter Butter, Sherry und Geduld schmeckte. Der Service hat dabei genau einmal nachgeschenkt – im richtigen Moment.",
       "Dessert war ein Rhabarber-Sorbet mit Olivenöl und etwas Pfeffer. Zurückhaltend, klar, präzise. Genau die Sorte Schluss, die man sich von einem guten Menü wünscht.",
-    ],
+    ]
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     image: "/assets/reviews/review-dish-fine-dining-plate-4x3-v01.webp",
     galleryImages: [
       "/assets/reviews/review-service-table-detail-4x3-v01.webp",
@@ -246,7 +249,9 @@ export const reviews: ReviewStub[] = [
       "Die Karte umfasst zwölf Zeilen, davon zwei für Desserts. Das ist freundlich gemeint, denn sie nimmt einem die Qual der Wahl ab und gibt einem die Erlaubnis, einfach Steak Frites zu nehmen.",
       "Das Fleisch kam medium-rare, wie bestellt. Pommes dünn, doppelt frittiert, salzig genau richtig. Die Beurre Blanc zum Vorspeisenfisch war fein säuerlich und ohne den üblichen Schwall an Sahne.",
       "Es ist die Art Bistro, die einem das Gefühl gibt, dass das alles ganz normal sei – und genau das ist das Schwierige.",
-    ],
+    ]
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     image: "/assets/reviews/review-service-table-detail-4x3-v01.webp",
     galleryImages: [
       "/assets/reviews/review-wine-glass-table-4x3-v01.webp",
@@ -266,7 +271,9 @@ export const reviews: ReviewStub[] = [
       "Vier offene Weine, sechs kleine Teller, kein Hauptgang. Das klingt nach Tapas, ist aber leiser. Der erste Teller – fermentierter Sellerie mit Haselnuss – war so präzise austariert, dass man kurz nachdenken musste, ob es Vorspeise oder Dessert war.",
       "Der Wein im offenen Ausschank war ein Versuch wert: ein georgischer Skin Contact, ohne den üblichen Hardcore-Charakter. Dazu eine Forelle, kalt geräuchert, mit Crème fraîche und sehr dünner Gurke.",
       "Service freundlich, kompetent, ohne Vortrag. Eine Bar, die nicht beweisen muss, dass sie etwas drauf hat.",
-    ],
+    ]
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     image: "/assets/reviews/review-after-dinner-table-4x3-v01.webp",
     galleryImages: [
       "/assets/reviews/review-dessert-plate-editorial-4x3-v01.webp",
@@ -289,7 +296,9 @@ export const articles: ArticleStub[] = [
       "Eine kurze Karte ist ein Versprechen. Sie sagt: Wir kaufen das, was heute gut ist, und wir kochen das, was wir können. Sie nimmt einem die Qual der Wahl ab und gibt einem die Erlaubnis, einfach das Naheliegende zu bestellen – und darauf zu vertrauen, dass es gut wird.",
       "Die lange Karte dagegen ist oft ein Misstrauensvotum gegen die eigene Küche. Vierzig Gerichte bedeuten Tiefkühltruhe, Convenience, Standzeiten. Wer alles anbietet, kann selten etwas richtig gut. Das ist keine Regel, aber eine erstaunlich verlässliche Faustregel.",
       "Am Ende ist die kurze Karte auch eine Frage des Respekts – vor dem Produkt, vor der eigenen Arbeit und vor dem Gast, dem man zutraut, dass er eine Entscheidung aushält.",
-    ].map((p) => `<p>${p}</p>`).join("\n"),
+    ]
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     image: "/assets/heroes/hero-reviews-table-after-service-16x9-v01.webp",
     galleryImages: ["/assets/reviews/review-service-table-detail-4x3-v01.webp"],
     publishedDate: "2026-05-12",
@@ -309,7 +318,9 @@ export const articles: ArticleStub[] = [
       "Mise en Place – „alles an seinem Platz“ – ist der unspektakulärste und zugleich wichtigste Teil des Kochens. Es ist der Moment, in dem alles geschnitten, abgewogen und bereitgestellt wird, bevor die erste Zutat in die Pfanne kommt.",
       "Wer schon einmal mitten im Kochen festgestellt hat, dass die Schalotte noch ungeschält ist, während die Butter in der Pfanne längst braun wird, kennt den Unterschied. Gute Küche ist selten eine Frage von Talent im Moment – sie ist eine Frage der Vorbereitung davor.",
       "Das Schöne daran: Mise en Place ist eine ruhige Tätigkeit. Schneiden, sortieren, in kleine Schälchen füllen. Es ist der meditative Teil, der dem lauten Teil vorausgeht. Und wenn dann die Hitze kommt, ist alles nur noch eine Frage des Timings.",
-    ].map((p) => `<p>${p}</p>`).join("\n"),
+    ]
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     image: "/assets/heroes/hero-recipes-kitchen-counter-mise-en-place-16x9-v01.webp",
     galleryImages: ["/assets/recipes/recipe-card-mise-en-place-vegetables-4x3-v01.webp"],
     publishedDate: "2026-04-28",
@@ -412,7 +423,7 @@ export const stats: StatStub[] = [
 
 export const quickChips: Array<{ label: string; href: string }> = [
   { label: "Neueste Kritiken", href: "/kritiken" },
-  { label: "Watchlist", href: "/restaurants?status=wishlist" },
+  { label: "Watchlist", href: "/restaurants#wishlist" },
   { label: "Alkoholfreie Cocktails", href: "/cocktails" },
   { label: "BBQ & Grill", href: "/sammlungen" },
   { label: "Bar-Basics", href: "/sammlungen" },
@@ -1032,7 +1043,7 @@ export const searchIndex: SearchEntry[] = [
       href: `/kritiken/${rv.slug}`,
       snippet: rest ? `${rest.name} · ${rest.city}` : "",
       image: rv.image,
-      searchText: s(rv.title, rv.excerpt, rest?.name, rest?.city, ...rv.body),
+      searchText: s(rv.title, rv.excerpt, rest?.name, rest?.city, rv.body.replace(/<[^>]+>/g, " ")),
     };
   }),
   ...articles.map<SearchEntry>((a) => ({

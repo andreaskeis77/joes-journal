@@ -78,6 +78,25 @@ function log(msg) {
   console.log(`[auto-rebuild ${new Date().toISOString()}] ${msg}`);
 }
 
+/**
+ * Begrenzt einen Netzwerk-Aufruf zeitlich. Ohne Timeout kann ein haengendes
+ * Directus (TCP-Accept ohne Antwort) den Poll bis zum 1h-ExecutionTimeLimit des
+ * Tasks blockieren; weil MultipleInstances=IgnoreNew gilt, fallen dabei alle
+ * Folge-Ticks aus -> bis zu 1h kein Rebuild. Mit Timeout schlaegt der Lauf
+ * stattdessen schnell fehl und der naechste Tick startet regulaer neu.
+ */
+async function withTimeout(promise, ms, label) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label}: Timeout nach ${ms} ms`)), ms);
+  });
+  try {
+    return await Promise.race([promise, timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function readState() {
   try {
     return JSON.parse(readFileSync(statePath, "utf8"));
@@ -136,11 +155,11 @@ async function main() {
   }
 
   const client = createDirectus(url).with(authentication()).with(rest());
-  await client.login(email, password);
+  await withTimeout(client.login(email, password), 30000, "Directus-Login");
 
   let latest;
   try {
-    latest = await latestContentChange(client);
+    latest = await withTimeout(latestContentChange(client), 30000, "directus_activity");
   } catch (error) {
     const m = error?.errors?.[0]?.message ?? error?.message ?? String(error);
     log(`directus_activity nicht lesbar - kein Auto-Rebuild (naechtlicher Task greift). (${m})`);
@@ -158,6 +177,19 @@ async function main() {
   } else if (latest && latest.id > lastId) {
     need = true;
     log(`Neue Aenderung: activity #${latest.id} @ ${latest.timestamp} (zuletzt #${lastId}).`);
+  } else if (latest && latest.id < lastId) {
+    // Regression: die juengste activity.id ist KLEINER als der gespeicherte Stand.
+    // directus_activity ist normalerweise eine monoton steigende PK -> das passiert
+    // nur, wenn die Tabelle rotiert/geleert/aus einem AELTEREN Dump restauriert
+    // oder die Sequence resettet wurde (typisch nach einem DB-Restore). Ohne
+    // Sonderbehandlung waere `latest.id > lastId` NIE wieder wahr -> stiller
+    // Dauer-Stillstand des Publish (Task meldet gruen "kein Build"). Wir setzen die
+    // Baseline auf den neuen Stand zurueck UND bauen einmal -> der Publish-Pfad
+    // heilt sich selbst, gerade im Recovery-Fall, in dem man sich darauf verlaesst.
+    need = true;
+    log(
+      `Activity-Regression: #${latest.id} < gespeicherter #${lastId} (Rotation/Restore?) -> Baseline-Reset + Build.`,
+    );
   } else {
     need = false;
   }

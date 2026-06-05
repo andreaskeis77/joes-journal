@@ -65,6 +65,11 @@ export async function loadFromDirectus(): Promise<RawData> {
     const fileIds = (raw.articles[i].gallery_files ?? []).map((j) => j?.directus_files_id);
     a.galleryImages = resolveGallery(fileIds, a.galleryImages, manifest);
   });
+  // Kritiken: derselbe Inline-Bild-Rewrite wie Artikel (Body ist jetzt WYSIWYG-HTML).
+  // Der Bake (bake-files.mjs) sammelt /assets/-UUIDs aus veröffentlichten Review-Bodies.
+  reviews.forEach((rv) => {
+    rv.body = rewriteBodyAssets(rv.body, manifest);
+  });
   const recipes = bakeImages(raw.recipes.map(mapRecipe), raw.recipes);
   const cocktails = bakeImages(raw.cocktails.map(mapCocktail), raw.cocktails);
   const equipment = bakeImages(raw.equipment.map(mapEquipment), raw.equipment);

@@ -35,7 +35,8 @@ export interface DirectusReview {
   visited_on: string | null;
   rating: number | string;
   excerpt: string | null;
-  body: string[] | null;
+  /** WYSIWYG-HTML (input-rich-text-html). Älterer string[]-Wert (Repeater) wird im Mapper auf "" verworfen. */
+  body: string | null;
   image: string | null;
   image_file?: string | null;
   gallery_images: string[] | null;

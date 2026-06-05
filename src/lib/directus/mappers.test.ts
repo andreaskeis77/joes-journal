@@ -85,14 +85,14 @@ describe("mapReview", () => {
       visited_on: "2026-04-18",
       rating: 4.5,
       excerpt: "Sechs Gänge…",
-      body: ["Absatz eins", "Absatz zwei"],
+      body: "<p>Absatz eins</p><p>Absatz zwei</p>",
       image: "/assets/reviews/foo.webp",
       gallery_images: ["/g1.webp"],
     };
     const out = mapReview(review);
     expect(out.restaurantSlug).toBe("restaurant-ohne-namen");
     expect(out.rating).toBe(4.5);
-    expect(out.body).toHaveLength(2);
+    expect(out.body).toContain("Absatz eins");
     expect(out.galleryImages).toEqual(["/g1.webp"]);
     expect(out.status).toBe("published");
   });
@@ -133,9 +133,27 @@ describe("mapReview", () => {
     };
     const out = mapReview(review);
     expect(out.rating).toBe(4);
-    expect(out.body).toEqual([]);
+    expect(out.body).toBe("");
     expect(out.galleryImages).toEqual([]);
     expect(out.restaurantSlug).toBe("uuid-only");
+  });
+
+  it("coerces a legacy array body (list-Repeater) to an empty string (no [object Object])", () => {
+    const review = {
+      id: "r4",
+      slug: "legacy",
+      title: "Legacy",
+      status: "published",
+      restaurant: "uuid-only",
+      visited_on: null,
+      rating: 0,
+      excerpt: null,
+      // Alter Wert aus dem kaputten list-Repeater: [{}, {}] statt HTML-String.
+      body: [{}, {}] as unknown as string,
+      image: null,
+      gallery_images: null,
+    } satisfies DirectusReview;
+    expect(mapReview(review).body).toBe("");
   });
 });
 

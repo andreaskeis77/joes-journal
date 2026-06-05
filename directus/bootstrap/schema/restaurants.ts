@@ -215,13 +215,18 @@ export const reviewCollection: CollectionDef = {
       schema: { is_nullable: true },
     },
     {
+      // WYSIWYG-HTML wie bei `articles` (behebt den kaputten `list`-Repeater, der
+      // "[object Object]" erzeugte). ACHTUNG: Der Wechsel json -> text ist NICHT
+      // additiv – `schema:apply` legt nur fehlende Felder an, ändert KEINE Typen.
+      // Auf einer Live-DB den Feldtyp manuell ändern (Data-Model: body löschen +
+      // `schema:apply`, oder Typ direkt auf "text" umstellen). Siehe
+      // docs/DIRECTUS_EDITOR_UX.md §"Kritik-Body".
       field: "body",
-      type: "json",
+      type: "text",
       meta: {
-        interface: "list",
+        interface: "input-rich-text-html",
         width: "full",
-        special: ["cast-json"],
-        note: "Absätze als Array von Strings.",
+        note: "Kritiktext. Formatierung über die Werkzeugleiste (fett, Überschrift, Liste); Bilder über den Bild-Button direkt im Text.",
       },
       schema: { is_nullable: true },
     },

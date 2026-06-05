@@ -5,6 +5,7 @@ import RatingStars from "../../components/RatingStars.astro";
 import EmptyState from "../../components/EmptyState.astro";
 import { restaurants, reviewBySlug } from "../../data/source";
 import type { RestaurantStub } from "../../data/source";
+import { formatGermanDate } from "../../lib/date";
 
 export function getStaticPaths() {
   return restaurants.map((restaurant) => ({
@@ -21,11 +22,8 @@ const { restaurant } = Astro.props;
 const review = restaurant.reviewSlug ? reviewBySlug.get(restaurant.reviewSlug) : undefined;
 const priceDisplay = "€".repeat(restaurant.priceLevel);
 const visitedDate = review
-  ? new Date(review.visitedOn).toLocaleDateString("de-DE", {
-      year: "numeric",
-      month: "long",
-    })
-  : null;
+  ? formatGermanDate(review.visitedOn, { year: "numeric", month: "long" })
+  : "";
 ---
 
 <BaseLayout
@@ -42,7 +40,7 @@ const visitedDate = review
     <div class="hero">
       <img
         src={restaurant.image}
-        alt=""
+        alt={restaurant.name}
         width="1600"
         height="1200"
         loading="eager"

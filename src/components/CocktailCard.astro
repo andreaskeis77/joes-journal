@@ -11,7 +11,14 @@ const { cocktail } = Astro.props;
 <article class="cocktail-card">
   <a class="cocktail-link" href={`/cocktails/${cocktail.slug}`}>
     <div class="image-wrap">
-      <img src={cocktail.image} alt="" width="1600" height="2000" loading="lazy" decoding="async" />
+      <img
+        src={cocktail.image}
+        alt={cocktail.name}
+        width="1600"
+        height="2000"
+        loading="lazy"
+        decoding="async"
+      />
       {cocktail.type === "alkoholfrei" && <span class="tag tag-alkoholfrei">alkoholfrei</span>}
     </div>
     <div class="body">

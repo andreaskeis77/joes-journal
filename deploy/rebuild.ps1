@@ -113,7 +113,20 @@ try {
   #    halb-leere Site zu hinterlassen.
   $dist = Join-Path $RepoRoot "dist"
   $distBak = Join-Path $RepoRoot "dist.prev"
-  if (Test-Path $distBak) { Remove-Item $distBak -Recurse -Force }
+  # Crash-Recovery (BEVOR der neue Swap passiert): Ein vorhandenes dist.prev am
+  # Lauf-START bedeutet, dass der VORHERIGE Lauf NICHT sauber endete - Erfolg
+  # raeumt dist.prev unten weg, und MultipleInstances IgnoreNew schliesst echte
+  # Parallel-Laeufe aus. dist.prev ist damit die letzte GUTE Kopie, ein evtl.
+  # vorhandenes dist/ ist ein abgebrochener/halber Build (Reboot/OOM/Timeout-Kill
+  # mitten in astro build). Frueher loeschte der naechste Lauf dieses dist.prev
+  # bedingungslos und konnte so die einzige gute Kopie vernichten - schlug dann
+  # der frische Build fehl, blieb GAR kein dist/ (leere Live-Site). Daher: das
+  # gute dist.prev zuerst zurueckrollen und das halbe dist/ verwerfen.
+  if (Test-Path $distBak) {
+    Write-Log "Recovery: dist.prev eines abgebrochenen Vorlaufs gefunden - stelle es als gute Basis wieder her (halbes dist/ wird verworfen)."
+    if (Test-Path $dist) { Remove-Item $dist -Recurse -Force }
+    Rename-Item $distBak $dist
+  }
   if (Test-Path $dist) { Rename-Item $dist $distBak }
 
   $env:JOES_DATA_SOURCE = "directus"

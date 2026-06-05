@@ -10,7 +10,14 @@ const { category } = Astro.props;
 
 <a class="category-card" href={category.href}>
   <div class="image-wrap">
-    <img src={category.image} alt="" width="1600" height="900" loading="lazy" decoding="async" />
+    <img
+      src={category.image}
+      alt={category.title}
+      width="1600"
+      height="900"
+      loading="lazy"
+      decoding="async"
+    />
   </div>
   <div class="body">
     <h3>{category.title}</h3>
